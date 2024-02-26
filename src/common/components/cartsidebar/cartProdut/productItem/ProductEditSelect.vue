@@ -1,0 +1,36 @@
+<template>
+  <select
+    class="select__detail text-color-eva-dark-green focus:border-color-eva-dark-green"
+    v-model="selectedQuantity"
+  >
+    <option value="">請選擇數量</option>
+    <oder-edit-slect-option
+      v-model="selectedQuantity"
+      v-for="option in options"
+      :key="option"
+      :optionValue="option"
+    ></oder-edit-slect-option>
+  </select>
+</template>
+
+<script setup>
+import { ref } from "vue";
+import OderEditSlectOption from "../../../ui/product/siderbar/OderEditSlectOption.vue";
+
+const options = [1, 2, 3, 4];
+
+const selectedQuantity = ref(1);
+</script>
+
+<style scoped>
+select {
+  width: 54px;
+  height: 24px;
+  padding: 5px;
+  border-radius: 2px;
+  /* background: #ccc; */
+  border: 1px solid transparent;
+  outline: none;
+  transition: all 0.3s;
+}
+</style>

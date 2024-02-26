@@ -1,0 +1,116 @@
+@tailwind components;
+
+/* join page */
+.join-page__section {
+  @apply py-16 px-4  sm:px-6;
+}
+.join-page__section-specific {
+  @apply py-[104px] px-4 sm:px-2 sm:py-[9.5rem] min-[950px]:py-[9.5rem] min-[950px]:px-2;
+}
+
+.join-page__contnet {
+  position: relative;
+  max-width: 376px;
+  @apply grid gap-10 m-auto text-center;
+}
+
+.join-page__contnet--from {
+  display: grid;
+  grid-column-gap: 40px;
+  -moz-column-gap: 40px;
+  column-gap: 40px;
+  grid-row-gap: 24px;
+  row-gap: 24px;
+  margin: auto;
+  width: 100%;
+}
+
+.join-input__control select,
+.join-input__control input,
+.join-input__control textarea {
+  background: #fff;
+  border: 1px solid #949291;
+  border-radius: 4px;
+  color: #5a5858;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  max-width: 91.22%;
+  padding: 16px 14px;
+  transition: all 0.3s ease;
+  transition-property: border, color;
+  width: 100%;
+}
+
+.join-input__control span,
+.join-input__control label,
+.join-input__control input,
+.join-input__control select,
+.join-input__control textarea {
+  text-align: left;
+  display: block;
+}
+
+.join-input__control input:checked,
+.join-input__control input:active,
+.join-input__control input:focus,
+.join-input__control select:checked,
+.join-input__control select:active,
+.join-input__control select:focus,
+.join-input__control textarea:checked,
+.join-input__control textarea:active,
+.join-input__control textarea:focus {
+  outline: none;
+  border-color: #000;
+}
+.join-input__control > .enterError {
+  border-color: #a91b00;
+}
+.enterErrorHelp {
+  color: #a91b00;
+  border-color: #a91b00;
+}
+
+.join-input__control .enterError:checked,
+.join-input__control .enterError:active,
+.join-input__control .enterError:focus {
+  outline: none;
+  border-color: #a91b00;
+}
+
+.join-input__helper {
+  @apply mt-2 flex items-center;
+}
+
+/* account page */
+/* account -> profile */
+.card-computer {
+  @apply min-[1439px]:col-span-4;
+}
+button.u-pirmary-button.profil__cancel,
+button.u-pirmary-button.profil__edit {
+  width: auto;
+  max-width: 276px;
+  min-width: 150px;
+  background: #fff;
+}
+
+.profil__cancel {
+  border: 3px solid #ff8080;
+}
+
+.profil__edit {
+  border: 3px solid #ffcf81;
+}
+
+button.u-pirmary-button.profil__cancel:hover {
+  background: #eeeeee;
+}
+
+button.u-pirmary-button.profil__edit:hover {
+  background: #f9e4c8;
+}
+
+.profil__edit:active,
+.profil__cancel:active {
+  transform: scale(0.99) translateX(1px);
+}

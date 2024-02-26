@@ -1,0 +1,214 @@
+    <!-- 這邊將會是兩塊區域 1 購物籃 2.日期選擇 tips: 當日期被選擇將會切換為出貨日期 -->
+
+          <div class="cart__dynamic">
+            <!-- 這邊是購物籃 動態顯示我們選擇的物件 -->
+            <!-- 將會有購物籃邏輯 -->
+            <div class="dynamic__wrapper">
+              <div class="dynamic__content">
+                <!-- 當沒有商品時將會出現 -->
+
+                <!-- 有商品才會出現 -->
+                <div class="cart__oder">
+                  <!-- 低消提示 -->
+
+                  <p class="oder__alert">
+                    <!-- 當無法達到某些目標時出現 -->
+                    <!-- <svg></svg> -->
+                    <span>你需要達到某些目標才能購買</span>
+                  </p>
+                  <!-- 低消提示 End -->
+
+                  <!-- 切割組件 -->
+                  <!-- 商品內容，與數量 -->
+                  <div class="oder__item">
+                    <ul class="item__list">
+                      <li class="item__list--photo"></li>
+                      <li class="item__list--info">
+                        <div class="info__detail">
+                          <a href="#">商品名稱</a>
+                          <a href="#">生產商</a>
+                          <span>商品量詞</span>
+                        </div>
+                      </li>
+                      <li class="item__list--edit">
+                        <p class="edit__price">價格待定</p>
+                        <!-- 數量與移除 -->
+                        <div class="edit__control">
+                          <div class="edit__contro--select">
+                            <select
+                              class="select__detail"
+                              v-model="selectedQuantity"
+                            >
+                              <option value="">請選擇數量</option>
+                              <!-- 透過 loop 去 產出他 option -->
+                            </select>
+                            <div class="select__tips">
+                              <!-- 當達到某個條件時，動態產出 -->
+                            </div>
+                          </div>
+                          <button class="edit__contro--remove">移除商品</button>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                  <!-- 商品內容，與數量 End-->
+
+                  <!-- 切割組件 -->
+                  <!-- 進度條 -->
+                  <div class="oder__progress">
+                    <label for="progress__bar"> 在消費 $'**' 便可以免運</label>
+                    <progress id="progress__bar" max="0" value="0">
+                      <!-- 透過 vuex 全局去管理產品相關值 -->
+                    </progress>
+                  </div>
+                  <!-- 進度條 end -->
+
+                  <!-- 切割組件 -->
+                  <!-- 處理金額邏輯 -->
+                  <dl class="oder__summary">
+                    <div class="summary__item">
+                      <dt>小計</dt>
+                      <dd>金額</dd>
+                    </div>
+                    <div class="summary__item">
+                      <dt>外送費</dt>
+                      <dd>金額</dd>
+                    </div>
+
+                    <!-- 當輸入完成折扣碼出現 -->
+                    <!-- 折扣碼強制大寫 -->
+                    <div class="promo__codes">
+                      <dt class="visually-hidden">折扣碼</dt>
+                      <dd class="codes__detail">
+                        <span> BOOKSAREMAGIC</span>
+                        <!-- inline -->
+                        <button>
+                          刪除折扣碼
+                          <span class="visually-hidden">BOOKSAREMAGIC</span>
+                        </button>
+                      </dd>
+                    </div>
+                    <!-- 當輸入完成折扣碼出現 End -->
+
+                    <!-- 輸入折扣碼 -->
+                    <!-- 二選一情況 為點選為添加，點選出現折扣碼表單 -->
+                    <div class="apply__promo-codes">
+                      <!-- inline button 尚未點選-->
+                      <button>
+                        <!-- svg -->
+                        添加折扣碼
+                      </button>
+                      <!-- 點選後隱藏 -->
+                      <form @submit.prevent>
+                        <label for=""></label>
+                        <input
+                          type="text"
+                          placeholder="請輸入折扣碼"
+                          v-model="something"
+                        />
+                        <button>關閉</button>
+                      </form>
+                    </div>
+                    <!-- 當輸入折扣碼時才會出現的折扣金額 -->
+                    <div class="summary__item discount">
+                      <tt>已應用折扣</tt>
+                      <td>金額</td>
+                    </div>
+                    <!-- 總計 -->
+                    <div class="summary__item total">
+                      <td>總計</td>
+                      <tt>金額</tt>
+                    </div>
+                  </dl>
+                  <!-- 處理金額邏輯 end -->
+                </div>
+              </div>
+              <!-- buttom-Bar 設為 card -->
+              <div class="dynamic__buttom-bar">
+                <div class="buttom-bar__content">
+                  <div>
+                    <div>
+                      <!-- 透過 router 首位 判斷是否登陸。 -->
+                      <!-- 是進入結帳 ，否進入登錄頁面 -->
+                      <a class="cta__buttom" href="#">提交表單</a>
+                      <!-- 當檢測沒有登陸時 -->
+                      <p>
+                        請在 9 月 30 日星期六上午 11:59
+                        之前建立帳戶，否則您購物車中的商品將被刪除。已經有帳戶？登入
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 這邊將會是 日期選擇 -->
+          <div class="cart__dynamic">
+            <!-- 選擇日期將會對應到上方的 secheader 的月曆 賦予文字 -->
+            <!-- 產出日期，並且日期將會有 假日 加上國定假日 對應到商品無法選擇 -->
+
+            <!-- 這邊將會有兩個型態。 1.產出選擇日期 2. 選擇的出貨日期 -->
+            <div class="dynamic__wrapper">
+              <div class="dynamic__content hide__horizontal-scrollbar">
+                <!-- 當為型態 2 時將會被隱藏 if -->
+                <figure class="dynamic__content--background">
+                  <figcaption></figcaption>
+                  <img src="" alt="" />
+                </figure>
+                <div class="date__list">
+                  <!-- 在尚未有商品時 -->
+                  <ul class="create__oder-list">
+                    <li class="oder__item">
+                      <div>
+                        <p class="item__title"></p>
+                        <p class="item__text"></p>
+                      </div>
+                    </li>
+                  </ul>
+                  <!-- 當已有商品時 -->
+                  <ul class="date__list-item">
+                    <li>
+                      <div>
+                        <!-- 他只有在第最近的日期出現 -->
+                        <p class="delivery-badge">
+                          <span class="">
+                            <!-- svg  -->
+                          </span>
+                          <span> 即將到達 </span>
+                        </p>
+                        <!--  -->
+                        <p class="item__title">
+                          <span>週一 , 10月1日 </span>
+                          <span>一個產品</span>
+                        </p>
+
+                        <p class="item__text">
+                          最後編輯時間：
+                          <span>Tuesday, October 24 at 11:59 AM </span>
+                        </p>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- 型態1. 將會是選擇日期 -->
+              <div class="dynamic__buttom-bar">
+                <div class="buttom-content">
+                  <div class="buttom-bar__select">
+                    <button class="btn__cancel">取消</button>
+                    <button class="btn__creare">創建</button>
+                  </div>
+                </div>
+              </div>
+              <!-- 型態2, 將會是創建新日期 -->
+              <div class="dynamic__buttom-bar">
+                <div class="buttom-content">
+                  <button type="button" class="btn__creare">
+                    添加新的日期
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>

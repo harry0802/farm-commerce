@@ -1,0 +1,14 @@
+:root {
+  /* ///////math value/////// */
+  --xs-grid-colm-gap: 1rem;
+  --sm-grid-colm-gap: 1.5rem;
+  /* small */
+  --small-width-colum-full: (100cqw - (16px * 2));
+  /* middle */
+  --middle--width-colum-1: (100cqw - ((24px * 2) + (24px * 8)));
+  --middle--width-colum-3: (100cqw - ((24px * 2) + (24px * 2)))/3;
+
+  /*large  */
+  --large--width-colum-1: ((100cqw - ((40px * 2) + (40px * 12))) / 3);
+  --large--width-colum-3: ((100cqw - ((40px * 2) + (40px * 2))) / 3);
+}
