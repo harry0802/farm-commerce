@@ -16,7 +16,7 @@
           <span class="u-text-large sm:hidden">田園速遞商店</span>
           <hero-aoto-produce-text />
         </h1>
-        <primary-button :btnTitle="'別猶豫，點我買菜'" />
+        <primary-button :path="'shop/Farm Boxes'" :btnTitle="'別猶豫，點我買菜'" />
       </div>
     </div>
   </section>

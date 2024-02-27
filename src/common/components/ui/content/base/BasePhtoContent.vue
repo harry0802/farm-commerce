@@ -7,9 +7,6 @@
 <script>
 export default {
   props: { reverse: { type: Boolean, default: false } },
-  data() {
-    return {};
-  },
 };
 </script>
 
@@ -19,7 +16,7 @@ export default {
 }
 
 .img__recontainer {
-  @apply col-start-3 sm:col-end-11
+  @apply col-span-full sm:col-end-11
 }
 
 
