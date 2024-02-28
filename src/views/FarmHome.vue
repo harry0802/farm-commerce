@@ -1,5 +1,5 @@
 <template>
-  <main id="main">
+  <main id="main" class="overflow-hidden">
     <home-hero />
     <home-product />
     <MountainFlow class="bg-white  text-b-color-browm" />
