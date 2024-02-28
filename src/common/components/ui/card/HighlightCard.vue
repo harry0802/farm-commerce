@@ -1,23 +1,22 @@
 <template>
-  <div class="highlightCard__wrap u-grid-col-3">
+  <div class="highlightCard__wrap flex flex-col items-center u-grid-col-3  ">
     <div class="highlightCard__photo">
       <figure>
-        <img class="" :src="props.imgPath" alt="" />
+        <img class="rounded-md object-cover w-full" :src="imgPath" alt="" />
+
       </figure>
     </div>
-    <div class="highlightCard__title u-text-smaill">
-      <h3>{{ props.title }}</h3>
+    <div class="highlightCard__title u-text-small">
+      <h3>{{ title }}</h3>
     </div>
-    <!-- <p class="whitespace-pre-line">{{ paragraph }}</p> -->
-    <collapsible-text :paragraph="props.paragraph"></collapsible-text>
+    <collapsible-text :paragraph="paragraph" />
   </div>
 </template>
 
 <script setup>
 import CollapsibleText from "../text/CollapsibleText.vue";
-import { defineProps } from "vue";
 
-const props = defineProps({
+defineProps({
   title: { name: String },
   paragraph: { name: String },
   imgPath: { name: String, default: "https://picsum.photos/800" },
@@ -25,20 +24,11 @@ const props = defineProps({
 </script>
 
 <style scoped>
-.highlightCard__wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  /* justify-content: end; */
-  /* padding: 2.5rem 1rem; */
-}
-.highlightCard__wrap > :not(:first-child) {
+.highlightCard__wrap> :not(:first-child) {
   margin-top: 1rem;
 }
 
-img {
-  margin: auto;
-  object-fit: cover;
-  width: 66%;
+figure {
+  aspect-ratio: 16/9;
 }
 </style>

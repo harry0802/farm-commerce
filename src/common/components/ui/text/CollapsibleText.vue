@@ -27,6 +27,7 @@ const collapsedState = computed(() => (isCollapsed.value ? "收起" : "展開"))
 button {
   display: none;
 }
+
 @media only screen and (min-width: 600px) {
   .text__container {
     position: relative;
@@ -46,6 +47,7 @@ button {
 
     /* text-align: left; */
   }
+
   .collapsed .text__content {
     -webkit-line-clamp: unset;
   }
@@ -55,11 +57,11 @@ button {
       "text"
       "btn";
   }
+
   button {
     display: flex;
     justify-content: flex-end;
     text-indent: 1em;
     @apply text-b-color-green-dark;
   }
-}
-</style>
+}</style>
