@@ -29,6 +29,4 @@ import {
   OpeningHoursSegment,
 } from "@/common/components/home/index.js";
 import MountainFlow from "@/common/components/ui/section/MountainFlow.vue";
-
-
 </script>

@@ -1,8 +1,8 @@
 <template>
-  <div class="col-span-full sm:col-start-3 sm:col-end-11">
+  <div class=" max-w-[370px]">
     <div class="card">
-      <div class="card-item">
-        <slot class=""> </slot>
+      <div class="card-item relative rounded-lg bg-white p-4 py-10">
+        <slot />
         <div class="card-Img-Border"></div>
       </div>
     </div>
@@ -23,12 +23,8 @@ export default {};
   overflow: hidden;
 }
 
-.card-item {
-  position: relative;
-  padding: 1rem;
-  border-radius: 9px;
-  background: #fff;
-}
+
+
 .card-Img-Border {
   position: absolute;
   width: 100%;
@@ -49,12 +45,10 @@ export default {};
   width: 100%;
   height: 100px;
   background-image: linear-gradient(#e4e4e4 0%, #fff 50%, #e4e4e4 100%);
-  background-image: linear-gradient(
-    rgba(228, 228, 228, 0) 0%,
-    #e4e4e4 20%,
-    #fff 60%,
-    rgba(228, 228, 228, 0) 100%
-  );
+  background-image: linear-gradient(rgba(228, 228, 228, 0) 0%,
+      #e4e4e4 20%,
+      #fff 60%,
+      rgba(228, 228, 228, 0) 100%);
 
   z-index: -1;
 }
