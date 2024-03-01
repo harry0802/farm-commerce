@@ -1,11 +1,11 @@
 <template>
-  <main id="main">
+  <main id="main" class="overflow-hidden">
     <home-hero />
     <home-product />
     <MountainFlow class="bg-white  text-b-color-browm" />
     <ordering-process-guide />
     <MountainFlow class="bg-b-color-browm text-b-color-green-light" />
-    <product-highlights></product-highlights>
+    <product-highlights />
     <MountainFlow class="bg-b-color-green-light text-b-color-green-dark" />
     <features-and-advantages />
     <MountainFlow class="bg-b-color-green-dark text-b-color-browm" />
@@ -29,6 +29,4 @@ import {
   OpeningHoursSegment,
 } from "@/common/components/home/index.js";
 import MountainFlow from "@/common/components/ui/section/MountainFlow.vue";
-
-
 </script>

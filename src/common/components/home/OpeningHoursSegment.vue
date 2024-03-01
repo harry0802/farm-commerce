@@ -2,21 +2,15 @@
   <div class="bg-b-color-browm">
     <base-section>
       <base-content>
-        <base-phto-content></base-phto-content>
+        <base-phto-content />
         <base-text-content>
-          <base-text
-            :title="'迎接您的光臨'"
-            :paragraph="'田園速遞餐廳 - 呈獻超凡美食之旅: 品味四季佳餚，每道菜肴都完美地融入農夫和製造商夥伴的用心栽培。從田野到餐桌，我們的料理是一場自然之美的盛宴。'"
-          >
-          </base-text>
+          <base-text :title="'迎接您的光臨'"
+            :paragraph="'田園速遞餐廳 - 呈獻超凡美食之旅: 品味四季佳餚，每道菜肴都完美地融入農夫和製造商夥伴的用心栽培。從田野到餐桌，我們的料理是一場自然之美的盛宴。'" />
         </base-text-content>
       </base-content>
+
       <base-content>
-        <div
-          class="openHour__content"
-          v-for="open in openHours"
-          :key="open.day"
-        >
+        <div class="openHour__content" v-for="open in openHours" :key="open.day">
           <p class="openHour--day u-text-smaill">{{ open.day }} :</p>
           <p class="openHour--am u-text-smaill">{{ open.am }}</p>
           <p class="openHour--pm u-text-smaill">{{ open.pm }}</p>
@@ -73,9 +67,11 @@ export default {
   color: #fff;
   z-index: 1;
 }
+
 .openHour__content:not(:first-of-type) {
   margin-top: 20px;
 }
+
 .openHour__content::before {
   position: absolute;
   inset: 0;
@@ -83,7 +79,7 @@ export default {
   background-repeat: no-repeat;
   background-image: url("@/assets/imgs/pixel_bg_small-6c949a35a7444bb26e9e22cd359850067aa94c2f573872782f6df56420cdfa60.png");
   background-position: center;
-  background-size: 300px 100%;
+  /* background-size: 300px 100%; */
   /* background-size: 50% 100%; 非手機版 */
   z-index: 0;
 }
@@ -91,6 +87,7 @@ export default {
 .openHour__content p {
   position: relative;
 }
+
 .openHour__content p:not(:first-of-type) {
   margin-top: 10px;
 }
@@ -100,9 +97,11 @@ export default {
     grid-column: auto / span 4;
     padding: 1rem;
   }
+
   p {
     font-size: 20px;
   }
+
   .openHour__content::before {
     left: 0;
     background-position: left;

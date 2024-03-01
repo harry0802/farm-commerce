@@ -1,23 +1,20 @@
 <template>
   <home-card>
-    <div class="person__warp">
+    <div class="person__warp  min-h-[400px] ">
       <figure class="person__content">
-        <img :src="props.personPhoto" alt="" />
-        <figcaption class="person__text">
-          <h3>{{ props.personName }}</h3>
-          <p>{{ props.personText }}</p>
+        <img :src="personPhoto" alt="" />
+        <figcaption class="person__text ">
+          <h3 class="u-text-small mt-6">{{ personName }}</h3>
+          <p class="mt-6 text-center">{{ personText }}</p>
         </figcaption>
-        <primary-button :btnTitle="'了解更多'"></primary-button>
       </figure>
     </div>
   </home-card>
 </template>
 
 <script setup>
-import { defineProps } from "vue";
 import HomeCard from "../../ui/card/HomeCard.vue";
-
-const props = defineProps({
+defineProps({
   personName: { type: String, default: "設定中..." },
   personText: { type: String, default: "設定中..." },
   personPhoto: { type: String, default: "https://picsum.photos/800" },
@@ -25,17 +22,19 @@ const props = defineProps({
 </script>
 
 <style scoped>
-.person__content > img {
+.person__content>img {
   width: 168px;
-  width: 168px;
+  object-fit: cover;
+  aspect-ratio: 1/1;
   margin: auto;
-  border-radius: 100%;
+  border-radius: 50%;
 }
+
 .person__text {
   margin-top: 1rem;
 }
 
-.person__text > h3 {
+.person__text>h3 {
   text-align: center;
 }
 </style>

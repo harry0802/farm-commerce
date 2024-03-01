@@ -1,5 +1,5 @@
 <template>
-  <section class="mobile__nav   h-16 flex  w-full px-5  justify-between items-center lg:hidden">
+  <section class="mobile__nav  bg-white  h-16 flex  w-full px-5  justify-between items-center lg:hidden">
     <div class="mobile__menu--button flex  items-center flex-1">
       <mobile-hamburger v-show="showMenu" />
       <mobile-search v-model:showMenu="showMenu"></mobile-search>

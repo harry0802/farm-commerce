@@ -1,8 +1,7 @@
 <template>
   <div>
-    <home-title class="text-b-color-green-light" :title="'細膩之處的別樣光華'"></home-title>
-
-    <highlight-article></highlight-article>
+    <home-title class="text-b-color-green-light" :title="'細膩之處的別樣光華'" />
+    <highlight-article />
   </div>
 </template>
 
