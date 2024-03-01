@@ -1,6 +1,6 @@
 <template>
   <p class=" autoProduce_text hidden place-content-center overflow-hidden sm:flex ">
-    <span class="text-white  text-4xl" v-for="(propaganda, i) in currentText" :style="charStyles[i]" :key="currentText">
+    <span class="text-white  text-4xl" v-for="(propaganda, i) in currentText" :style="propaganda" :key="currentIndex + [i]">
       {{ propaganda }}
     </span>
   </p>
@@ -35,8 +35,6 @@ const controlSpan = function () {
 
   for (let i = 0; i < text.length; i++) {
     currentText.value[i] = text[i];
-
-
     charStyles.value[i] = `animation-delay:${i * 0.05}s`;
   }
 };

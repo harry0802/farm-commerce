@@ -1,14 +1,12 @@
 <template>
   <div class="section-bg">
-
     <home-title class="text-b-color-browm" :title="'以人為本'" />
-
     <base-section>
       <base-content>
-        <FeatureCarousel class="col-span-full md::col-start-3 md::col-end-11  ">
+        <FeatureCarousel class="col-span-full  md::col-start-3 md::col-end-11  ">
           <template #CarouselItem>
-            <CarouselItem v-for=" feedback in pepolefeedback"
-              class=" flex place-content-center min-[500px]:basis-1/2  sm:basis-1/3  lg:basis-1/3 ">
+            <CarouselItem v-for=" feedback in pepolefeedback" :key="feedback.personName"
+              class="flex justify-center  min-[500px]:basis-1/2  sm:basis-1/3  lg:basis-1/3 ">
               <HomePersonCard :personName="feedback.personName" :personText="feedback.personText"
                 :personPhoto="feedback.personPhoto" />
             </CarouselItem>

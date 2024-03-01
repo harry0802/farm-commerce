@@ -1,13 +1,12 @@
 <template>
-  <home-card class="">
-    <div class="person__warp  h-[350px] ">
+  <home-card>
+    <div class="person__warp  min-h-[400px] ">
       <figure class="person__content">
         <img :src="personPhoto" alt="" />
         <figcaption class="person__text ">
           <h3 class="u-text-small mt-6">{{ personName }}</h3>
           <p class="mt-6 text-center">{{ personText }}</p>
         </figcaption>
-        <primary-button :btnTitle="'了解更多'"></primary-button>
       </figure>
     </div>
   </home-card>
