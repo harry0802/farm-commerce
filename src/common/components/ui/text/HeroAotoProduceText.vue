@@ -1,6 +1,7 @@
 <template>
   <p class=" autoProduce_text hidden place-content-center overflow-hidden sm:flex ">
-    <span class="text-white  text-4xl" v-for="(propaganda, i) in currentText" :style="propaganda" :key="currentIndex + [i]">
+    <span class="text-white  text-4xl" v-for="(propaganda, i) in currentText" :style="charStyles"
+      :key="currentText + [i]">
       {{ propaganda }}
     </span>
   </p>
@@ -44,7 +45,7 @@ loopAutoText();
 timer = setInterval(() => {
   controlSpan();
   loopAutoText();
-}, 3000);
+}, 4000);
 
 
 
