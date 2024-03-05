@@ -1,49 +1,34 @@
 <template>
-    <button class="chatbot-toggler  ">
-        <span class="material-symbols-rounded">
-            mode_comment
-            <Icon icon="tabler:message-chatbot" />
-            <Icon icon="game-icons:megabot" />
-        </span>
-        <span class="material-symbols-outlined">
-            close
-            <Icon icon="pixelarticons:close" />
-        </span>
+    <button @click="chatbotToggler"
+        class="chatbot-toggler fixed flex h-[50px] w-[50px] place-content-center place-items-center bottom-[30px] left-9 bg-color-eva-dark-yellow  cursor-pointer rounded-full  transition-all">
+        <Icon class="u-text-small absolute" :class="{
+        'showChatbot': !isChat,
+        'closeChatbot': isChat
+    }" :icon="isChat ? 'tabler:message-chatbot' : 'pixelarticons:close'" />
     </button>
+
 </template>
 
 <script setup>
 import { Icon } from '@iconify/vue';
-
+const isChat = defineModel('isChat')
+const chatbotToggler = () => isChat.value = !isChat.value
 </script>
 
 <style scoped>
-.chatbot-toggler {
-    position: fixed;
-    display: flex;
-    justify-content: center;
-    height: 50px;
-    width: 50px;
-    align-items: center;
-    bottom: 30px;
-    left: 35px;
-    background: #724ae8;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    border-radius: 50%;
-    transition: all 0.2s ease;
+.iconify,
+.showChatbot,
+.closeChatbot {
+    transition: opacity .2s, transform .3s;
 }
 
-.show-chatbot .chatbot-toggler {
+.showChatbot.iconify {
+    opacity: 1;
     transform: rotate(90deg);
 }
 
-.show-chatbot .chatbot-toggler span:first-child {
-    opacity: 0;
-}
-
-.show-chatbot .chatbot-toggler span:last-child {
+.closeChatbot.iconify {
     opacity: 1;
+    transform: rotate(0deg);
 }
 </style>
