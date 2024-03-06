@@ -10,17 +10,43 @@
                 <br />
                 請輸入你想提問的訊息
             </p>
-
         </li>
+
+
+        <li class="chat outgoing flex list-none">
+            <Icon
+                class="w-8 h-8  bgcbloc text-white text-5xl cursor-default text-center self-center bg-color-eva-light-purple rounded mr-2.5 mb-[7px]  "
+                icon="emojione:robot-face" />
+
+            <p class="max-w-[75%] bg-color-grey-light  whitespace-pre-wrap py-3 px-4 rounded-[10px] rounded-b-none ">
+                設定中...
+            </p>
+        </li>
+
     </ul>
 </template>
 
 <script setup>
 import { Icon } from '@iconify/vue';
 
+const createChatLi = [
+    { message: '', className: 'incoming' },
+    { message: '', className: 'outgoing' },
+]
+
 
 
 
 </script>
 
-<style scoped></style>
+<style scoped>
+.chatbox .chat p.error {
+    color: #721c24;
+    background: #f8d7da;
+}
+
+.chatbox .incoming p {
+    color: #000;
+    background: #f2f2f2;
+}
+</style>

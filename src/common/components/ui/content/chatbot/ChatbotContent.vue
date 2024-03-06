@@ -14,7 +14,8 @@
 </template>
 
 <script setup>
-const isChat = defineModel('isChat')
+import { inject } from "vue";
+const { isChat } = inject('store')
 </script>
 
 <style scoped>
@@ -34,16 +35,6 @@ const isChat = defineModel('isChat')
 }
 
 
-
-.chatbox .chat p.error {
-    color: #721c24;
-    background: #f8d7da;
-}
-
-.chatbox .incoming p {
-    color: #000;
-    background: #f2f2f2;
-}
 
 
 

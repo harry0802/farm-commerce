@@ -10,9 +10,9 @@
 </template>
 
 <script setup>
-import { Icon } from '@iconify/vue';
-const isChat = defineModel('isChat')
-const chatbotToggler = () => isChat.value = !isChat.value
+import { Icon, } from '@iconify/vue';
+import { inject } from "vue";
+const { isChat, chatbotToggler } = inject('store')
 </script>
 
 <style scoped>
