@@ -16,56 +16,12 @@
 
 <script setup>
 import { Icon } from '@iconify/vue';
-import { ref, onMounted } from "vue";
+import { ref, onMounted, inject } from "vue";
 
-const userMessage = ref('')
+const { setInputInitHeight, setElementTextarea, userMessage, autoAdjustTextareaHeight, handleEnterKeyPress } = inject('store')
 const elementTextarea = ref(null)
-let inputInitHeight
-
-const autoAdjustTextareaHeight = () => {
-    const setHeight = (height) => elementTextarea.value.style.height = `${height}px`
-    userMessage.value === '' ? setHeight(inputInitHeight) : setHeight(inputInitHeight), setHeight(elementTextarea.value.scrollHeight)
-}
-
-const handleEnterKeyPress = (e) => {
-    if (userMessage.value === '') return
-    if (e.key === "Enter" && !e.shiftKey && window.innerWidth > 800) {
-        e.preventDefault();
-        console.log(123);
-        // handleChat();
-    }
-}
-
-
-
-// const handleChats = () => {
-//     if (!userMessage.value) return;
-
-//     // Clear the input textarea and set its height to default
-//     userMessage.value = "";
-//     chatInput.style.height = `${inputInitHeight}px`;
-
-//     // Append the user's message to the chatbox
-
-//     chatbox.appendChild(createChatLi(userMessage, "outgoing"));
-//     chatbox.scrollTo(0, chatbox.scrollHeight);
-
-//     setTimeout(() => {
-//         //Display "Thinking..." message while waiting for the response
-//         const incomingChatLi = createChatLi("Thinking...", "incoming");
-//         chatbox.appendChild(incomingChatLi);
-//         chatbox.scrollTo(0, chatbox.scrollHeight);
-//         generateResponse(incomingChatLi);
-//     }, 600);
-
-// };
-
-
 onMounted(() => {
-    inputInitHeight = elementTextarea.value.scrollHeight;
+    setInputInitHeight.value = elementTextarea.value.scrollHeight;
+    setElementTextarea.value = elementTextarea.value
 })
-
-
 </script>
-
-<style scoped></style>

@@ -12,7 +12,6 @@
             </p>
         </li>
 
-
         <li class="chat outgoing flex list-none">
             <Icon
                 class="w-8 h-8  bgcbloc text-white text-5xl cursor-default text-center self-center bg-color-eva-light-purple rounded mr-2.5 mb-[7px]  "
@@ -29,10 +28,6 @@
 <script setup>
 import { Icon } from '@iconify/vue';
 
-const createChatLi = [
-    { message: '', className: 'incoming' },
-    { message: '', className: 'outgoing' },
-]
 
 
 

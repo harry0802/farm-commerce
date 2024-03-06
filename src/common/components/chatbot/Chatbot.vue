@@ -24,13 +24,25 @@ import ChatbotTitle from "@/common/components/ui/title/ChatbotTitle.vue";
 import ChatContent from "@/common/components/ui/content/chatbot/ChatContent.vue";
 import { provide, toRefs } from "vue";
 import useChatbotStore from "@/store/modules/chatbot/chatbotStore.js";
-const { isChat, chatbotToggler } = toRefs(useChatbotStore())
-
+const {
+    isChat,
+    chatbotToggler,
+    inputInitHeight,
+    elementTextarea,
+    userMessage,
+    autoAdjustTextareaHeight,
+    handleEnterKeyPress
+} = toRefs(useChatbotStore())
 
 
 provide('store', {
     isChat: isChat,
     chatbotToggler: chatbotToggler
+    , setInputInitHeight: inputInitHeight
+    , setElementTextarea: elementTextarea
+    , userMessage
+    , autoAdjustTextareaHeight
+    , handleEnterKeyPress
 })
 
 
