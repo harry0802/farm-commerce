@@ -1,4 +1,7 @@
 import { defineStore } from "pinia";
+import { reactive } from "vue";
+import { v4 as uuidv4 } from "uuid";
+import actions from "@/store/modules/chatbot/actions.js";
 
 const useChatbotStore = defineStore("useChatbot", {
   state() {
@@ -7,46 +10,32 @@ const useChatbotStore = defineStore("useChatbot", {
       isChat: true,
       inputInitHeight: null,
       elementTextarea: null,
-      createChatLi: [
-        { message: "", className: "incoming" },
-        { message: "", className: "outgoing" },
-      ],
+      elementCahtbox: null,
+      createChatLi: reactive([
+        {
+          id: "a688e7b2-93e0-4776-a7a3-59f8e25e13c6",
+          role: "bot",
+          message: "你好👋\n請輸入你想提問的訊息 ",
+          wait: false,
+        },
+        {
+          role: "user",
+          message: "訊息訊息訊息訊息訊息訊息訊息訊息",
+          wait: false,
+        },
+        { role: "bot", message: "", wait: true },
+        {
+          role: "user",
+          message: "abc",
+          wait: false,
+        },
+      ]),
     };
   },
-  actions: {
-    chatbotToggler() {
-      this.isChat = !this.isChat;
-    },
-
-    setChatLi(message, className) {
-      {
-      }
-    },
-
-    handleChat(userMessage) {
-      if (!userMessage) return;
-    },
-
-    autoAdjustTextareaHeight() {
-      const inputInitHeight = this.inputInitHeight;
-      const elementTextarea = this.elementTextarea;
-      const setHeight = (height) =>
-        (elementTextarea.style.height = `${height}px`);
-      this.userMessage === ""
-        ? setHeight(inputInitHeight)
-        : setHeight(inputInitHeight),
-        setHeight(elementTextarea.scrollHeight);
-    },
-
-    handleEnterKeyPress(e) {
-      if (this.userMessage === "") return;
-      if (e.key === "Enter" && !e.shiftKey && window.innerWidth > 800) {
-        e.preventDefault();
-        console.log(123);
-        // handleChat();
-      }
-    },
+  getters: {
+    creadeUid: () => uuidv4(),
   },
+  actions: actions,
   persist: {
     storage: window.sessionStorage,
     paths: [],

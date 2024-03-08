@@ -1,37 +1,39 @@
 <template>
-    <ul class="chatbox overflow-y-auto h-[510px] pt-[30px] pb-5 px-[10px]">
-        <li class="chat incoming flex list-none">
-            <Icon
-                class="w-8 h-8  bgcbloc text-white text-5xl cursor-default text-center self-center bg-color-eva-light-purple rounded mr-2.5 mb-[7px]  "
-                icon="emojione:robot-face" />
+    <ul ref="elementCahtbox" class="chatbox overflow-y-auto h-[510px] pt-[30px] pb-5 px-[10px]">
+        <li v-for=" chatList in  createChatLi " class="chat incoming flex list-none "
+            :class="{ outgoing: chatList.role === 'user' }">
+            <div class="flex w-full">
+                <Icon v-if="chatList.role === 'bot'"
+                    class="w-8 h-8    text-white text-5xl cursor-default text-center self-center bg-color-eva-light-purple rounded mr-2.5 mb-[7px]  "
+                    icon="emojione:robot-face" />
 
-            <p class="max-w-[75%] bg-color-grey-light  whitespace-pre-wrap py-3 px-4 rounded-[10px] rounded-b-none ">
-                你好👋
-                <br />
-                請輸入你想提問的訊息
-            </p>
+                <p v-if="!chatList.wait" class=" max-w-[75%] bg-color-grey-light whitespace-pre-wrap py-3 px-4 rounded-[10px]
+                    rounded-bl-none ">
+                    {{ chatList.message }}
+                </p>
+
+                <p v-else class=" max-w-[75%] bg-color-grey-light whitespace-pre-wrap py-3 px-4 rounded-[10px]
+                    rounded-bl-none">
+                    <Icon icon="svg-spinners:3-dots-bounce" />
+                </p>
+            </div>
         </li>
-
-        <li class="chat outgoing flex list-none">
-            <Icon
-                class="w-8 h-8  bgcbloc text-white text-5xl cursor-default text-center self-center bg-color-eva-light-purple rounded mr-2.5 mb-[7px]  "
-                icon="emojione:robot-face" />
-
-            <p class="max-w-[75%] bg-color-grey-light  whitespace-pre-wrap py-3 px-4 rounded-[10px] rounded-b-none ">
-                設定中...
-            </p>
-        </li>
-
     </ul>
 </template>
 
 <script setup>
 import { Icon } from '@iconify/vue';
+import { inject, onMounted, ref, watch } from "vue";
+const { setElementCahtbox, createChatLi } = inject('store')
 
+const elementCahtbox = ref(null)
 
-
-
-
+watch(createChatLi.value, (newVal,) => {
+    createChatLi.value = newVal
+}, { deep: true, })
+onMounted(() => {
+    setElementCahtbox.value = elementCahtbox
+})
 </script>
 
 <style scoped>
@@ -40,8 +42,22 @@ import { Icon } from '@iconify/vue';
     background: #f8d7da;
 }
 
-.chatbox .incoming p {
+.chat.outgoing {
+    margin: 20px 0;
+    justify-content: flex-end;
+}
+
+.outgoing>div {
+    justify-content: flex-end;
+}
+
+.outgoing>div>p {
+    border-radius: 10px 10px 0px 10px;
+}
+
+
+/* .chatbox .incoming p {
     color: #000;
     background: #f2f2f2;
-}
+} */
 </style>

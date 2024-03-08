@@ -11,7 +11,6 @@
 
 <script setup>
 import { Icon } from '@iconify/vue';
-const isChat = defineModel('isChat')
+import { inject } from "vue";
+const { isChat } = inject('store')
 </script>
-
-<style scoped></style>
