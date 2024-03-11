@@ -11,6 +11,7 @@ const useChatbotStore = defineStore("useChatbot", {
       inputInitHeight: null,
       elementTextarea: null,
       elementCahtbox: null,
+      isAborted: false,
       createChatLi: reactive([
         {
           id: "a688e7b2-93e0-4776-a7a3-59f8e25e13c6",

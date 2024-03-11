@@ -1,5 +1,10 @@
 const API_URL = "https://api.openai.com/v1/chat/completions";
 const API_KEY = "PASTE-YOUR-API-KEY";
+import OpenAI from "openai";
+const openai = new OpenAI();
+
+// const openai = new OpenAI();
+// console.log();
 
 // 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
 // 401：驗證失敗，檢查你輸入的 API Key 是否正確。
@@ -23,36 +28,21 @@ export default {
 
   async generateResponse() {
     // Define the properties and message for the API request
-    const requestOptions = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${API_KEY}`,
-      },
-      body: JSON.stringify({
-        model: "gpt-3.5-turbo",
-        messages: [{ role: "user", content: userMessage }],
-      }),
-    };
-
-    const response = await fetch(API_URL, requestOptions);
-
-    if (!response.ok) throw new Error("Something went wrong. Please try again");
-
-    const data = res.json();
-    data.choices[0].message.content.trim();
-
-    fetch(API_URL, requestOptions)
-      .then((res) => res.json())
-      .then((data) => {
-        messageElement.textContent = data.choices[0].message.content.trim();
-      })
-      .catch(() => {
-        messageElement.classList.add("error");
-        messageElement.textContent =
-          "Oops! Something went wrong. Please try again.";
-      })
-      .finally(() => chatbox.scrollTo(0, chatbox.scrollHeight));
+    try {
+      const stream = await openai.beta.chat.completions.stream({
+        model: "gpt-4",
+        messages: [
+          {
+            role: "system",
+            content:
+              "It reluctantly answers all questions with sarcastic remarks, except for those related to farming.",
+          },
+        ],
+        stream: true,
+      });
+    } catch (error) {
+    } finally {
+    }
   },
 
   autoAdjustTextareaHeight() {
