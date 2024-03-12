@@ -67,35 +67,3 @@ const setupTWzipcode = (element) => {
 };
 
 export { queryZipCode, initializeTWzipcode, defineHandleFn };
-
-/*
-const setupTWzipcode = (element, countyRef, districtRef, zipCodeRef) => {
-  if (!handleContry || !handleDistrict || !handleZipcode) return;
-
-  if (element) {
-    return (element = new TWzipcode({
-      combine: false,
-      county: {
-        value: store.deliveryAddress.user_City
-          ? store.deliveryAddress.user_City.val
-          : "",
-        onChange: function (id) {
-          const { county } = this.nth(id).get();
-          // countyRef.field.userEnter = county;
-          handleContry(county);
-        },
-      },
-      district: {
-        onChange: function (id) {
-          const { district, zipcode } = this.nth(id).get();
-          // districtRef.field.userEnter = district;
-          handleDistrict(district);
-          // zipCodeRef.field.userEnter = zipcode;
-          handleZipcode(+zipcode);
-        },
-      },
-      islands_hidden: true,
-    }));
-  }
-};
-*/

@@ -29,10 +29,9 @@ export default {
 
   //----------------
 
-  async generateResponse(findId, userMessage) {
-    // Define the properties and message for the API request
+  async generateResponse(userMessage) {
     try {
-      const stream = await openai.beta.chat.completions.stream({
+      return await openai.beta.chat.completions.stream({
         model: "gpt-3.5-turbo",
         messages: [
           {
@@ -48,44 +47,44 @@ export default {
         ],
         stream: true,
       });
-
-      const target = this.createChatLi.find(
-        (el) => el.id === findId && el.wait
-      );
-      if (!target) return;
-
-      setTimeout(() => {
-        target.wait = false;
-      }, 1000);
-
-      await new Promise((resolve, reject) => {
-        stream.on("content", (delta) => {
-          if (!this.isAborted) {
-            resolve((target.message += delta));
-          } else {
-            stream.abort();
-            // Abort the stream if isAborted is true
-          }
-        });
-
-        stream.on("abort", (error) => {
-          resolve(() => {
-            target.message += `訊息：有內鬼停止交易...`;
-            this.isAborted = false;
-          });
-          if (error) reject(error);
-        });
-
-        stream.on("error", (error) => {
-          target.message = "技術上出現一點錯誤，請聯絡開發人員回報";
-          if (error) reject(error);
-        });
-      });
     } catch (err) {
-      throw err;
+      if (err instanceof OpenAI.APIError) {
+        console.log(err.status); // 400
+        console.log(err.name); // BadRequestError
+        console.log(err.headers); // {server: 'nginx', ...}
+      } else {
+        throw err;
+      }
     }
   },
+  openaiEventHandler(stream, findId) {
+    const target = this.createChatLi.find((el) => el.id === findId && el.wait);
+    if (!target) return;
+    return new Promise((resolve, rejection) => {
+      setTimeout(() => {
+        resolve((target.wait = false));
+      }, 1000);
 
+      stream.on("content", (delta) => {
+        if (!this.isAborted) {
+          target.message += delta;
+        } else {
+          stream.abort();
+        }
+      });
+
+      stream.on("abort", (error) => {
+        target.message += `訊息：有內鬼停止交易...`;
+        this.isAborted = false;
+        rejection(error);
+      });
+
+      stream.on("error", (error) => {
+        target.message = "技術上出現一點錯誤，請聯絡開發人員回報";
+        rejection(error);
+      });
+    });
+  },
   autoAdjustTextareaHeight() {
     const inputInitHeight = this.inputInitHeight;
     const elementTextarea = this.elementTextarea;
@@ -108,7 +107,6 @@ export default {
   async handleChat() {
     try {
       const userMessage = this.userMessage;
-
       if (!userMessage === "" || this.operational) return;
 
       //   reset the textarea and reset height to default
@@ -124,10 +122,13 @@ export default {
       this.addMessage(uid, "bot", "", true);
       this.elementCahtbox.scrollTo(0, this.getChatboxScroll());
 
-      await this.generateResponse(uid, userMessage);
+      const stream = await this.generateResponse(uid, userMessage);
+      await this.openaiEventHandler(stream, uid);
     } catch (error) {
       this.elementCahtbox.scrollTo(0, this.getChatboxScroll());
-      console.error(error);
+
+      console.error(`HENDLE OPENAI ERROR:💣 ${error.message}`);
+    } finally {
     }
   },
 };
