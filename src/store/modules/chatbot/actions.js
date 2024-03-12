@@ -1,13 +1,12 @@
 // const API_KEY = "PASTE-YOUR-API-KEY";
-// "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"
-
+// "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"
+// 4 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
 import OpenAI from "openai";
+
 const openai = new OpenAI({
-  apiKey: import.meta.env,
+  apiKey: "",
   dangerouslyAllowBrowser: true,
 });
-
-// console.log();
 
 // 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
 // 401：驗證失敗，檢查你輸入的 API Key 是否正確。
@@ -69,19 +68,27 @@ export default {
         if (!this.isAborted) {
           target.message += delta;
         } else {
+          target.message += `📱訊息：有內鬼停止交易...`;
           stream.abort();
         }
       });
 
-      stream.on("abort", (error) => {
-        target.message += `訊息：有內鬼停止交易...`;
-        this.isAborted = false;
-        rejection(error);
-      });
+      // stream.on("abort", () => {
+      //   target.message += `📱訊息：有內鬼停止交易...`;
+      //   this.isAborted = false;
+      // });
 
       stream.on("error", (error) => {
         target.message = "技術上出現一點錯誤，請聯絡開發人員回報";
-        rejection(error);
+        console.log(error);
+
+        rejection(error.me);
+      });
+      stream.on("end", () => {
+        console.log(123);
+
+        this.operational = false;
+        this.isAborted = false;
       });
     });
   },
@@ -108,7 +115,6 @@ export default {
     try {
       const userMessage = this.userMessage;
       if (!userMessage === "" || this.operational) return;
-
       //   reset the textarea and reset height to default
       this.operational = true;
       this.userMessage = "";
@@ -125,10 +131,9 @@ export default {
       const stream = await this.generateResponse(uid, userMessage);
       await this.openaiEventHandler(stream, uid);
     } catch (error) {
-      this.elementCahtbox.scrollTo(0, this.getChatboxScroll());
-
       console.error(`HENDLE OPENAI ERROR:💣 ${error.message}`);
     } finally {
+      this.elementCahtbox.scrollTo(0, this.getChatboxScroll());
     }
   },
 };

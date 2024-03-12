@@ -8,6 +8,7 @@
     "build:stage": "vite build --mode staging"
   },
   "dependencies": {
+    "@google/generative-ai": "^0.2.1",
     "@radix-icons/vue": "^1.0.0",
     "@supabase/supabase-js": "^2.38.0",
     "@vee-validate/zod": "^4.12.5",
