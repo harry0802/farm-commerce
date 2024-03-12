@@ -12,6 +12,7 @@ const useChatbotStore = defineStore("useChatbot", {
       elementTextarea: null,
       elementCahtbox: null,
       isAborted: false,
+      operational: false,
       createChatLi: reactive([
         {
           id: "a688e7b2-93e0-4776-a7a3-59f8e25e13c6",
@@ -19,22 +20,14 @@ const useChatbotStore = defineStore("useChatbot", {
           message: "你好👋\n請輸入你想提問的訊息 ",
           wait: false,
         },
-        {
-          role: "user",
-          message: "訊息訊息訊息訊息訊息訊息訊息訊息",
-          wait: false,
-        },
-        { role: "bot", message: "", wait: true },
-        {
-          role: "user",
-          message: "abc",
-          wait: false,
-        },
       ]),
     };
   },
   getters: {
     creadeUid: () => uuidv4(),
+    matchArrayId(sign) {
+      return this.createChatLi.find((el) => el.id === sign && el.wait);
+    },
   },
   actions: actions,
   persist: {

@@ -1,9 +1,12 @@
-const API_URL = "https://api.openai.com/v1/chat/completions";
-const API_KEY = "PASTE-YOUR-API-KEY";
-import OpenAI from "openai";
-const openai = new OpenAI();
+// const API_KEY = "PASTE-YOUR-API-KEY";
+// "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"
 
-// const openai = new OpenAI();
+import OpenAI from "openai";
+const openai = new OpenAI({
+  apiKey: import.meta.env,
+  dangerouslyAllowBrowser: true,
+});
+
 // console.log();
 
 // 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
@@ -21,27 +24,65 @@ export default {
     this.isChat = !this.isChat;
   },
   addMessage(id, role, message, state = false) {
-    this.createChatLi.push({ id, role, message, await: state });
+    this.createChatLi.push({ id, role, message, wait: state });
   },
 
   //----------------
 
-  async generateResponse() {
+  async generateResponse(findId, userMessage) {
     // Define the properties and message for the API request
     try {
       const stream = await openai.beta.chat.completions.stream({
-        model: "gpt-4",
+        model: "gpt-3.5-turbo",
         messages: [
           {
             role: "system",
             content:
               "It reluctantly answers all questions with sarcastic remarks, except for those related to farming.",
           },
+
+          {
+            role: "user",
+            content: `${userMessage}`,
+          },
         ],
         stream: true,
       });
-    } catch (error) {
-    } finally {
+
+      const target = this.createChatLi.find(
+        (el) => el.id === findId && el.wait
+      );
+      if (!target) return;
+
+      setTimeout(() => {
+        target.wait = false;
+      }, 1000);
+
+      await new Promise((resolve, reject) => {
+        stream.on("content", (delta) => {
+          if (!this.isAborted) {
+            resolve((target.message += delta));
+          } else {
+            stream.abort();
+            // Abort the stream if isAborted is true
+          }
+        });
+
+        stream.on("abort", (error) => {
+          resolve(() => {
+            target.message += `訊息：有內鬼停止交易...`;
+            this.isAborted = false;
+          });
+          if (error) reject(error);
+        });
+
+        stream.on("error", (error) => {
+          target.message = "技術上出現一點錯誤，請聯絡開發人員回報";
+          if (error) reject(error);
+        });
+      });
+    } catch (err) {
+      throw err;
     }
   },
 
@@ -64,28 +105,29 @@ export default {
     }
   },
 
-  handleChat() {
-    if (!this.userMessage === "") return;
-    //   reset the textarea and reset height to default
-    this.userMessage = "";
-    this.elementTextarea.style.height = `${this.inputInitHeight}px`;
+  async handleChat() {
+    try {
+      const userMessage = this.userMessage;
 
-    // push the user's message to the createChatLi array
-    const uid = this.creadeUid;
-    this.addMessage(uid, "user", "設定");
+      if (!userMessage === "" || this.operational) return;
 
-    // Wait for the response, then substitute it with the bot's message
-    new Promise((s) => {
-      setTimeout(() => {
-        this.elementCahtbox.scrollTo(0, this.getChatboxScroll());
-        // generateResponse(incomingChatLi);
-        this.createChatLi.forEach((element) => {
-          if (element.id === uid) {
-            element.message = "更改";
-          }
-        });
-      }, 3000);
-      s();
-    });
+      //   reset the textarea and reset height to default
+      this.operational = true;
+      this.userMessage = "";
+      this.elementTextarea.style.height = `${this.inputInitHeight}px`;
+
+      // push the user's message to the createChatLi array
+      const uid = this.creadeUid;
+      this.addMessage(this.creadeUid, "user", userMessage);
+
+      // Wait for the response, then substitute it with the bot's message
+      this.addMessage(uid, "bot", "", true);
+      this.elementCahtbox.scrollTo(0, this.getChatboxScroll());
+
+      await this.generateResponse(uid, userMessage);
+    } catch (error) {
+      this.elementCahtbox.scrollTo(0, this.getChatboxScroll());
+      console.error(error);
+    }
   },
 };

@@ -1,5 +1,5 @@
 <template>
-    <ul ref="elementCahtbox" class="chatbox overflow-y-auto h-[510px] pt-[30px] pb-5 px-[10px]">
+    <ul ref="elementCahtbox" class="chatbox overflow-y-auto h-[510px] pt-[30px] px-5 pb-[100px]">
         <li v-for=" chatList in  createChatLi " class="chat incoming flex list-none "
             :class="{ outgoing: chatList.role === 'user' }">
             <div class="flex w-full">
@@ -12,7 +12,7 @@
                     {{ chatList.message }}
                 </p>
 
-                <p v-else class=" max-w-[75%] bg-color-grey-light whitespace-pre-wrap py-3 px-4 rounded-[10px]
+                <p v-else-if="chatList.role === 'bot' && chatList.wait" class=" max-w-[75%] bg-color-grey-light whitespace-pre-wrap py-3 px-4 rounded-[10px]
                     rounded-bl-none">
                     <Icon icon="svg-spinners:3-dots-bounce" />
                 </p>
