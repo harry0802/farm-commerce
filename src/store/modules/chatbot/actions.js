@@ -1,18 +1,43 @@
-// const API_KEY = "PASTE-YOUR-API-KEY";
-// "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"
-// 4 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
 import OpenAI from "openai";
+import {
+  GoogleGenerativeAI,
+  HarmCategory,
+  HarmBlockThreshold,
+} from "@google/generative-ai";
 
+// OPENAI SETTING
 const openai = new OpenAI({
   apiKey: "",
   dangerouslyAllowBrowser: true,
 });
-
-// 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
-// 401：驗證失敗，檢查你輸入的 API Key 是否正確。
-// 429：API 可用額度不足或超過每月可使用限額，可以付費加值購買額度。
-// 500：伺服器錯誤，通常重新發送一次請求即可，不用做其他處理。
-
+// GOOGLEAI SETTING
+const MODEL_NAME = "gemini-1.0-pro";
+const API_KEY = import.meta.env.VITE_APP_GOOGLEAI_KEY;
+const genAI = new GoogleGenerativeAI(API_KEY);
+const safetySettings = [
+  {
+    category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+    threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+  },
+  {
+    category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+    threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+  },
+  {
+    category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+    threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+  },
+  {
+    category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+    threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+  },
+];
+const generationConfig = {
+  temperature: 0.9,
+  topK: 1,
+  topP: 1,
+  maxOutputTokens: 2048,
+};
 export default {
   // helper fouctions
   getChatboxScroll() {
@@ -27,7 +52,60 @@ export default {
   },
 
   //----------------
+  // GOOGLE AI
 
+  async runChat(findId, msg) {
+    try {
+      const target = this.createChatLi.find(
+        (el) => el.id === findId && el.wait
+      );
+      if (!target) return;
+      const model = genAI.getGenerativeModel({ model: MODEL_NAME });
+
+      const chat = model.startChat({
+        history: [
+          {
+            role: "user",
+            parts: "我好傷心",
+          },
+          {
+            role: "model",
+            parts: "我不在乎",
+          },
+          {
+            role: "user",
+            parts: "你好我是來購買的顧客",
+          },
+          {
+            role: "model",
+            parts:
+              "除了與農產品有關的問題外，它充滿了傲慢與諷刺，不情願的回答所有問題。",
+          },
+        ],
+        generationConfig: {
+          maxOutputTokens: 100,
+        },
+      });
+
+      // const result = await chat.sendMessage(msg);
+      // const response = await result.response;
+      // const text = response.text();
+      // console.log(text);
+
+      const result = await chat.sendMessageStream(msg);
+      target.wait = false;
+      for await (const chunk of result.stream) {
+        const chunkText = chunk.text();
+        target.message += chunkText;
+        this.elementCahtbox.scrollTo(0, this.getChatboxScroll());
+      }
+
+      this.operational = false;
+    } catch (error) {
+      throw error;
+    }
+  },
+  // OPENAI
   async generateResponse(userMessage) {
     try {
       return await openai.beta.chat.completions.stream({
@@ -92,6 +170,7 @@ export default {
       });
     });
   },
+  //
   autoAdjustTextareaHeight() {
     const inputInitHeight = this.inputInitHeight;
     const elementTextarea = this.elementTextarea;
@@ -105,8 +184,12 @@ export default {
 
   handleEnterKeyPress(e) {
     if (this.userMessage === "") return;
-    if (e.key === "Enter" && !e.shiftKey && window.innerWidth > 800) {
-      e.preventDefault();
+    if (
+      e.key === "Enter" &&
+      !e.shiftKey &&
+      window.innerWidth > 800 &&
+      !e.isComposing
+    ) {
       this.handleChat();
     }
   },
@@ -128,12 +211,12 @@ export default {
       this.addMessage(uid, "bot", "", true);
       this.elementCahtbox.scrollTo(0, this.getChatboxScroll());
 
-      const stream = await this.generateResponse(uid, userMessage);
-      await this.openaiEventHandler(stream, uid);
+      await this.runChat(uid, userMessage);
     } catch (error) {
-      console.error(`HENDLE OPENAI ERROR:💣 ${error.message}`);
+      console.error(`HENDLE GOOGLEAI ERROR:💣 ${error.message}`);
     } finally {
       this.elementCahtbox.scrollTo(0, this.getChatboxScroll());
+      this.operational = false;
     }
   },
 };
