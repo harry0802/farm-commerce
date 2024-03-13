@@ -14,6 +14,7 @@ const openai = new OpenAI({
 const MODEL_NAME = "gemini-1.0-pro";
 const API_KEY = import.meta.env.VITE_APP_GOOGLEAI_KEY;
 const genAI = new GoogleGenerativeAI(API_KEY);
+
 const safetySettings = [
   {
     category: HarmCategory.HARM_CATEGORY_HARASSMENT,
@@ -97,9 +98,8 @@ export default {
       for await (const chunk of result.stream) {
         const chunkText = chunk.text();
         target.message += chunkText;
-        this.elementCahtbox.scrollTo(0, this.getChatboxScroll());
       }
-
+      this.elementCahtbox.scrollTo(0, this.getChatboxScroll());
       this.operational = false;
     } catch (error) {
       throw error;
@@ -176,6 +176,7 @@ export default {
     const elementTextarea = this.elementTextarea;
     const setHeight = (height) =>
       (elementTextarea.style.height = `${height}px`);
+
     this.userMessage === ""
       ? setHeight(inputInitHeight)
       : setHeight(inputInitHeight),
@@ -190,6 +191,7 @@ export default {
       window.innerWidth > 800 &&
       !e.isComposing
     ) {
+      e.preventDefault();
       this.handleChat();
     }
   },
@@ -198,24 +200,27 @@ export default {
     try {
       const userMessage = this.userMessage;
       if (!userMessage === "" || this.operational) return;
-      //   reset the textarea and reset height to default
       this.operational = true;
+
       this.userMessage = "";
       this.elementTextarea.style.height = `${this.inputInitHeight}px`;
 
       // push the user's message to the createChatLi array
       const uid = this.creadeUid;
       this.addMessage(this.creadeUid, "user", userMessage);
+      this.elementCahtbox.scrollTo(0, this.getChatboxScroll());
 
       // Wait for the response, then substitute it with the bot's message
       this.addMessage(uid, "bot", "", true);
       this.elementCahtbox.scrollTo(0, this.getChatboxScroll());
+      return;
 
-      await this.runChat(uid, userMessage);
+      // await this.runChat(uid, userMessage);
     } catch (error) {
       console.error(`HENDLE GOOGLEAI ERROR:💣 ${error.message}`);
     } finally {
       this.elementCahtbox.scrollTo(0, this.getChatboxScroll());
+      this.elementTextarea.style.height = `${this.inputInitHeight}px`;
       this.operational = false;
     }
   },

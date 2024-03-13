@@ -4,7 +4,7 @@
             :class="{ outgoing: chatList.role === 'user' }">
             <div class="flex w-full">
                 <Icon v-if="chatList.role === 'bot'"
-                    class="w-8 h-8    text-white text-5xl cursor-default text-center self-center bg-color-eva-light-purple rounded mr-2.5 mb-[7px]  "
+                    class="w-8 h-8    text-white text-5xl cursor-default text-center self-start bg-color-eva-light-purple rounded mr-2.5 mb-[7px]  "
                     icon="emojione:robot-face" />
 
                 <p v-if="!chatList.wait" class=" max-w-[75%] bg-color-grey-light whitespace-pre-wrap py-3 px-4 rounded-[10px]
@@ -23,14 +23,11 @@
 
 <script setup>
 import { Icon } from '@iconify/vue';
-import { inject, onMounted, ref, watch } from "vue";
+import { inject, onMounted, ref, } from "vue";
 const { setElementCahtbox, createChatLi } = inject('store')
 
 const elementCahtbox = ref(null)
 
-watch(createChatLi.value, (newVal,) => {
-    createChatLi.value = newVal
-}, { deep: true, })
 onMounted(() => {
     setElementCahtbox.value = elementCahtbox
 })
