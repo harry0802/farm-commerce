@@ -43,6 +43,8 @@ module.exports = {
       "color-primary": "#07261E",
       "color-primary-light": "#136450",
       "color-grey-dark": "#7F7F7F",
+      "color-grey-light": "#f5f5f5",
+
       "b-color-green-dark": "#005842",
       "b-color-green-light": "#B8E0D6",
       "b-color-browm": "#FAE7C3",

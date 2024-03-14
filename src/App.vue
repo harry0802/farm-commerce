@@ -9,6 +9,7 @@
   </router-view>
   <farm-footer />
   <Toaster position="bottom-left" richColors :expand="true" />
+  <chatbot />
 </template>
 
 <script setup >
@@ -16,6 +17,7 @@ import { RouterView } from "vue-router";
 import FarmFooter from "./layout/FarmFooter.vue";
 import farmHeader from "./layout/FarmHeader.vue";
 import HeaderSidebar from "@/common/components/cartsidebar/HeaderSidebar.vue";
+import chatbot from "@/common/components/chatbot/chatbot.vue";
 import { Toaster } from "@/common/composables/ui/sonner";
 </script>
 

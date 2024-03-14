@@ -16,7 +16,7 @@ export default {
 }
 
 .img__recontainer {
-  @apply col-span-full sm:col-end-11
+  @apply col-span-full sm:col-start-3 sm:col-end-11
 }
 
 
