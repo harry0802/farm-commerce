@@ -4,7 +4,6 @@ import {
   HarmCategory,
   HarmBlockThreshold,
 } from "@google/generative-ai";
-
 // OPENAI SETTING
 const openai = new OpenAI({
   apiKey: "",
@@ -48,8 +47,8 @@ export default {
   chatbotToggler() {
     this.isChat = !this.isChat;
   },
-  addMessage(id, role, message, state = false) {
-    this.createChatLi.push({ id, role, message, wait: state });
+  addMessage(id, role, message, state = false, err = false) {
+    this.createChatLi.push({ id, role, message, wait: state, err });
   },
 
   //----------------
@@ -84,23 +83,36 @@ export default {
           },
         ],
         generationConfig: {
-          maxOutputTokens: 100,
+          maxOutputTokens: 3000,
         },
       });
 
-      // const result = await chat.sendMessage(msg);
-      // const response = await result.response;
-      // const text = response.text();
-      // console.log(text);
+      const result = await chat.sendMessageStream(msg).catch((e) => {
+        target.wait = false;
+        target.message = "很抱歉因為 Google 流量限制，請你稍候再試";
+        target.error = true;
+        throw e;
+      });
 
-      const result = await chat.sendMessageStream(msg);
+      const { stream, response } = await result;
+
+      await response.then((feedback) => {
+        if (
+          (feedback.promptFeedback && feedback.promptFeedback.blockReason) ||
+          feedback.candidates[0].finishReason === "SAFETY"
+        ) {
+          target.wait = false;
+          target.message =
+            "很抱歉你因為 Google 安全政策，你不能詢問相關問題 \n";
+          target.error = true;
+        }
+      });
+
       target.wait = false;
-      for await (const chunk of result.stream) {
+      for await (const chunk of stream) {
         const chunkText = chunk.text();
         target.message += chunkText;
       }
-      this.elementCahtbox.scrollTo(0, this.getChatboxScroll());
-      this.operational = false;
     } catch (error) {
       throw error;
     }
@@ -208,14 +220,10 @@ export default {
       // push the user's message to the createChatLi array
       const uid = this.creadeUid;
       this.addMessage(this.creadeUid, "user", userMessage);
-      this.elementCahtbox.scrollTo(0, this.getChatboxScroll());
 
       // Wait for the response, then substitute it with the bot's message
       this.addMessage(uid, "bot", "", true);
-      this.elementCahtbox.scrollTo(0, this.getChatboxScroll());
-      return;
-
-      // await this.runChat(uid, userMessage);
+      await this.runChat(uid, userMessage);
     } catch (error) {
       console.error(`HENDLE GOOGLEAI ERROR:💣 ${error.message}`);
     } finally {

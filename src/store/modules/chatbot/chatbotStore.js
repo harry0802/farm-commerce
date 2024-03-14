@@ -19,6 +19,7 @@ const useChatbotStore = defineStore("useChatbot", {
           role: "bot",
           message: "你好👋\n請輸入你想提問的訊息 ",
           wait: false,
+          error: false,
         },
       ]),
     };

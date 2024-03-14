@@ -34,8 +34,7 @@ const {
     , handleEnterKeyPress
     , elementCahtbox
     , createChatLi
-    , test
-    , addMessage
+    , handleChat
 } = toRefs(useChatbotStore())
 
 
@@ -50,7 +49,7 @@ provide('store', {
     , autoAdjustTextareaHeight
     , handleEnterKeyPress
     , createChatLi
-    , test
+    , handleChat
 })
 
 </script>
