@@ -16,10 +16,10 @@ const queryZipCode = async function (zip) {
       return TwZipCode;
     }
     if (error) {
-      error.message;
+      throw error;
     }
   } catch (err) {
-    console.log(err);
+    console.error(`TwZipCode Error ${err.message}`);
   }
 };
 
@@ -47,9 +47,9 @@ const setupTWzipcode = (element) => {
           const { county } = this.nth(id).get();
           county === ""
             ? (() => {
+                handleContry("");
                 handleDistrict("");
                 handleZipcode("");
-                handleContry("");
               })()
             : handleContry(county);
         },
@@ -58,7 +58,7 @@ const setupTWzipcode = (element) => {
         onChange: function (id) {
           const { district, zipcode } = this.nth(id).get();
           handleDistrict(district);
-          handleZipcode(zipcode);
+          handleZipcode(+zipcode);
         },
       },
       islands_hidden: true,

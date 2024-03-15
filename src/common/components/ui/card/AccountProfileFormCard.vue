@@ -23,4 +23,3 @@ defineProps('onSubmit')
     @apply grid w-full gap-y-6 gap-x-8 sm:grid-cols-2
 }
 </style>
-

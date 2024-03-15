@@ -72,10 +72,10 @@ export const queryZipCode = async function (zip) {
       return TwZipCode;
     }
     if (error) {
-      error.message;
+      throw error;
     }
   } catch (err) {
-    console.log(err);
+    console.error(err.message);
   }
 };
 
