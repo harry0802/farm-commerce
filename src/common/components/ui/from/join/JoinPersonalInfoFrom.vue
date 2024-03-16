@@ -10,7 +10,7 @@
         </FormField>
         <FormField v-slot="{ componentField }" name="userEmail">
             <CostomInput class="join-input" :componentField="componentField" :userLabel="'郵件地址'"
-                :userDescription="'請輸入相應內容'" :userPlaceholder="'Ex: furryfriendfan@yopmail.com'" />
+                :userDescription="'推薦 @yopmail.com 信箱'" :userPlaceholder="'Ex: furryfriendfan@yopmail.com'" />
         </FormField>
         <FormField v-slot="{ componentField }" name="userEmailDup">
             <CostomInput class="join-input" :componentField="componentField" :userLabel="'確認郵件地址'"
@@ -37,7 +37,7 @@
 
 
         <div class="">
-            <button @click="sendRequset" class="u-pirmary-button" type="submit">下一步</button>
+            <button class="u-pirmary-button" type="submit">下一步</button>
         </div>
 
     </form>
@@ -54,21 +54,6 @@ import { inject } from "vue";
 
 const { registerClient } = inject('personall')
 
-
-
-
-
-/*
-userFirstName
-userLastName
-userEmail
-userEmailDup
-userPassword
-userPasswordDup
-*/
-
-// 
-
 import { Icon } from '@iconify/vue';
 import { useRouter } from "vue-router";
 
@@ -76,21 +61,10 @@ const router = useRouter()
 
 
 const sendRequset = async function () {
-
-    if (!onSubmit()) return
-
-
-    return
-
-
-    registerClient.value(
-        {
-            userFirstName,
-            userLastName,
-            userEmail,
-            userPassword,
-        }
-    )
+    const data = await onSubmit()
+    if (!data) return
+    const response = await registerClient.value(data)
+    if (!response) return
     router.push({ name: 'verify-email-otp' })
 }
 
