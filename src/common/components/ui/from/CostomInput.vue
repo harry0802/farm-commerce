@@ -2,8 +2,8 @@
     <FormItem>
         <FormLabel class="text-base">{{ userLabel }}</FormLabel>
         <FormControl>
-            <Input class="py-4 px-3.5 h-auto transition-shadow   duration-300" type="text" placeholder="shadcn"
-                v-bind="componentField" />
+            <Input class="py-4 px-3.5 h-auto transition-shadow   duration-300" type="text"
+                :placeholder="userPlaceholder" v-bind="componentField" />
         </FormControl>
         <FormDescription>
             {{ userDescription }}
@@ -34,6 +34,10 @@ const props = defineProps({
     , userDescription: {
         type: String,
         required: true
+    }
+    ,
+    userPlaceholder: {
+        type: String,
     }
 })
 

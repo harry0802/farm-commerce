@@ -26,7 +26,7 @@
             </FormField>
 
             <div class="submit__container self-center">
-                <button v-if="!showMewMew" @click="submitFrom" class="u-pirmary-button" type="submit ">
+                <button v-if="!loading" @click="submitFrom" class="u-pirmary-button" type="submit ">
                     下一步
                 </button>
                 <LoadingCat2 v-else class="h-[50px] " />
@@ -41,20 +41,18 @@
 
 import { useRouter } from "vue-router";
 import { queryZipCode } from "@/Plugins/supabaseClinets.js";
+import { ref, onMounted, inject } from "vue";
+import { Form, FormField } from "@/common/composables/ui/form";
+import { useField, checkZipcode } from "@/Plugins/zodValidators.js";
+import CostomSelect from "@/common/components/ui/from/CostomSelect.vue";
 import LoadingCat2 from '../../../ui/animat/LoadingCat2.vue'
 const router = useRouter()
 
-
 // --- zod 
-import { ref, onMounted, inject } from "vue";
-import { showMewMew } from "@/Plugins/inputValidation.js";
-
-import { Form, FormField } from "@/common/composables/ui/form";
-import CostomSelect from "@/common/components/ui/from/CostomSelect.vue";
-import { useField, checkZipcode } from "@/Plugins/zodValidators.js";
 const twZipcode = ref('')
-const { onSubmit, defineHandleFn, initializeZipcodeWithPage } = checkZipcode()
+const { onSubmit, defineHandleFn, initializeZipcodeWithPage, loading } = checkZipcode()
 
+//  twzipcode 套件設定 傳遞到 zod 
 const { handleChange: setCountys } = useField('countys')
 const { handleChange: setDistricts } = useField('districts')
 const { value, handleChange: setZipcode, } = useField('zipCodeDefault')
@@ -64,17 +62,22 @@ const { setUserArea } = inject('zipCheck')
 
 
 const submitFrom = async function () {
-    const data = await onSubmit()
-    if (!data) return
-    const { zipCodeDefault } = data
-    showMewMew.value = true
-    const response = await queryZipCode(zipCodeDefault)
-    if (response.length > 0) {
-        setUserArea.value(response)
-        router.replace({ name: 'in-area' })
-    } else {
-        router.replace({ name: 'out-area' })
+    try {
+        const data = await onSubmit()
+        if (!data) return
+        const { zipCodeDefault } = data
+        loading.value = true
+        const response = await queryZipCode(zipCodeDefault)
+        if (response.length > 0) {
+            setUserArea.value(response)
+            router.replace({ name: 'in-area' })
+        } else {
+            router.replace({ name: 'out-area' })
+        }
+    } finally {
+        loading.value = false
     }
+
 }
 
 onMounted(() => {
@@ -86,36 +89,4 @@ onMounted(() => {
 * {
     font-family: "RiiT_F";
 }
-
-/* input {
-    max-width: none;
-    border-start-start-radius: 0;
-    border-start-end-radius: 0;
-} */
-
-/* .join-input__control>div>select {
-    border-bottom: transparent;
-    border-end-end-radius: 0;
-    border-end-start-radius: 0;
-    padding: 0;
-    text-align: center;
-    max-width: 30%;
-
-} */
-
-/* select:first-child {
-    border-start-end-radius: 0;
-}
-
-select:last-child {
-    border-start-start-radius: 0;
-    border-left: transparent;
-}
-
-.join-input__control select:checked,
-.join-input__control select:focus,
-.join-input__control select:active {
-    outline: none;
-    border-color: #949291;
-} */
 </style>

@@ -31,10 +31,10 @@ const useAccountStore = defineStore("accountStore", {
 
     async registerClient(userDatas) {
       this.userInfo = {
-        user_FirstName: userDatas.userFirstName.field.userEnter,
-        user_LastName: userDatas.userLastName.field.userEnter,
-        user_Email: userDatas.userEmail.field.userEnter,
-        user_Password: userDatas.userPassword.field.userEnter,
+        user_FirstName: userDatas.userFirstName,
+        user_LastName: userDatas.userLastName,
+        user_Email: userDatas.userEmail,
+        user_Password: userDatas.userPassword,
       };
       await userSignUp(this.userInfo.user_Email, this.userInfo.user_Password);
     },
