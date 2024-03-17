@@ -3,7 +3,7 @@
         <FormLabel class="text-base">{{ userLabel }}</FormLabel>
         <FormControl>
             <Textarea :class="'h-40 w-full  transition-shadow   duration-300'" class="resize-none"
-                v-bind="componentFields" />
+                v-bind="componentFields" :placeholder="userPlaceholder" />
         </FormControl>
         <FormDescription>
             {{ userDescription }}
@@ -26,6 +26,9 @@ const props = defineProps({
     componentFields: { type: Object },
     userLabel: { type: String },
     userDescription: { type: String },
+    userPlaceholder: {
+        type: String,
+    },
 })
 
 

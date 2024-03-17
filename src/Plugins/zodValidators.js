@@ -2,10 +2,23 @@ import * as z from "zod";
 import { initializeTWzipcode, defineHandleFn } from "@/Plugins/zipCode.js";
 import { toTypedSchema } from "@vee-validate/zod";
 import { useForm, useField } from "vee-validate";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 
 // 全局變數
 const loading = ref(false);
+
+// 全局函數
+const hiddenPassword = ref(false);
+const passwordIcon = computed(() =>
+  hiddenPassword.value ? "pixelarticons:eye" : "pixelarticons:eye-closed"
+);
+const passwordType = computed(() =>
+  hiddenPassword.value ? "text" : "password"
+);
+function showPassword() {
+  hiddenPassword.value = !hiddenPassword.value;
+}
+
 // 通用 Zod 設定
 const emptyStr = z
   .string({ required_error: "* 不可空白", invalid_type_error: "只接收文字" })
@@ -21,8 +34,6 @@ const passwordSchema = z
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$/,
     "密碼必須包含至少一個大寫字母、一個小寫字母和一個數字"
   );
-
-const confirmPasswordSchema = z.string({ required_error: "* 不可空白" });
 
 const emailSchema = z
   .string({
@@ -105,7 +116,55 @@ const userFields = function () {
   const onSubmit = handleSubmit((values) => values);
 
   return {
+    loading,
+    passwordIcon,
+    passwordType,
+    showPassword,
     onSubmit,
+  };
+};
+
+const verifyEmailOtp = function () {
+  const fields = toTypedSchema(
+    z.object({
+      pin: z
+        .string({
+          required_error: "* 不可空白",
+        })
+        .refine((val) => +val.length === 6 && !isNaN(val), {
+          message: "請重新確認你的驗證碼",
+        }),
+    })
+  );
+  const { handleSubmit } = useForm({
+    validationSchema: fields,
+  });
+  return {
+    loading,
+    handleSubmit,
+  };
+};
+
+const deliveryAddress = function (initialValues) {
+  const fields = z.object({
+    streetAddress: emptyStr,
+    unitNo: emptyStr,
+    about: emptyStr,
+    phone: emptyStr,
+    driverTips: emptyStr,
+    countys: emptyStr,
+    districts: emptyStr,
+    zipCodeDefault: zipCodeLimitNumber,
+  });
+
+  const handleSubmit = createHandleSubmit(fields, initialValues);
+  const initializeZipcodeWithPage = (zipCheckPage) =>
+    initializeTWzipcode(zipCheckPage);
+  return {
+    defineHandleFn,
+    initializeZipcodeWithPage,
+    loading,
+    handleSubmit,
   };
 };
 
@@ -176,6 +235,8 @@ export {
   // register page
   checkZipcode,
   userFields,
+  verifyEmailOtp,
+  deliveryAddress,
   // profile page
   profileUserField,
   profileUserAddress,

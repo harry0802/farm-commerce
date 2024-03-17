@@ -1,5 +1,26 @@
 import { supabase } from "@/config/FarmPruductsItemManage.js";
 import { toast } from "vue-sonner";
+
+const setErrorToast = (mes) => toast.error(mes);
+
+function handleSupabaseError(err) {
+  if (err.status === 409) {
+    setErrorToast("⚠️資料已經存在");
+  } else if (err.status === 403) {
+    setErrorToast("請進行登錄或註冊");
+  } else if (err.status === 429) {
+    setErrorToast("因頻繁操作，請稍後再試");
+  } else if (err.status === 500) {
+    setErrorToast("出現伺服器內部錯誤，請稍後再試");
+  } else if (
+    err.message.includes("duplicate key value violates unique constraint")
+  ) {
+    setErrorToast("您的電子郵件地址已被使用");
+  } else {
+    setErrorToast("發生錯誤，請稍後再試");
+  }
+}
+
 export const userSignUp = async function (userEmail, userPassword) {
   try {
     const { data, error } = await supabase.auth.signUp({
@@ -8,39 +29,50 @@ export const userSignUp = async function (userEmail, userPassword) {
     });
 
     if (error) throw error;
+    console.log(data.user_metadata);
+    console.log(data);
     return data;
   } catch (err) {
     console.error(err.message);
-
-    if (err.status === 429) {
-      toast.error("因頻繁操作，請稍後再試");
-    }
-    if (err.status === 500) {
-      toast.error("出現伺服器內部錯誤，請稍後再試");
-    } else if (
-      err.message.includes("duplicate key value violates unique constraint")
-    ) {
-      toast.error("您的電子郵件地址已被使用");
-    }
+    handleSupabaseError(err);
   }
 };
-/*
 
-Failed to load resource: the server responded with a status of 429 ()
-VM4668:1 Email rate limit exceeded
-*
-*
-Failed to load resource: the server responded with a status of 500 ()
-VM4668:1 duplicate key value violates unique constraint "users_email_partial_key"
-eval	@	
-*/
+export const verifyOtp = async function (email, token) {
+  try {
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.verifyOtp({
+      email,
+      token,
+      type: "email",
+    });
+    console.log(session);
+    if (error) throw error;
+    return session;
+  } catch (err) {
+    if (err.status === 400) {
+      setErrorToast("請聯絡我們，重新設置您的信箱地址");
+    } else if (err.status === 401) {
+      setErrorToast("請輸入正確的 OTP 驗證碼");
+    } else handleSupabaseError(err);
+    throw err;
+  }
+};
+
 export const userInsertRows = async function (fromName, userData) {
   try {
-    const { error } = await supabase.from(fromName).insert(userData);
+    const { error, data } = await supabase
+      .from(fromName)
+      .insert(userData)
+      .select();
+    console.log(data);
     if (error) throw error;
-    return true;
+    return data;
   } catch (err) {
     console.error(err.message);
+    handleSupabaseError(err);
   }
 };
 
@@ -89,6 +121,7 @@ export const queryZipCode = async function (zip) {
       return TwZipCode;
     }
     if (error) {
+      setErrorToast("查無該地區");
       throw error;
     }
   } catch (err) {

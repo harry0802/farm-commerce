@@ -1,9 +1,9 @@
 import { defineStore } from "pinia";
-import { supabase } from "@/config/FarmPruductsItemManage.js";
 import {
   userSignUp,
   userInsertRows,
   queryZipCode,
+  verifyOtp,
 } from "@/Plugins/supabaseClinets.js";
 const useAccountStore = defineStore("accountStore", {
   state() {
@@ -36,7 +36,10 @@ const useAccountStore = defineStore("accountStore", {
         user_Email: userDatas.userEmail,
         user_Password: userDatas.userPassword,
       };
-      await userSignUp(this.userInfo.user_Email, this.userInfo.user_Password);
+      return await userSignUp(
+        this.userInfo.user_Email,
+        this.userInfo.user_Password
+      );
     },
 
     async registerClientAddress(address) {
@@ -44,7 +47,6 @@ const useAccountStore = defineStore("accountStore", {
         address.clients_id = this.userState.user.id;
         const zipcode = await queryZipCode(address.user_ZipCode);
         if (!zipcode.length > 0) return;
-        console.log(address.suer_driverTips);
         return await userInsertRows("deliveryAddress", address);
       } catch (err) {
         console.log(err.message);
@@ -54,30 +56,16 @@ const useAccountStore = defineStore("accountStore", {
     async loginEmailOTP(verifyCode) {
       try {
         const userInfo = this.userInfo;
-        const token = verifyCode.field.userEnter;
-        let sessionState;
-        const {
-          data: { session },
-          error,
-        } = await supabase.auth.verifyOtp({
-          email: userInfo.user_Email,
-          token: token,
-          type: "email",
-        });
-        if (error) {
-          throw error;
+        const token = verifyCode;
+        const response = await verifyOtp(userInfo.user_Email, token);
+        if (response) {
+          this.userState = response;
+          userInfo.user_id = response.user.id;
         }
-        if (session) {
-          sessionState = session;
-          userInfo.user_id = sessionState.user.id;
-          this.userState = sessionState;
-          const response = await userInsertRows("clients", userInfo);
-          console.log(response);
 
-          return response;
-        }
+        return await userInsertRows("clients", userInfo);
       } catch (err) {
-        console.error(err.message);
+        throw err;
       }
     },
   },
