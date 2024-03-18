@@ -4,7 +4,7 @@
             <Checkbox class="" :checked="value" @update:checked="handleChange" />
         </FormControl>
         <div class="space-y-1 leading-none ">
-            <FormLabel class="text-xl ">帳單地址與您送貨的地址一樣嗎？</FormLabel>
+            <FormLabel class=" ">帳單地址與您送貨的地址一樣嗎？</FormLabel>
             <FormDescription>
                 預設的地址
             </FormDescription>
@@ -22,6 +22,14 @@ import {
     FormLabel,
     FormMessage,
 } from '@/common/composables/ui/form'
+const props = defineProps({
+    value: { type: String, required: false },
+    handleChange: { type: Function, required: false },
+})
+
+
+
+
 
 </script>
 

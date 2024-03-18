@@ -65,7 +65,7 @@ const createHandleSubmit = (fields, initialValue = null) => {
   return handleSubmit;
 };
 
-// Account 資料 （註冊中）
+// Account 資料 （註冊頁面）
 const checkZipcode = function () {
   const fields = z.object({
     countys: emptyStr,
@@ -168,6 +168,25 @@ const deliveryAddress = function (initialValues) {
   };
 };
 
+const paymentinfo = function (initialValues) {
+  const fields = z.object({
+    userName: emptyStr,
+    creditNumber: z.string().length(16, { message: "請符合信用卡格式" }),
+    creditMoon: emptyStr,
+    creditYear: emptyStr,
+    creditLastNb: z.string().length(3, { message: "限定3碼" }),
+    // 兩者只有一個
+    sameAddress: z.boolean(),
+    // newAddress: emptyStr,
+  });
+
+  const handleSubmit = createHandleSubmit(fields, initialValues);
+  return {
+    loading,
+    handleSubmit,
+  };
+};
+
 // Account 資料 （已登陸）
 const profileUserField = (initialValues) => {
   const fields = z.object({
@@ -237,6 +256,7 @@ export {
   userFields,
   verifyEmailOtp,
   deliveryAddress,
+  paymentinfo,
   // profile page
   profileUserField,
   profileUserAddress,
