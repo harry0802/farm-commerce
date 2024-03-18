@@ -91,6 +91,8 @@ const router = createRouter({
         {
           path: "payment-info",
           name: "payment-info",
+          component: () =>
+            import("@/common/components/join/JoinPaymentInfo.vue"),
         },
       ],
     },

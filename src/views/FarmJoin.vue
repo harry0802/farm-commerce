@@ -9,7 +9,6 @@
 
 import { toRefs, provide } from "vue";
 import accountStore from "@/store/modules/account/accountStore.js";
-
 const { setUserArea, userArea, registerClient, loginEmailOTP, registerClientAddress } = toRefs(accountStore())
 
 

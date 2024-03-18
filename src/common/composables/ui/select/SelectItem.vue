@@ -6,6 +6,8 @@ import {
   SelectItemText,
   useForwardProps,
 } from "radix-vue";
+
+
 import { CheckIcon } from "@radix-icons/vue";
 import { cn } from "@/lib/utils";
 
@@ -19,10 +21,12 @@ const props = defineProps({
 });
 
 const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props;
 
+
+  const { class: _, ...delegated } = props;
   return delegated;
 });
+
 
 const forwardedProps = useForwardProps(delegatedProps);
 </script>

@@ -1,5 +1,4 @@
 <template>
-
     <form @submit.prevent="onSubmit" class="grid gap-6 ">
         <FormField v-slot="{ componentField }" name="pin">
             <CostomInput class="text-left" user-label="請輸入驗證碼" userDescription="6位數字號碼" userPlaceholder="Ex:123456"
