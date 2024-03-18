@@ -12,7 +12,7 @@
     </FormItem>
 </template>
 
-<script setup >
+<script setup>
 
 import {
     FormControl,

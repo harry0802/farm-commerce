@@ -38,7 +38,7 @@
 
                 <FormField name="zipCodeDefault">
                     <CostomSelect :user-label="'郵遞區號*'" :user-description="'輸入要更改的內容'">
-                        <input v-model="value"
+                        <input v-model.number="value"
                             class="flex w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50   py-4 px-3.5 h-auto transition-shadow   duration-300"
                             data-role="zipcode" />
                     </CostomSelect>
@@ -77,6 +77,8 @@ const { initializeZipcodeWithPage, onSubmit, defineHandleFn } = profileUserAddre
 const { handleChange: setCountys } = useField('countys')
 const { handleChange: setDistricts } = useField('districts')
 const { value, handleChange: setZipcode, } = useField('zipCodeDefault')
+
+
 defineHandleFn(setCountys, setDistricts, setZipcode)
 
 
@@ -98,4 +100,3 @@ store
     @apply text-color-primary
 }
 </style>
-

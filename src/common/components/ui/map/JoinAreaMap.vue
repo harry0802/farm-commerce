@@ -5,12 +5,10 @@
 <script setup>
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import accountStore from '@/store/modules/account/accountStore.js';
-import { ref, onMounted, toRefs } from "vue";
-import { useRouter } from "vue-router";
 
-const sotre = accountStore()
-const { userArea } = toRefs(sotre)
+import { ref, onMounted, inject } from "vue";
+import { useRouter } from "vue-router";
+const { userArea } = inject('areaMap')
 const markerArea = [userArea.value.CenterPointLatitude, userArea.value.CenterPointLongitude]
 const router = useRouter()
 
@@ -24,7 +22,7 @@ onMounted(() => {
     });
 
     const greenIcon = L.icon({
-        iconUrl: require("@/assets/imgs/mapIcon/pet-shop-location-color-icon-vector.png"), // 修改這裡,
+        iconUrl: ("src/assets/imgs/mapIcon/pet-shop-location-color-icon-vector.png"), // 修改這裡,
         iconSize: [50, 64],
         iconAnchor: [25, 64],
         popupAnchor: [0, -64],
@@ -37,9 +35,6 @@ onMounted(() => {
 
     L.marker(markerArea, { icon: greenIcon }
     ).addTo(map).bindPopup(`<b>您的所在地區: </b > <br>${userArea.value.district}`).openPopup();
-
-
-
 });
 
 const mapContainer = ref(null);

@@ -7,7 +7,6 @@
         </div>
         <div class="submit__container">
             <RouterLink class="u-pirmary-button" :to="{ name: 'personal-info' }">下一步</RouterLink>
-
         </div>
     </div>
 </template>

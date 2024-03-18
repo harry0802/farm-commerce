@@ -10,8 +10,10 @@
             <span class=" progress-bar-step" :class="{ current: currentName('delivery-address').value }">
                 配送地址</span>
         </li>
-        <li class=" progress-bar-step">
-            付款資訊
+        <li>
+            <span class=" progress-bar-step" :class="{ current: currentName('payment-info').value }">
+                付款資訊
+            </span>
         </li>
     </ul>
 </template>
@@ -20,7 +22,9 @@
 import { computed } from "vue";
 import { useRoute } from 'vue-router';
 
+
 const route = useRoute()
+
 const currentName = (pathName) => computed(() => pathName === route.name)
 </script>
 

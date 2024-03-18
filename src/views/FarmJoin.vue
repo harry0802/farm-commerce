@@ -4,3 +4,21 @@
         <slot name="sidebar"></slot>
     </main>
 </template>
+
+<script setup>
+
+import { toRefs, provide } from "vue";
+import accountStore from "@/store/modules/account/accountStore.js";
+const { setUserArea, userArea, registerClient, loginEmailOTP, registerClientAddress } = toRefs(accountStore())
+
+
+
+provide('zipCheck', { setUserArea })
+provide('areaMap', { userArea })
+provide('personall', { registerClient })
+provide('verifyEmailOtp', { loginEmailOTP })
+provide('deliveryAddress', { registerClientAddress })
+
+
+
+</script>
