@@ -187,7 +187,21 @@ const paymentinfo = function (initialValues) {
   };
 };
 
+// Login
+
+const userlogin = function () {
+  const fields = z.object({
+    userEmail: emailSchema,
+    userPassword: emptyStr,
+  });
+  const handleSubmit = createHandleSubmit(fields);
+  return {
+    handleSubmit,
+  };
+};
+
 // Account 資料 （已登陸）
+
 const profileUserField = (initialValues) => {
   const fields = z.object({
     userFirstName: emptyStr,
@@ -257,6 +271,8 @@ export {
   verifyEmailOtp,
   deliveryAddress,
   paymentinfo,
+  // login
+  userlogin,
   // profile page
   profileUserField,
   profileUserAddress,

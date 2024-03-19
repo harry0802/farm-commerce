@@ -2,7 +2,7 @@
     <div class="join-page__section">
         <div class="join-page__contnet max-w-full place-content-center place-items-center text-color-primary">
             <div class="u-text-giant tracking-widest	 ">謝謝您的註冊！</div>
-            <div class="max-w-[600px] "><img cla｀ss="rounded-md shadow-lg" src="@/assets/imgs/welcom.jpg" alt=""></div>
+            <div class="max-w-[600px] "><img class="rounded-md shadow-lg" src="@/assets/imgs/welcom.jpg" alt=""></div>
             <div>目前我們只對台灣本島發貨<br />特定地區可能需要 ✌🏼多收錢 ✌🏼</div>
             <div>不需要結帳！<br />
                 你將於訂單截止日後為購物車中的商品付款。<br />

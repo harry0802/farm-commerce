@@ -3,6 +3,9 @@ import TWzipcode from "twzipcode.js";
 import { supabase } from "@/config/FarmPruductsItemManage.js";
 
 const store = useProfileInfoStore();
+
+console.log(store);
+
 let handleContry, handleDistrict, handleZipcode;
 
 const queryZipCode = async function (zip) {

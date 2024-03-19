@@ -6,6 +6,7 @@ import FarmProduct from "@/views/FarmProduct.vue";
 import FarmProducers from "@/views/FarmProducers.vue";
 import FarmJoin from "@/views/FarmJoin.vue";
 import FarmAccount from "@/views/FarmAccount.vue";
+import FarmLogin from "@/views/FarmLogin.vue";
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -46,8 +47,9 @@ const router = createRouter({
     },
     {
       path: "/login",
+      name: "login",
       props: true,
-      // component: FarmProducers,
+      component: FarmLogin,
     },
     {
       path: "/join",
@@ -97,7 +99,6 @@ const router = createRouter({
         {
           path: "welcome",
           name: "welcome",
-
           component: () => import("@/common/components/join/JoinWelcome.vue"),
         },
       ],

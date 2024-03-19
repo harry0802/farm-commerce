@@ -89,6 +89,8 @@ const useProfileInfoStore = defineStore("ProfileInfoStore", {
   setAccountDeliveryAddress(spDelivery) {
     const deliveryAddress = this.deliveryAddress;
     spDelivery.map((item) => {
+      console.log(item);
+
       driverInstructions.suer_driverTips = item.suer_driverTips;
       personalInfo.user_phone.val = item.user_phone;
       this.assignmentLoop(deliveryAddress, item);
