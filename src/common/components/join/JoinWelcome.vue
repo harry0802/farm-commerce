@@ -15,15 +15,6 @@
     </div>
 
 </template>
-
-<script setup>
-import { inject } from "vue";
-const { router } = inject('welcome')
-
-const toshop = () => router.push({ name: 'home' })
-
-</script>
-
 <style scoped>
 * {
     font-family: "SentyGoldSand";
