@@ -77,26 +77,29 @@ export const userInsertRows = async function (fromName, userData) {
 };
 
 // c4633c3b-74be-48cb-84dd-49c01e770e3c
-// export const subscription = supabase.auth.onAuthStateChange(
-//   (event, session) => {
-//     console.log(event, session);
-//     // if (event === "INITIAL_SESSION") {
-//     //   // handle initial session
-//     // }
-//     // if (event === "SIGNED_IN" || session.user) {
-//     //   return session.user;
-//     // }
-//     //  else if (event === "SIGNED_OUT") {
-//     //   // handle sign out event
-//     // } else if (event === "PASSWORD_RECOVERY") {
-//     //   // handle password recovery event
-//     // } else if (event === "TOKEN_REFRESHED") {
-//     //   // handle token refreshed event
-//     // } else if (event === "USER_UPDATED") {
-//     //   // handle user updated event
-//     // }
+// const subscription = supabase.auth.onAuthStateChange((event, session) => {
+//   // console.log(event, session);
+//   if (event === "INITIAL_SESSION") {
+//     console.log(`INITIAL_SESSION `);
+//     console.log(session);
 //   }
-// );
+//   if (event === "SIGNED_OUT") {
+//     console.log(session);
+//   }
+
+//   // if (event === "SIGNED_IN" || session.user) {
+//   //   return session.user;
+//   // }
+//   //  else if (event === "SIGNED_OUT") {
+//   //   // handle sign out event
+//   // } else if (event === "PASSWORD_RECOVERY") {
+//   //   // handle password recovery event
+//   // } else if (event === "TOKEN_REFRESHED") {
+//   //   // handle token refreshed event
+//   // } else if (event === "USER_UPDATED") {
+//   //   // handle user updated event
+//   // }
+// });
 
 // subscription();
 
@@ -105,10 +108,11 @@ const signInWithPassword = async function () {
     email: "furryfriendfan@yopmail.com",
     password: "Zxc123123",
   });
-
   data, error;
 };
-signInWithPassword();
+// signInWithPassword();
+
+// const { error } = await supabase.auth.signOut();
 
 export const queryZipCode = async function (zip) {
   try {

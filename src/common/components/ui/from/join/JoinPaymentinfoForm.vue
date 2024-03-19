@@ -1,5 +1,4 @@
 <template>
-
     <form @submit.prevent="onsubmit">
         <BaseCard>
             <template #Card-Title>付款方式</template>
@@ -32,8 +31,7 @@
 
                     <FormField name="creditYear">
                         <CostomSelect user-label="Year">
-                            <select
-                            v-model="creditYearVl"
+                            <select v-model="creditYearVl"
                                 class="flex w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 py-4 px-3.5 h-auto transition-shadow duration-300">
                                 <option v-for="i in 10" :key="i" :value="`${new Date().getFullYear() + i}`">
                                     {{ new Date().getFullYear() + i }}</option>
@@ -53,7 +51,7 @@
             </template>
             <template #Card-Footer>
                 <Button class="w-full">
-                下一步
+                    下一步
                 </Button>
             </template>
         </BaseCard>
@@ -64,7 +62,6 @@
 * {
     font-family: RiiT_F
 }
-
 </style>
 <script setup>
 import { Form, FormField } from "@/common/composables/ui/form";
@@ -79,18 +76,18 @@ import { paymentinfo, useField } from "@/Plugins/zodValidators.js";
 
 const { loading,
     handleSubmit, } = paymentinfo({
-        creditMoon:'January',
-creditYear:'2025',
-sameAddress:true
+        creditMoon: 'January',
+        creditYear: '2025',
+        sameAddress: true
     })
 
 const onsubmit = handleSubmit((val) => {
     console.log(val);
-    
+
 
 })
 
-const { value: creditMoonVl,} = useField('creditMoon')
+const { value: creditMoonVl, } = useField('creditMoon')
 const { value: creditYearVl, } = useField('creditYear')
 const mo = ['January',
     'February',

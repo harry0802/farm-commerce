@@ -94,9 +94,14 @@ const router = createRouter({
           component: () =>
             import("@/common/components/join/JoinPaymentInfo.vue"),
         },
+        {
+          path: "welcome",
+          name: "welcome",
+
+          component: () => import("@/common/components/join/JoinWelcome.vue"),
+        },
       ],
     },
-
     {
       path: "/account",
       component: FarmAccount,

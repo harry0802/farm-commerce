@@ -69,6 +69,10 @@ import { useField, deliveryAddress } from "@/Plugins/zodValidators.js";
 import { ref, onMounted, inject } from 'vue';
 import CostomSelect from "@/common/components/ui/from/CostomSelect.vue";
 import CostomTextArea from "@/common/components/ui/from/CostomTextArea.vue";
+import { useRouter } from 'vue-router';
+const router = useRouter()
+
+
 const { registerClientAddress } = inject(['deliveryAddress'])
 
 const twzipcodes = ref('')
@@ -80,6 +84,9 @@ const { loading,
         phone: '0912345678',
         driverTips: '放在植物後面',
     })
+
+
+
 
 const { handleChange: setCountys } = useField('countys')
 const { handleChange: setDistricts } = useField('districts')
@@ -99,8 +106,8 @@ const onSubmit = handleSubmit(async (val) => {
             suer_driverTips: val.driverTips,
         }
         const reponse = await registerClientAddress.value(sendData)
-        console.log(reponse);
-
+        if (!reponse) return
+        router.push({ name: 'payment-info' })
     } finally {
         loading.value = false
     }
