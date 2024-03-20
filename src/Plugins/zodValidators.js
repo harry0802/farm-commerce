@@ -210,56 +210,48 @@ const profileUserField = (initialValues) => {
   });
   const handleSubmit = createHandleSubmit(fields, initialValues);
   return {
-    fields,
     handleSubmit,
   };
 };
 const profileUserAddress = (initialValues) => {
   const fields = z.object({
-    streetAddress: emptyStr,
-    unitNo: emptyStr,
-    countys: emptyStr,
-    districts: emptyStr,
-    zipCodeDefault: zipCodeLimitNumber,
+    user_Address: emptyStr,
+    user_AddressLine: emptyStr,
+    user_City: emptyStr,
+    user_State: emptyStr,
+    user_ZipCode: zipCodeLimitNumber,
   });
   const handleSubmit = createHandleSubmit(fields, initialValues);
 
-  const onSubmit = handleSubmit((values) => {});
   const initializeZipcodeWithPage = (zipCheckPage) =>
     initializeTWzipcode(zipCheckPage);
 
   return {
-    fields,
     initializeZipcodeWithPage,
-    onSubmit,
+    handleSubmit,
     defineHandleFn,
   };
 };
 
 const profileUserDriverInstructions = (initialValues) => {
   const fields = z.object({
-    about: emptyStr,
+    suer_driverTips: emptyStr,
   });
 
   const handleSubmit = createHandleSubmit(fields, initialValues);
-  const onSubmit = handleSubmit((values) => {
-    console.log(values);
-  });
+
   return {
-    onSubmit,
+    handleSubmit,
   };
 };
 
 const profileUserEmail = (initialValues) => {
   const fields = z.object({
-    userEmail: emailStr,
+    user_Email: emailStr,
   });
 
   const handleSubmit = createHandleSubmit(fields, initialValues);
-  const onSubmit = handleSubmit((values) => {
-    console.log(values);
-  });
-  return { onSubmit };
+  return { handleSubmit };
 };
 
 export {

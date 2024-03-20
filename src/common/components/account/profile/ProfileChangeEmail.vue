@@ -14,15 +14,10 @@ import AccountProfileActionBtn from '@/common/components/ui/button/AccountProfil
 import ProfileChangeEmailContent from "@/common/components/ui/content/account/profile/ProfileChangeEmailContent.vue";
 import ProfileChangeEmailForm from "@/common/components/ui/from/account/profile/ProfileChangeEmailForm.vue";
 import { ref, provide } from "vue";
-import { store } from "@/common/composables/profileData.js";
-import { profileUserEmail } from "@/Plugins/inputValidation.js";
-
 const isForm = ref(false)
-const { fields, calcFieldsError } = profileUserEmail()
+const closeForm = () => isForm.value = false
+provide('closeForm', closeForm)
 
-provide('calcFieldsError', calcFieldsError.calcEmail)
-provide('userEmail', fields.userEmail)
-provide('store', store)
 </script>
 
 <style scoped>

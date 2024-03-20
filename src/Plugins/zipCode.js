@@ -1,8 +1,5 @@
-import useProfileInfoStore from "@/store/modules/profile/profileStore.js";
 import TWzipcode from "twzipcode.js";
 import { supabase } from "@/config/FarmPruductsItemManage.js";
-
-const store = useProfileInfoStore();
 
 let handleContry, handleDistrict, handleZipcode;
 
@@ -10,17 +7,21 @@ const queryZipCode = async function (zip) {
   try {
     let { data: TwZipCode, error } = await supabase
       .from("TwZipCode")
-      .select("*")
+      .select("ID")
       .eq("zipCode", zip);
-
+    if (!!TwZipCode[0] === false) {
+      throw new Error("查無此地區");
+    }
     if (TwZipCode) {
       return TwZipCode;
     }
     if (error) {
+      console.log(error);
       throw error;
     }
   } catch (err) {
     console.error(`TwZipCode Error ${err.message}`);
+    throw err;
   }
 };
 
@@ -41,9 +42,6 @@ const setupTWzipcode = (element) => {
     return (element = new TWzipcode({
       combine: false,
       county: {
-        value: store.deliveryAddress.user_City
-          ? store.deliveryAddress.user_City.val
-          : "",
         onChange: function (id) {
           const { county } = this.nth(id).get();
           county === ""

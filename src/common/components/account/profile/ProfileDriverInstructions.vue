@@ -15,13 +15,9 @@ import AccountProfileActionBtn from '@/common/components/ui/button/AccountProfil
 import ProfileDriverInstructionsContent from "@/common/components/ui/content/account/profile/ProfileDriverInstructionsContent.vue";
 import ProfileDriverInstructionsForm from '@/common/components/ui/from/account/profile/ProfileDriverInstructionsForm.vue'
 import { ref, provide } from "vue";
-import { store } from "@/common/composables/profileData.js";
-import { profileUserDriverInstructions } from "@/Plugins/inputValidation.js";
 const isForm = ref(false)
-const { fields, calcFieldsError } = profileUserDriverInstructions()
-provide('about', fields.about)
-provide('calcFieldsError', calcFieldsError)
-provide('store', store)
+const closeForm = () => isForm.value = false
+provide('closeForm', closeForm)
 
 </script>
 

@@ -31,6 +31,8 @@ export const multipleTablesChannel = supabase
     (payload) => {
       const { new: newData } = payload;
       if (newData.user_id === testId) {
+        store.notifications = newData.notifications;
+        store.email.val = newData.user_Email;
         resetProfile(store.personalInfo, newData);
       }
     }
@@ -47,6 +49,7 @@ export const multipleTablesChannel = supabase
       if (newData.clients_id === testId) {
         resetProfile(store.deliveryAddress, newData);
         resetProfile(store.personalInfo, newData);
+        store.driverInstructions.suer_driverTips = newData.suer_driverTips;
       }
     }
   )

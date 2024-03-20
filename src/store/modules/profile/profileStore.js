@@ -79,7 +79,7 @@ const useProfileInfoStore = defineStore("ProfileInfoStore", {
 
     compareObjects(oriVl, newVl) {
       return Object.entries(oriVl).every(
-        ([key, { val }]) => newVl[key] === val + ""
+        ([key, { val }]) => newVl[key] + "" === val + ""
       );
     },
   },

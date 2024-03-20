@@ -23,6 +23,7 @@ import CostomInput from "@/common/components/ui/from/CostomInput.vue";
 import { FormField, } from "@/common/composables/ui/form";
 import { profileUserField } from "@/Plugins/zodValidators.js";
 import { inject, } from "vue";
+
 const { updateAccount, store } = inject('store')
 const closeForm = inject('closeForm')
 const toast = inject('toast')
@@ -53,7 +54,7 @@ const onSubmit = handleSubmit(async (val) => {
         })
         toast.success('已成功更新')
     } catch (error) {
-        console.log(error.message);
+        console.error(error.message);
         toast.error('更新失敗')
     } finally {
         closeForm()

@@ -14,7 +14,7 @@
 <script setup>
 import AccountProfileInfoCard from '@/common/components/ui/card/AccountProfileInfoCard.vue'
 import { inject } from 'vue';
-const store = inject(['store'])
+const { store } = inject(['store'])
+
 
 </script>
-
