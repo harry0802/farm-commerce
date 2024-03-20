@@ -13,9 +13,8 @@
 import AccountProfileInfoCard from '@/common/components/ui/card/AccountProfileInfoCard.vue'
 import AccountProfileItems from "@/common/components/ui/text/AccountProfileItems.vue";
 import { inject } from 'vue';
-const store = inject(['store'])
 
+const { store } = inject('store')
 
 
 </script>
-

@@ -1,4 +1,3 @@
-
 <template>
     <form @submit="onSubmit">
         <FormField name="items">
@@ -31,15 +30,15 @@
         </div>
     </form>
 </template>
-  
 
-<script setup >
+
+<script setup>
 import { useForm } from 'vee-validate'
-import { updateAccount, store } from "@/common/composables/profileData.js";
 import { toTypedSchema } from '@vee-validate/zod'
+import { inject } from "vue";
+const { updateAccount, store } = inject('store')
+const toast = inject('toast')
 import { Checkbox } from '@/common/composables/ui/checkbox'
-import { toast } from 'vue-sonner'
-
 import * as z from "zod";
 import {
     FormControl,
@@ -49,6 +48,7 @@ import {
     FormLabel,
     FormMessage,
 } from '@/common/composables/ui/form'
+
 
 const dialog = defineModel('controlDialog')
 const items = [
@@ -75,8 +75,6 @@ const items = [
 
 ]
 
-
-
 const formSchema = toTypedSchema(z.object({
     items: z.array(z.string())
 }))
@@ -93,12 +91,14 @@ const onSubmit = handleSubmit(async (values) => {
     try {
         const updateData = { notifications: values.items }
         const response = await updateAccount('clients', updateData, 'user_id')
-        if (!response) throw response
+
+        if (!response[0]) throw new Error('更新資料失敗，請嘗試從新登錄')
         if (response) {
             toast.success('更新成功')
         }
     } catch (error) {
-        console.error(error.message);
+        toast.error('更新失敗')
+        console.error(`💣 HANDLE UPDATE: ${error.message}`);
 
     } finally {
         dialog.value = false

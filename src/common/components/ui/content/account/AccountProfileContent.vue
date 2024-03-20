@@ -14,8 +14,10 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
+import { onMounted, provide, ref } from "vue";
+import { toast } from 'vue-sonner'
 import { getAccountInfo } from "@/common/composables/profileData.js";
+import { updateAccount, store } from "@/common/composables/profileData.js";
 import {
     ProfileInfomation,
     ProfileDeliveryAddress,
@@ -28,8 +30,13 @@ import {
     ProfileBillingAddress,
     ProfileChangePassword
 } from "@/common/components/account/profile/index.js";
-onMounted(async () => {
-    await getAccountInfo()
+provide('store', { updateAccount, store })
+provide('toast', toast)
+
+
+onMounted(() => {
+    (async () => { await getAccountInfo() })()
+
 })
 </script>
 

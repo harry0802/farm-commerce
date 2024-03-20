@@ -204,15 +204,14 @@ const userlogin = function () {
 
 const profileUserField = (initialValues) => {
   const fields = z.object({
-    userFirstName: emptyStr,
-    userLastName: emptyStr,
-    phone: emptyStr,
+    user_FirstName: emptyStr,
+    user_LastName: emptyStr,
+    user_phone: emptyStr,
   });
   const handleSubmit = createHandleSubmit(fields, initialValues);
-  const onSubmit = handleSubmit((values) => {});
   return {
     fields,
-    onSubmit,
+    handleSubmit,
   };
 };
 const profileUserAddress = (initialValues) => {

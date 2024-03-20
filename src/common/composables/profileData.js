@@ -7,6 +7,18 @@ function updateValueIfDifferent(originalValue, newValue) {
   return originalValue === newValue ? originalValue : newValue;
 }
 
+const resetProfile = function (data, newData) {
+  for (const key in data) {
+    if (Object.hasOwnProperty.call(data, key)) {
+      const element = newData[key];
+      const originalEl = data[key];
+      if (!!element) {
+        originalEl.val = updateValueIfDifferent(originalEl.val, element);
+      }
+    }
+  }
+};
+
 export const multipleTablesChannel = supabase
   .channel("multiple-tables-changes")
   .on(
@@ -19,17 +31,7 @@ export const multipleTablesChannel = supabase
     (payload) => {
       const { new: newData } = payload;
       if (newData.user_id === testId) {
-        store.notifications = newData.notifications;
-
-        for (const key in store.personalInfo) {
-          if (Object.hasOwnProperty.call(store.personalInfo, key)) {
-            const element = newData[key];
-            const originalEl = store.personalInfo[key];
-            if (!!element) {
-              originalEl.val = updateValueIfDifferent(originalEl.val, element);
-            }
-          }
-        }
+        resetProfile(store.personalInfo, newData);
       }
     }
   )
@@ -43,7 +45,8 @@ export const multipleTablesChannel = supabase
     (payload) => {
       const { new: newData } = payload;
       if (newData.clients_id === testId) {
-        console.log(newData);
+        resetProfile(store.deliveryAddress, newData);
+        resetProfile(store.personalInfo, newData);
       }
     }
   )
@@ -92,29 +95,21 @@ const getSupabaseSpecificData = async (spFrom, spSelect, spEq) => {
 };
 
 export const getAccountInfo = async function () {
-  const client = await getSupabaseSpecificData(
-    "clients",
-    "user_FirstName,user_LastName,user_Email,notifications",
-    "user_id"
-  );
-
-  const deliveryAddress = await getSupabaseSpecificData(
-    "deliveryAddress",
-    "*",
-    "clients_id"
-  );
-
-  const billingAddress = await getSupabaseSpecificData(
-    "BillingAddress",
-    "*",
-    "clients_id"
-  );
-  const paymentInfo = await getSupabaseSpecificData(
-    "PaymentInfo",
-    "card_cardNumber,card_date",
-    "client_id"
-  );
-
+  const [client, deliveryAddress, billingAddress, paymentInfo] =
+    await Promise.all([
+      getSupabaseSpecificData(
+        "clients",
+        "user_FirstName,user_LastName,user_Email,notifications",
+        "user_id"
+      ),
+      getSupabaseSpecificData("deliveryAddress", "*", "clients_id"),
+      getSupabaseSpecificData("BillingAddress", "*", "clients_id"),
+      getSupabaseSpecificData(
+        "PaymentInfo",
+        "card_cardNumber,card_date",
+        "client_id"
+      ),
+    ]);
   store.setAccountProfileInfo(
     client,
     deliveryAddress,
@@ -124,15 +119,18 @@ export const getAccountInfo = async function () {
 };
 
 export const updateAccount = async function (spFrom, columnVal, spEq) {
+  // spEq = 等於 table  user key 的 column 名稱
   try {
     const { data, error } = await supabase
       .from(spFrom)
       .update(columnVal)
       .eq(spEq, testId)
-      .select();
+      .select("id");
     if (error) throw error;
-    if (data) return data;
+    if (data) {
+      return data;
+    }
   } catch (error) {
-    console.error(error.message);
+    throw error;
   }
 };

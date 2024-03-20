@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { ref } from "vue";
 
 const useProfileInfoStore = defineStore("ProfileInfoStore", {
   state() {
@@ -33,6 +34,7 @@ const useProfileInfoStore = defineStore("ProfileInfoStore", {
   },
   getters: {},
   actions: {
+    //初始化分配資料
     setAccountProfileInfo(spClient, spDelivery, spBilling, spPayment) {
       const personalInfo = this.personalInfo;
       const deliveryAddress = this.deliveryAddress;
@@ -40,7 +42,7 @@ const useProfileInfoStore = defineStore("ProfileInfoStore", {
       const email = this.email;
       const billingAddress = this.billingAddress;
       const paymentInfo = this.paymentInfo;
-
+      // 輔助函數
       const assignmentLoop = (data, item) => {
         for (const key in data) {
           if (Object.hasOwnProperty.call(data, key)) {
@@ -74,46 +76,12 @@ const useProfileInfoStore = defineStore("ProfileInfoStore", {
         ? (this.paymentInfo = false)
         : spPayment.map((item) => assignmentLoop(paymentInfo, item));
     },
-  },
 
-  setAccountPersonalInfo(spClient) {
-    const personalInfo = this.personalInfo;
-    spClient.map((item) => {
-      email.val = item.user_Email;
-      this.notifications = item.notifications
-        ? item.notifications
-        : this.notifications;
-      this.assignmentLoop(personalInfo, item);
-    });
-  },
-  setAccountDeliveryAddress(spDelivery) {
-    const deliveryAddress = this.deliveryAddress;
-    spDelivery.map((item) => {
-      console.log(item);
-
-      driverInstructions.suer_driverTips = item.suer_driverTips;
-      personalInfo.user_phone.val = item.user_phone;
-      this.assignmentLoop(deliveryAddress, item);
-    });
-  },
-
-  setAccountDriverInstructions() {
-    spDelivery.map((item) => {
-      driverInstructions.suer_driverTips = item.suer_driverTips;
-      personalInfo.user_phone.val = item.user_phone;
-    });
-  },
-  setAccountEmail() {},
-
-  assignmentLoop(data, item) {
-    for (const key in data) {
-      if (Object.hasOwnProperty.call(data, key)) {
-        const element = data[key];
-        if (item[key]) {
-          element.val = item[key];
-        }
-      }
-    }
+    compareObjects(oriVl, newVl) {
+      return Object.entries(oriVl).every(
+        ([key, { val }]) => newVl[key] === val + ""
+      );
+    },
   },
 });
 

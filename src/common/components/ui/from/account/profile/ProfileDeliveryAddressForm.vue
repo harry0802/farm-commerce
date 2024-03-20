@@ -59,8 +59,9 @@ import CostomSelect from "@/common/components/ui/from/CostomSelect.vue";
 import { inject, onMounted, ref } from "vue";
 import { FormField, } from "@/common/composables/ui/form";
 import { useField, profileUserAddress } from "@/Plugins/zodValidators.js";
-
-const store = inject(['store'])
+const closeForm = inject('closeForm')
+const { updateAccount, store } = inject('store')
+const toast = inject('toast')
 const zipcode = ref()
 
 
@@ -77,9 +78,10 @@ const { initializeZipcodeWithPage, onSubmit, defineHandleFn } = profileUserAddre
 const { handleChange: setCountys } = useField('countys')
 const { handleChange: setDistricts } = useField('districts')
 const { value, handleChange: setZipcode, } = useField('zipCodeDefault')
-
-
 defineHandleFn(setCountys, setDistricts, setZipcode)
+
+
+
 
 
 

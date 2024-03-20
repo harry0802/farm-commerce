@@ -13,23 +13,11 @@ import AccountProfileCard from "@/common/components/ui/card/AccountProfileCard.v
 import AccountProfileActionBtn from '@/common/components/ui/button/AccountProfileActionBtn.vue'
 import ProfileDeliveryAddress from "@/common/components/ui/content/account/profile/ProfileDeliveryAddress.vue";
 import ProfileDeliveryAddressForm from '@/common/components/ui/from/account/profile/ProfileDeliveryAddressForm.vue'
-import { profileUserAddress } from "@/Plugins/inputValidation.js";
-
-
 import { ref, provide } from "vue";
-import { store } from "@/common/composables/profileData.js";
 const isForm = ref(false)
+const closeForm = () => isForm.value = false
+provide('closeForm', closeForm)
 
-const { fields,
-    allAddressChecks,
-    initializeZipcodeWithPage, calcFieldsError } = profileUserAddress()
-
-provide('store', store)
-provide('fields', fields)
-provide('initializeZipcodeWithPage', initializeZipcodeWithPage)
-provide('calcFieldsError', calcFieldsError)
-
-allAddressChecks
 </script>
 
 <style scoped>

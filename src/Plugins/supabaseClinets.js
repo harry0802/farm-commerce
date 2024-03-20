@@ -77,7 +77,7 @@ export const userInsertRows = async function (fromName, userData) {
 };
 
 // c4633c3b-74be-48cb-84dd-49c01e770e3c
-// const subscription = supabase.auth.onAuthStateChange((event, session) => {
+//  const subscription = supabase.auth.onAuthStateChange((event, session) => {
 //   // console.log(event, session);
 //   if (event === "INITIAL_SESSION") {
 //     console.log(`INITIAL_SESSION `);
