@@ -48,6 +48,15 @@
                     <CustomCheckbox :value="value" :handleChange="handleChange" class="text-left flex " />
                 </FormField>
 
+                <div v-if="!showAddress">
+
+                    {{ showAddress }}
+
+                </div>
+
+
+
+
             </template>
             <template #Card-Footer>
                 <Button class="w-full">
@@ -72,8 +81,15 @@ import { Button } from '@/common/composables/ui/button'
 import BaseCard from "@/common/components/ui/card/BaseCard.vue";
 import PayinfoRadioGroup from "@/common/components/ui/from/join/payinfo/PayinfoRadioGroup.vue";
 import { paymentinfo, useField } from "@/Plugins/zodValidators.js";
+import { userInsertRows } from "@/Plugins/supabaseClinets.js";
+import { inject } from "vue";
+
+const profileInfo = inject('profileInfo')
+// console.log(
+//     Object.values(profileInfo.deliveryAddress).map(item => item.val));
 
 
+const { router } = inject('paymentInfo')
 const { loading,
     handleSubmit, } = paymentinfo({
         creditMoon: 'January',
@@ -81,9 +97,16 @@ const { loading,
         sameAddress: true
     })
 
-const onsubmit = handleSubmit((val) => {
-    console.log(val);
+const { value: showAddress } = useField('sameAddress')
 
+
+const onsubmit = handleSubmit((val) => {
+
+
+    router
+
+    // userInsertRows()
+    userInsertRows()
 
 })
 

@@ -1,8 +1,9 @@
-import { supabase } from "@/config/FarmPruductsItemManage.js";
-const testId = "c32a1e24-58bf-4714-b0a4-5e8e7e3421c9";
 import useProfileInfoStore from "@/store/modules/profile/profileStore.js";
-export const store = useProfileInfoStore();
-
+import { supabase } from "@/config/FarmPruductsItemManage.js";
+import { createPinia } from "pinia";
+const pinia = createPinia();
+export const store = useProfileInfoStore(pinia);
+const testId = "c32a1e24-58bf-4714-b0a4-5e8e7e3421c9";
 function updateValueIfDifferent(originalValue, newValue) {
   return originalValue === newValue ? originalValue : newValue;
 }

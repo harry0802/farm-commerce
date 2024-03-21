@@ -170,8 +170,12 @@ const deliveryAddress = function (initialValues) {
 
 const paymentinfo = function (initialValues) {
   const fields = z.object({
-    userName: emptyStr,
-    creditNumber: z.string().length(16, { message: "請符合信用卡格式" }),
+    userName: z.string({ required_error: "不可空白" }).regex(/^[a-zA-Z]*$/, {
+      message: "只限於英文",
+    }),
+    creditNumber: z
+      .string({ required_error: "不可空白" })
+      .length(16, { message: "請符合信用卡格式" }),
     creditMoon: emptyStr,
     creditYear: emptyStr,
     creditLastNb: z.string().length(3, { message: "限定3碼" }),
@@ -186,7 +190,7 @@ const paymentinfo = function (initialValues) {
     handleSubmit,
   };
 };
-
+const BillingAddress = function () {};
 // Login
 
 const userlogin = function () {
@@ -247,7 +251,7 @@ const profileUserDriverInstructions = (initialValues) => {
 
 const profileUserEmail = (initialValues) => {
   const fields = z.object({
-    user_Email: emailStr,
+    user_Email: emailSchema,
   });
 
   const handleSubmit = createHandleSubmit(fields, initialValues);
