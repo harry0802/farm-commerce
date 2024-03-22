@@ -66,7 +66,6 @@ const closeForm = inject('closeForm')
 const { updateAccount, store } = inject('store')
 const toast = inject('toast')
 
-
 const { initializeZipcodeWithPage, handleSubmit, defineHandleFn } = profileUserAddress(
     {
         user_Address: store.deliveryAddress.user_Address.val,

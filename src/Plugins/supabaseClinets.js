@@ -15,13 +15,13 @@ function handleSupabaseError(err) {
   } else if (
     err.message.includes("duplicate key value violates unique constraint")
   ) {
-    setErrorToast("您的電子郵件地址已被使用");
+    setErrorToast("該資料已存在");
   } else {
     setErrorToast("發生錯誤，請稍後再試");
   }
 }
 
-export const userSignUp = async function (userEmail, userPassword) {
+const userSignUp = async function (userEmail, userPassword) {
   try {
     const { data, error } = await supabase.auth.signUp({
       email: userEmail,
@@ -38,7 +38,7 @@ export const userSignUp = async function (userEmail, userPassword) {
   }
 };
 
-export const verifyOtp = async function (email, token) {
+const verifyOtp = async function (email, token) {
   try {
     const {
       data: { session },
@@ -61,48 +61,20 @@ export const verifyOtp = async function (email, token) {
   }
 };
 
-export const userInsertRows = async function (fromName, userData) {
+const userInsertRows = async function (fromName, userData) {
   try {
     const { error, data } = await supabase
       .from(fromName)
       .insert(userData)
       .select();
-    console.log(data);
     if (error) throw error;
     return data;
   } catch (err) {
     console.error(err.message);
     handleSupabaseError(err);
+    throw err;
   }
 };
-
-// c4633c3b-74be-48cb-84dd-49c01e770e3c
-
-const subscription = supabase.auth.onAuthStateChange((event, session) => {
-  console.log(event, session);
-  if (event === "INITIAL_SESSION") {
-    console.log(`INITIAL_SESSION `);
-    console.log(session);
-  }
-  if (event === "SIGNED_OUT") {
-    console.log(session);
-  }
-
-  // if (event === "SIGNED_IN" || session.user) {
-  //   return session.user;
-  // }
-  //  else if (event === "SIGNED_OUT") {
-  //   // handle sign out event
-  // } else if (event === "PASSWORD_RECOVERY") {
-  //   // handle password recovery event
-  // } else if (event === "TOKEN_REFRESHED") {
-  //   // handle token refreshed event
-  // } else if (event === "USER_UPDATED") {
-  //   // handle user updated event
-  // }
-});
-
-// subscription();
 
 const signInWithPassword = async function () {
   const { data, error } = await supabase.auth.signInWithPassword({
@@ -115,7 +87,7 @@ const signInWithPassword = async function () {
 
 // const { error } = await supabase.auth.signOut();
 
-export const queryZipCode = async function (zip) {
+const queryZipCode = async function (zip) {
   try {
     let { data: TwZipCode, error } = await supabase
       .from("TwZipCode")
@@ -131,7 +103,35 @@ export const queryZipCode = async function (zip) {
     }
   } catch (err) {
     console.error(err.message);
+    throw err;
   }
 };
 
-// signInWithPassword();
+const getUserInfo = async function () {
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.getUser();
+  if (error) throw error;
+  if (user) return user;
+};
+
+// const getUserAddress = async function () {
+//   const {
+//     data: { user },
+//   } = await supabase.auth.getUser();
+//   console.log(user);
+//   let { data: deliveryAddress, error } = await supabase
+//     .from("deliveryAddress")
+//     .select("user_City,user_State,user_ZipCode,user_Address,user_AddressLine")
+//     .eq("clients_id", "Equal to");
+// };
+
+export {
+  userSignUp,
+  verifyOtp,
+  userInsertRows,
+  queryZipCode,
+  getUserInfo,
+  toast,
+};

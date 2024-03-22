@@ -29,6 +29,7 @@
 
                     </FormField>
 
+
                     <FormField name="creditYear">
                         <CostomSelect user-label="Year">
                             <select v-model="creditYearVl"
@@ -44,24 +45,20 @@
                     </FormField>
                 </div>
 
-                <FormField v-slot="{ value, handleChange }" name="sameAddress">
-                    <CustomCheckbox :value="value" :handleChange="handleChange" class="text-left flex " />
+                <FormField v-slot="{ value: checkboxVl, handleChange }" name="sameAddress">
+                    <CustomCheckbox :description="getDeliveryAddress()" :value="checkboxVl" :handleChange="handleChange"
+                        class="text-left flex mt-5" @click="isAddresSave = false" />
                 </FormField>
 
-                <div v-if="!showAddress">
-
-                    {{ showAddress }}
-
-                </div>
-
-
-
+                <PayInfoForm v-model:getCustomAddress="getCustomAddress" v-model:closeAddress="closeAddress"
+                    v-model:isAddresSave="isAddresSave" v-if="!showAddress" />
 
             </template>
             <template #Card-Footer>
-                <Button class="w-full">
+                <Button v-if="!loading" class="w-full" :disabled="!showAddress && !isAddresSave">
                     下一步
                 </Button>
+                <LoadingCat2 v-else class="h-[50px] " />
             </template>
         </BaseCard>
     </form>
@@ -73,45 +70,43 @@
 }
 </style>
 <script setup>
-import { Form, FormField } from "@/common/composables/ui/form";
 import CustomCheckbox from "@/common/components/ui/from/CustomCheckbox.vue";
 import CostomSelect from "@/common/components/ui/from/CostomSelect.vue";
 import CostomInput from "@/common/components/ui/from/CostomInput.vue";
-import { Button } from '@/common/composables/ui/button'
 import BaseCard from "@/common/components/ui/card/BaseCard.vue";
 import PayinfoRadioGroup from "@/common/components/ui/from/join/payinfo/PayinfoRadioGroup.vue";
+import LoadingCat2 from '../../../ui/animat/LoadingCat2.vue'
+import { inject, ref } from "vue";
+import { userInsertRows, getUserInfo } from "@/Plugins/supabaseClinets.js";
+import { Form, FormField } from "@/common/composables/ui/form";
 import { paymentinfo, useField } from "@/Plugins/zodValidators.js";
-import { userInsertRows } from "@/Plugins/supabaseClinets.js";
-import { inject } from "vue";
-
-const profileInfo = inject('profileInfo')
-// console.log(
-//     Object.values(profileInfo.deliveryAddress).map(item => item.val));
-
-
-const { router } = inject('paymentInfo')
-const { loading,
-    handleSubmit, } = paymentinfo({
-        creditMoon: 'January',
-        creditYear: '2025',
-        sameAddress: true
-    })
-
-const { value: showAddress } = useField('sameAddress')
-
-
-const onsubmit = handleSubmit((val) => {
-
-
-    router
-
-    // userInsertRows()
-    userInsertRows()
-
+import { Button } from '@/common/composables/ui/button'
+import PayInfoForm from "@/common/components/ui/from/join/payinfo/PayInfoForm.vue";
+const { store, router } = inject('paymentInfo')
+const {
+    handleSubmit,
+    loading
+} = paymentinfo({
+    creditMoon: 'January',
+    creditYear: '2025',
+    sameAddress: true,
 })
+
+
 
 const { value: creditMoonVl, } = useField('creditMoon')
 const { value: creditYearVl, } = useField('creditYear')
+const { value: showAddress } = useField('sameAddress')
+// defineModel
+const getCustomAddress = ref('')
+const closeAddress = ref(showAddress)
+const isAddresSave = ref(false)
+
+
+
+// 預設地址
+const getDeliveryAddress = () => Object.values(store.deliveryAddress).map(item => item.val).join(',')
+
 const mo = ['January',
     'February',
     'March',
@@ -124,4 +119,55 @@ const mo = ['January',
     'October',
     'November',
     'December',]
+
+
+const onsubmit = handleSubmit(async (val) => {
+    try {
+        loading.value = true
+        const { id } = await getUserInfo()
+        const { deliveryAddress } = store
+        const paymentData = {
+            client_id: id,
+            card_name: val.userName,
+            card_cardNumber: val.creditNumber,
+            card_date: `${val.creditYear}/${val.creditMoon}`,
+            card_password: val.creditLastNb,
+        }
+
+        let address = {
+            clients_id: id,
+            user_Address: deliveryAddress.user_Address.val,
+            user_AddressLine: deliveryAddress.user_AddressLine.val,
+            user_City: deliveryAddress.user_City.val,
+            user_State: deliveryAddress.user_State.val,
+            user_ZipCode: deliveryAddress.user_ZipCode.val,
+        }
+
+
+        if (!val.sameAddress) {
+            address = {
+                clients_id: id,
+                ...getCustomAddress.value
+            }
+        }
+
+        await Promise.all([
+            userInsertRows('PaymentInfo', paymentData),
+            userInsertRows('BillingAddress', address)]).catch((e) => {
+                throw e
+            })
+        router.push({ name: 'welcome' })
+    } finally {
+        loading.value = false
+    }
+
+})
+
 </script>
+
+<style scoped>
+.hidden {
+    visibility: hidden;
+
+}
+</style>

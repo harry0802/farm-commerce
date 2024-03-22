@@ -2,6 +2,7 @@
 
     <form @submit.prevent="onSubmit" class="join-page__contnet--from grid-cols-4 text-color-primary twzipcode"
         ref="twzipcodes">
+
         <FormField v-slot="{ componentField }" name="streetAddress">
             <CostomInput class="col-span-4 sm:col-span-2 " user-label="街道地址 *" :componentField="componentField">
             </CostomInput>
@@ -70,12 +71,13 @@ import { ref, onMounted, inject } from 'vue';
 import CostomSelect from "@/common/components/ui/from/CostomSelect.vue";
 import CostomTextArea from "@/common/components/ui/from/CostomTextArea.vue";
 import { useRouter } from 'vue-router';
+
+
 const router = useRouter()
-
-
 const { registerClientAddress } = inject(['deliveryAddress'])
-
 const twzipcodes = ref('')
+
+
 const { loading,
     handleSubmit, defineHandleFn, initializeZipcodeWithPage } = deliveryAddress({
         streetAddress: '芝麻街',
@@ -92,6 +94,10 @@ const { handleChange: setCountys } = useField('countys')
 const { handleChange: setDistricts } = useField('districts')
 const { value, handleChange: setZipcode, } = useField('zipCodeDefault')
 defineHandleFn(setCountys, setDistricts, setZipcode)
+
+
+
+
 const onSubmit = handleSubmit(async (val) => {
     try {
 

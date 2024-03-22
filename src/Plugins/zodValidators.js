@@ -179,9 +179,7 @@ const paymentinfo = function (initialValues) {
     creditMoon: emptyStr,
     creditYear: emptyStr,
     creditLastNb: z.string().length(3, { message: "限定3碼" }),
-    // 兩者只有一個
     sameAddress: z.boolean(),
-    // newAddress: emptyStr,
   });
 
   const handleSubmit = createHandleSubmit(fields, initialValues);
@@ -190,7 +188,7 @@ const paymentinfo = function (initialValues) {
     handleSubmit,
   };
 };
-const BillingAddress = function () {};
+
 // Login
 
 const userlogin = function () {
@@ -257,7 +255,6 @@ const profileUserEmail = (initialValues) => {
   const handleSubmit = createHandleSubmit(fields, initialValues);
   return { handleSubmit };
 };
-
 export {
   useField,
   // register page

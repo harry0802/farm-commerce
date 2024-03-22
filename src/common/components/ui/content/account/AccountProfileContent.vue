@@ -31,6 +31,7 @@ import {
 } from "@/common/components/account/profile/index.js";
 provide('store', { updateAccount, store })
 provide('toast', toast)
+
 </script>
 
 <style scoped>

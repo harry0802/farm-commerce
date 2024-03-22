@@ -6,7 +6,7 @@
         <div class="space-y-1 leading-none ">
             <FormLabel class=" ">帳單地址與您送貨的地址一樣嗎？</FormLabel>
             <FormDescription>
-                預設的地址
+                {{ description }}
             </FormDescription>
             <FormMessage />
         </div>
@@ -26,12 +26,11 @@ import {
 
 
 
-
 const props = defineProps({
-    value: { type: String, required: false },
+    value: { type: Boolean, required: false },
     handleChange: { type: Function, required: false },
+    description: { type: String }
 })
-
 
 
 

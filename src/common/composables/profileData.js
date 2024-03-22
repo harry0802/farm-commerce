@@ -2,8 +2,10 @@ import useProfileInfoStore from "@/store/modules/profile/profileStore.js";
 import { supabase } from "@/config/FarmPruductsItemManage.js";
 import { createPinia } from "pinia";
 const pinia = createPinia();
-export const store = useProfileInfoStore(pinia);
+const store = useProfileInfoStore(pinia);
+
 const testId = "c32a1e24-58bf-4714-b0a4-5e8e7e3421c9";
+
 function updateValueIfDifferent(originalValue, newValue) {
   return originalValue === newValue ? originalValue : newValue;
 }
@@ -20,7 +22,7 @@ const resetProfile = function (data, newData) {
   }
 };
 
-export const multipleTablesChannel = supabase
+const multipleTablesChannel = supabase
   .channel("multiple-tables-changes")
   .on(
     "postgres_changes",
@@ -64,7 +66,7 @@ export const multipleTablesChannel = supabase
     (payload) => {
       const { new: newData } = payload;
       if (newData.clients_id === testId) {
-        console.log(newData);
+        resetProfile(store.billingAddress, newData);
       }
     }
   )
@@ -98,7 +100,7 @@ const getSupabaseSpecificData = async (spFrom, spSelect, spEq) => {
   }
 };
 
-export const getAccountInfo = async function () {
+const getAccountInfo = async function () {
   const [client, deliveryAddress, billingAddress, paymentInfo] =
     await Promise.all([
       getSupabaseSpecificData(
@@ -114,6 +116,7 @@ export const getAccountInfo = async function () {
         "client_id"
       ),
     ]);
+
   store.setAccountProfileInfo(
     client,
     deliveryAddress,
@@ -122,7 +125,7 @@ export const getAccountInfo = async function () {
   );
 };
 
-export const updateAccount = async function (spFrom, columnVal, spEq) {
+const updateAccount = async function (spFrom, columnVal, spEq) {
   // spEq = 等於 table  user key 的 column 名稱
   try {
     const { data, error } = await supabase
@@ -138,3 +141,5 @@ export const updateAccount = async function (spFrom, columnVal, spEq) {
     throw error;
   }
 };
+
+export { store, multipleTablesChannel, updateAccount, getAccountInfo };

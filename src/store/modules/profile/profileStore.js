@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
 
 const useProfileInfoStore = defineStore("ProfileInfoStore", {
   state() {
@@ -22,6 +21,7 @@ const useProfileInfoStore = defineStore("ProfileInfoStore", {
       email: { title: "信箱地址", val: "" },
       paymentInfo: { card_cardNumber: "", card_date: "" },
       notifications: [],
+
       billingAddress: {
         user_Address: { title: "地址", val: "" },
         user_AddressLine: { title: "樓號", val: "" },
@@ -74,7 +74,11 @@ const useProfileInfoStore = defineStore("ProfileInfoStore", {
 
       spPayment.length === 0
         ? (this.paymentInfo = false)
-        : spPayment.map((item) => assignmentLoop(paymentInfo, item));
+        : spPayment.map((item) => {
+            const paymentInfo = this.paymentInfo;
+            paymentInfo.card_date = item.card_date;
+            paymentInfo.card_cardNumber = item.card_cardNumber;
+          });
     },
 
     compareObjects(oriVl, newVl) {
