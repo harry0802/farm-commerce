@@ -14,9 +14,9 @@ import ProfilePersonalInfo from "@/common/components/ui/content/account/profile/
 import AccountProfileActionBtn from '@/common/components/ui/button/AccountProfileActionBtn.vue'
 import ProfilePersonalInfoForm from '@/common/components/ui/from/account/profile/ProfilePersonalInfoForm.vue'
 import { ref, provide } from "vue";
-import { store } from "@/common/composables/profileData.js";
 const isForm = ref(false)
-provide('store', store)
+const closeForm = () => isForm.value = false
+provide('closeForm', closeForm)
 
 </script>
 

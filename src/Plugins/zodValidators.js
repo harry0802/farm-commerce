@@ -65,7 +65,7 @@ const createHandleSubmit = (fields, initialValue = null) => {
   return handleSubmit;
 };
 
-// Account 資料 （註冊中）
+// Account 資料 （註冊頁面）
 const checkZipcode = function () {
   const fields = z.object({
     countys: emptyStr,
@@ -165,71 +165,111 @@ const deliveryAddress = function (initialValues) {
     initializeZipcodeWithPage,
     loading,
     handleSubmit,
+    loading,
+  };
+};
+
+const paymentinfo = function (initialValues) {
+  const fields = z.object({
+    userName: z.string({ required_error: "不可空白" }).regex(/^[a-zA-Z]*$/, {
+      message: "只限於英文",
+    }),
+    creditNumber: z
+      .string({ required_error: "不可空白" })
+      .length(16, { message: "請符合信用卡格式" }),
+    creditMoon: emptyStr,
+    creditYear: emptyStr,
+    creditLastNb: z.string().length(3, { message: "限定3碼" }),
+    sameAddress: z.boolean(),
+  });
+
+  const handleSubmit = createHandleSubmit(fields, initialValues);
+  return {
+    loading,
+    handleSubmit,
+  };
+};
+
+// Login
+
+const userLoginPassword = function () {
+  const fields = z.object({
+    userEmail: emailSchema,
+    userPassword: emptyStr,
+  });
+  const handleSubmit = createHandleSubmit(fields);
+  return {
+    handleSubmit,
+    loading,
+    passwordIcon,
+    passwordType,
+    showPassword,
+  };
+};
+const userLoginEmail = function () {
+  const fields = z.object({
+    userEmail: emailSchema,
+  });
+  const handleSubmit = createHandleSubmit(fields);
+  return {
+    handleSubmit,
+    loading,
   };
 };
 
 // Account 資料 （已登陸）
+
 const profileUserField = (initialValues) => {
   const fields = z.object({
-    userFirstName: emptyStr,
-    userLastName: emptyStr,
-    phone: emptyStr,
+    user_FirstName: emptyStr,
+    user_LastName: emptyStr,
+    user_phone: emptyStr,
   });
   const handleSubmit = createHandleSubmit(fields, initialValues);
-  const onSubmit = handleSubmit((values) => {});
   return {
-    fields,
-    onSubmit,
+    handleSubmit,
   };
 };
 const profileUserAddress = (initialValues) => {
   const fields = z.object({
-    streetAddress: emptyStr,
-    unitNo: emptyStr,
-    countys: emptyStr,
-    districts: emptyStr,
-    zipCodeDefault: zipCodeLimitNumber,
+    user_Address: emptyStr,
+    user_AddressLine: emptyStr,
+    user_City: emptyStr,
+    user_State: emptyStr,
+    user_ZipCode: zipCodeLimitNumber,
   });
   const handleSubmit = createHandleSubmit(fields, initialValues);
 
-  const onSubmit = handleSubmit((values) => {});
   const initializeZipcodeWithPage = (zipCheckPage) =>
     initializeTWzipcode(zipCheckPage);
 
   return {
-    fields,
     initializeZipcodeWithPage,
-    onSubmit,
+    handleSubmit,
     defineHandleFn,
   };
 };
 
 const profileUserDriverInstructions = (initialValues) => {
   const fields = z.object({
-    about: emptyStr,
+    suer_driverTips: emptyStr,
   });
 
   const handleSubmit = createHandleSubmit(fields, initialValues);
-  const onSubmit = handleSubmit((values) => {
-    console.log(values);
-  });
+
   return {
-    onSubmit,
+    handleSubmit,
   };
 };
 
 const profileUserEmail = (initialValues) => {
   const fields = z.object({
-    userEmail: emailStr,
+    user_Email: emailSchema,
   });
 
   const handleSubmit = createHandleSubmit(fields, initialValues);
-  const onSubmit = handleSubmit((values) => {
-    console.log(values);
-  });
-  return { onSubmit };
+  return { handleSubmit };
 };
-
 export {
   useField,
   // register page
@@ -237,6 +277,10 @@ export {
   userFields,
   verifyEmailOtp,
   deliveryAddress,
+  paymentinfo,
+  // login
+  userLoginPassword,
+  userLoginEmail,
   // profile page
   profileUserField,
   profileUserAddress,

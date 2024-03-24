@@ -5,6 +5,7 @@ import {
   queryZipCode,
   verifyOtp,
 } from "@/Plugins/supabaseClinets.js";
+// 註冊帳戶紀錄
 const useAccountStore = defineStore("accountStore", {
   state() {
     return {

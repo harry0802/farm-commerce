@@ -14,8 +14,9 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
-import { getAccountInfo } from "@/common/composables/profileData.js";
+import { provide, } from "vue";
+import { toast } from 'vue-sonner'
+import { updateAccount, store } from "@/common/composables/profileData.js";
 import {
     ProfileInfomation,
     ProfileDeliveryAddress,
@@ -28,9 +29,9 @@ import {
     ProfileBillingAddress,
     ProfileChangePassword
 } from "@/common/components/account/profile/index.js";
-onMounted(async () => {
-    await getAccountInfo()
-})
+provide('store', { updateAccount, store })
+provide('toast', toast)
+
 </script>
 
 <style scoped>

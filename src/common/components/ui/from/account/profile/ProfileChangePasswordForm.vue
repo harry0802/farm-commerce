@@ -34,4 +34,3 @@ label,
     @apply text-color-primary
 }
 </style>
-

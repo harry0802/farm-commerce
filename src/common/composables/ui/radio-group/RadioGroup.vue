@@ -20,15 +20,17 @@ const emits = defineEmits(["update:modelValue"]);
 
 const delegatedProps = computed(() => {
   const { class: _, ...delegated } = props;
-
   return delegated;
 });
 
 const forwarded = useForwardPropsEmits(delegatedProps, emits);
+
 </script>
 
 <template>
-  <RadioGroupRoot :class="cn('grid gap-2', props.class)" v-bind="forwarded">
+  <RadioGroupRoot :modelValue="modelValue" :defaultValue="defaultValue" :disabled="disabled" :name="name"
+    :required="required" :orientation="orientation" :dir="dir" :loop="loop" :asChild="asChild" :as="as"
+    @update:model-value="emits" :class="cn('grid gap-2', props.class)" v-bind="forwarded">
     <slot />
   </RadioGroupRoot>
 </template>

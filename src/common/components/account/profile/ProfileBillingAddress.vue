@@ -14,8 +14,10 @@ import AccountProfileActionBtn from '@/common/components/ui/button/AccountProfil
 import ProfileBillingAddressContent from "@/common/components/ui/content/account/profile/ProfileBillingAddressContent.vue";
 import ProfileBillingAddressForm from "@/common/components/ui/from/account/profile/ProfileBillingAddressForm.vue";
 
-import { ref } from "vue";
+import { ref, provide } from "vue";
 const isForm = ref(false)
+const closeForm = () => isForm.value = false
+provide('closeForm', closeForm)
 
 
 </script>

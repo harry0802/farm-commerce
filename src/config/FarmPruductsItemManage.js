@@ -2,10 +2,8 @@ import { createClient } from "@supabase/supabase-js";
 
 const supabaseUrl = import.meta.env.VITE_APP_FARM_PRODUCTS_URL;
 const supabaseKey = import.meta.env.VITE_APP_FARM_PRODUCTS_KEY;
-
-export const supabase = createClient(supabaseUrl, supabaseKey);
-
-export const getSupabaseData = async function (tableName) {
+const supabase = createClient(supabaseUrl, supabaseKey);
+const getSupabaseData = async function (tableName) {
   try {
     const { error, data } = await supabase.from(tableName).select();
 
@@ -19,3 +17,5 @@ export const getSupabaseData = async function (tableName) {
     console.error(e);
   }
 };
+
+export { supabase, getSupabaseData };

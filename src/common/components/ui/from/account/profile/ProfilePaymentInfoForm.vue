@@ -29,4 +29,3 @@ import AccountProfileFormCard from '@/common/components/ui/card/AccountProfileFo
     @apply text-color-primary
 }
 </style>
-

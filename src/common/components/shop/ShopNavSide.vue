@@ -3,7 +3,7 @@
     <template #title>
       <h1 :id="currentId" class="pb-2 u-text-medium">
         <RouterLink :to="'/shop/' + data.project">{{
-          data.project }} </RouterLink>
+        data.project }} </RouterLink>
       </h1>
     </template>
     <template #navlist>

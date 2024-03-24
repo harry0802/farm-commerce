@@ -9,7 +9,7 @@
             </div>
         </template>
         <template #form-table>
-            <FormField v-slot="{ componentField }" name="about">
+            <FormField v-slot="{ componentField }" name="suer_driverTips">
                 <CostomTextArea class="col-span-2" :user-label="'輸入給司機的提醒'" :user-description="'輸入要更改的內容'"
                     :componentFields="componentField" />
             </FormField>
@@ -26,14 +26,34 @@ import AccountProfileFormCard from '@/common/components/ui/card/AccountProfileFo
 import CostomTextArea from "@/common/components/ui/from/CostomTextArea.vue";
 import { profileUserDriverInstructions } from "@/Plugins/zodValidators.js";
 import { FormField } from '@/common/composables/ui/form';
-import { inject } from 'vue';
+import { inject, } from "vue";
 
+const { updateAccount, store } = inject('store')
+const closeForm = inject('closeForm')
+const toast = inject('toast')
 
+const { handleSubmit } = profileUserDriverInstructions({
+    suer_driverTips: store.driverInstructions.suer_driverTips
+})
 
-const store = inject(['store'])
-
-const { onSubmit } = profileUserDriverInstructions({
-    about: store.driverInstructions.suer_driverTips
+const onSubmit = handleSubmit(async (val) => {
+    try {
+        if (store.compareObjects(store.driverInstructions, val)) {
+            toast.warning('您並沒有更改任何東西')
+            return
+        }
+        const { suer_driverTips } = val
+        await updateAccount('deliveryAddress', { suer_driverTips }, 'clients_id')
+            .catch(e => {
+                throw e
+            })
+        toast.success('已成功更新')
+    } catch (error) {
+        console.error(error.message);
+        toast.error('更新失敗')
+    } finally {
+        closeForm()
+    }
 })
 
 
@@ -51,4 +71,3 @@ label,
     max-width: 100%;
 }
 </style>
-

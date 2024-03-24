@@ -11,16 +11,16 @@
 
         <template #form-TableZipcode>
             <div class="grid w-full gap-y-6 gap-x-8 sm:grid-cols-2 twzipcode" ref="zipcode">
-                <FormField v-slot="{ componentField }" name="streetAddress">
+                <FormField v-slot="{ componentField }" name="user_Address">
                     <CostomInput :componentField="componentField" :userLabel="'地址*'" :userDescription="'輸入要更改的內容'" />
                 </FormField>
 
-                <FormField v-slot="{ componentField }" name="unitNo">
+                <FormField v-slot="{ componentField }" name="user_AddressLine">
                     <CostomInput :componentField="componentField" :userLabel="'樓號*'" :userDescription="'輸入要更改的內容'" />
 
                 </FormField>
 
-                <FormField name="countys">
+                <FormField name="user_City">
                     <CostomSelect :userLabel="'縣市*'" :userDescription="'輸入要更改的內容'">
                         <select
                             class="flex w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50   py-4 px-3.5 h-auto transition-shadow   duration-300"
@@ -28,7 +28,7 @@
                     </CostomSelect>
                 </FormField>
 
-                <FormField name="districts">
+                <FormField name="user_State">
                     <CostomSelect :user-label="'地區*'" :user-description="'輸入要更改的內容'">
                         <select
                             class="flex w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50   py-4 px-3.5 h-auto transition-shadow   duration-300"
@@ -36,7 +36,7 @@
                     </CostomSelect>
                 </FormField>
 
-                <FormField name="zipCodeDefault">
+                <FormField name="user_ZipCode">
                     <CostomSelect :user-label="'郵遞區號*'" :user-description="'輸入要更改的內容'">
                         <input v-model.number="value"
                             class="flex w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50   py-4 px-3.5 h-auto transition-shadow   duration-300"
@@ -59,27 +59,63 @@ import CostomSelect from "@/common/components/ui/from/CostomSelect.vue";
 import { inject, onMounted, ref } from "vue";
 import { FormField, } from "@/common/composables/ui/form";
 import { useField, profileUserAddress } from "@/Plugins/zodValidators.js";
+import { queryZipCode } from "@/Plugins/zipCode.js";
 
-const store = inject(['store'])
 const zipcode = ref()
+const closeForm = inject('closeForm')
+const { updateAccount, store } = inject('store')
+const toast = inject('toast')
 
-
-const { initializeZipcodeWithPage, onSubmit, defineHandleFn } = profileUserAddress(
+const { initializeZipcodeWithPage, handleSubmit, defineHandleFn } = profileUserAddress(
     {
-        streetAddress: store.deliveryAddress.user_Address.val,
-        unitNo: store.deliveryAddress.user_AddressLine.val,
-        countys: store.deliveryAddress.user_City.val,
-        districts: store.deliveryAddress.user_State.val,
-        zipCodeDefault: `${store.deliveryAddress.user_ZipCode.val}`,
+        user_Address: store.deliveryAddress.user_Address.val,
+        user_AddressLine: store.deliveryAddress.user_AddressLine.val,
+        user_City: store.deliveryAddress.user_City.val,
+        user_State: store.deliveryAddress.user_State.val,
+        user_ZipCode: `${store.deliveryAddress.user_ZipCode.val}`,
     }
 )
 
-const { handleChange: setCountys } = useField('countys')
-const { handleChange: setDistricts } = useField('districts')
-const { value, handleChange: setZipcode, } = useField('zipCodeDefault')
+const { handleChange: setuser_City } = useField('user_City')
+const { handleChange: setuser_State } = useField('user_State')
+const { value, handleChange: setZipcode, } = useField('user_ZipCode')
+defineHandleFn(setuser_City, setuser_State, setZipcode)
 
 
-defineHandleFn(setCountys, setDistricts, setZipcode)
+
+
+const onSubmit = handleSubmit(async val => {
+
+    try {
+        if (store.compareObjects(store.deliveryAddress, val)) {
+            toast.warning('您並沒有更改任何東西')
+            return
+        }
+        const { user_Address,
+            user_AddressLine,
+            user_City,
+            user_State,
+            user_ZipCode, }
+            = val
+
+        await queryZipCode(+user_ZipCode).catch(e => { throw e })
+        await updateAccount('deliveryAddress', {
+            user_Address,
+            user_AddressLine,
+            user_City,
+            user_State,
+            user_ZipCode,
+        }, 'clients_id').catch(e => { throw e })
+
+        toast.success('已成功更新')
+    } catch (error) {
+        console.error(error.message);
+        toast.error('更新失敗')
+    } finally {
+        closeForm()
+    }
+})
+
 
 
 

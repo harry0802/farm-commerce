@@ -14,9 +14,9 @@
 
         <div class="secondary-nav__user--accout user__button">
           <Icon icon="ri:user-5-fill" />
-          <a href="">登陸</a>
+          <RouterLink :to="{ name: 'login' }">登陸</RouterLink>
           <span>|</span>
-          <a href="">註冊</a>
+          <RouterLink :to="{ name: 'zip-check' }">註冊</RouterLink>
         </div>
       </div>
     </div>
@@ -60,4 +60,5 @@ import { Icon } from "@iconify/vue";
 
 .user__button> :not(:first-child) {
   margin-left: 12px;
-}</style>
+}
+</style>

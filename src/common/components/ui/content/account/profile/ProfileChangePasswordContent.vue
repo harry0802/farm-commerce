@@ -13,4 +13,3 @@
 import AccountProfileInfoCard from '@/common/components/ui/card/AccountProfileInfoCard.vue'
 
 </script>
-
