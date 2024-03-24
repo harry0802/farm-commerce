@@ -1,21 +1,22 @@
 <template>
-    <form>
-        <FormField name="aa">
-            <CostomInput />
-        </FormField>
-        <FormField name="aa">
-            <CostomInput />
-        </FormField>
+    <form @submit.prevent="onSubmit" class="">
+
+
     </form>
+
+
 </template>
 
 
 <script setup>
-import { Form, FormField } from "@/common/composables/ui/form";
-import CostomInput from "@/common/components/ui/from/CostomInput.vue";
-// import { profileUserField } from "@/Plugins/zodValidators.js";
+import { Form } from "@/common/composables/ui/form";
+import { provide } from "vue";
 
 
 </script>
 
-<style scoped></style>
+<style scoped>
+* {
+    text-align: left;
+}
+</style>

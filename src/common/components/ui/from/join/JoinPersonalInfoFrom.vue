@@ -4,19 +4,23 @@
             <CostomInput class=" join-input" :componentField="componentField" :userLabel="'姓'"
                 :userDescription="'請輸入相應內容'" />
         </FormField>
+
         <FormField v-slot="{ componentField }" name="userLastName">
             <CostomInput class="join-input" :componentField="componentField" :userLabel="'名'"
                 :userDescription="'請輸入相應內容'" />
         </FormField>
+
         <FormField v-slot="{ componentField }" name="userEmail">
             <CostomInput class="join-input" :componentField="componentField" :userLabel="'郵件地址'"
                 :userDescription="'推薦 @yopmail.com 信箱'" :userPlaceholder="'Ex: furryfriendfan@yopmail.com'"
                 :customType="'email'" />
         </FormField>
+
         <FormField v-slot="{ componentField }" name="userEmailDup">
             <CostomInput class="join-input" :componentField="componentField" :userLabel="'確認郵件地址'"
                 :userDescription="'請輸入相應內容'" :customType="'email'" />
         </FormField>
+
         <FormField v-slot="{ componentField }" name="userPassword">
             <div class="join-input relative">
                 <CostomInput :componentField="componentField" :userLabel="'密碼'" :userDescription="'請輸入相應內容'"
@@ -26,8 +30,8 @@
                     <Icon @click="showPassword" :icon="passwordIcon" />
                 </div>
             </div>
-
         </FormField>
+
         <FormField v-slot="{ componentField }" name="userPasswordDup">
             <CostomInput class="join-input" :componentField="componentField" :userLabel="'確認密碼'"
                 :userDescription="'請輸入相應內容'" :customType="passwordType" />

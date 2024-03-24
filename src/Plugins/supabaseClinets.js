@@ -76,13 +76,37 @@ const userInsertRows = async function (fromName, userData) {
   }
 };
 
-const signInWithPassword = async function () {
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email: "furryfriendfan@yopmail.com",
-    password: "Zxc123123",
-  });
-  data, error;
+const signInWithPassword = async function (userEnter) {
+  try {
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: userEnter.email,
+      password: userEnter.password,
+    });
+
+    if (error) throw error;
+    return data;
+  } catch (error) {
+    throw error;
+  }
 };
+// "furryfriendfan@yopmail.com"
+// Zxc123123
+const signinWithEmail = async function (userEnter) {
+  try {
+    const { data, error } = await supabase.auth.signInWithOtp({
+      email: userEnter,
+      options: {
+        emailRedirectTo: "http://localhost:5173/?#/home",
+      },
+    });
+    if (error) throw error;
+    toast.success("已寄送登入信件");
+  } catch (error) {
+    handleSupabaseError(error);
+    console.error(error.message);
+  }
+};
+
 // signInWithPassword();
 
 // const { error } = await supabase.auth.signOut();
@@ -116,22 +140,13 @@ const getUserInfo = async function () {
   if (user) return user;
 };
 
-// const getUserAddress = async function () {
-//   const {
-//     data: { user },
-//   } = await supabase.auth.getUser();
-//   console.log(user);
-//   let { data: deliveryAddress, error } = await supabase
-//     .from("deliveryAddress")
-//     .select("user_City,user_State,user_ZipCode,user_Address,user_AddressLine")
-//     .eq("clients_id", "Equal to");
-// };
-
 export {
   userSignUp,
   verifyOtp,
   userInsertRows,
   queryZipCode,
   getUserInfo,
+  signInWithPassword,
+  signinWithEmail,
   toast,
 };

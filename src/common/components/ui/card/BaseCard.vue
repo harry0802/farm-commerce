@@ -11,7 +11,7 @@
         <CardContent>
             <slot name="Card-Content" />
         </CardContent>
-        <CardFooter>
+        <CardFooter class="flex-col">
             <slot name="Card-Footer" />
         </CardFooter>
     </Card>

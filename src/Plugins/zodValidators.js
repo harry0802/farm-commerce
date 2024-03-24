@@ -165,6 +165,7 @@ const deliveryAddress = function (initialValues) {
     initializeZipcodeWithPage,
     loading,
     handleSubmit,
+    loading,
   };
 };
 
@@ -191,7 +192,7 @@ const paymentinfo = function (initialValues) {
 
 // Login
 
-const userlogin = function () {
+const userLoginPassword = function () {
   const fields = z.object({
     userEmail: emailSchema,
     userPassword: emptyStr,
@@ -199,6 +200,20 @@ const userlogin = function () {
   const handleSubmit = createHandleSubmit(fields);
   return {
     handleSubmit,
+    loading,
+    passwordIcon,
+    passwordType,
+    showPassword,
+  };
+};
+const userLoginEmail = function () {
+  const fields = z.object({
+    userEmail: emailSchema,
+  });
+  const handleSubmit = createHandleSubmit(fields);
+  return {
+    handleSubmit,
+    loading,
   };
 };
 
@@ -264,7 +279,8 @@ export {
   deliveryAddress,
   paymentinfo,
   // login
-  userlogin,
+  userLoginPassword,
+  userLoginEmail,
   // profile page
   profileUserField,
   profileUserAddress,
