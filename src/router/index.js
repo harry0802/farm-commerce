@@ -7,27 +7,39 @@ import FarmProducers from "@/views/FarmProducers.vue";
 import FarmJoin from "@/views/FarmJoin.vue";
 import FarmAccount from "@/views/FarmAccount.vue";
 import FarmLogin from "@/views/FarmLogin.vue";
-
+import FarmLoggedInHome from "@/views/FarmLoggedInHome.vue";
 const router = createRouter({
   history: createWebHashHistory(),
   routes: [
-    { path: "/", redirect: "home" },
+    { path: "/", component: FarmHome },
 
     {
       path: "/home",
       name: "home",
       component: FarmHome,
     },
+    {
+      path: "/test",
+      name: "test",
+      component: FarmLoggedInHome,
+    },
 
     {
       path: "/shop",
       name: "shop",
+      children: [
+        {
+          path: ":id",
+          props: true,
+          component: FarmShop,
+        },
+      ],
     },
-    {
-      path: "/shop/:id",
-      props: true,
-      component: FarmShop,
-    },
+    // {
+    //   path: "/shop/:id",
+    //   props: true,
+    //   component: FarmShop,
+    // },
 
     {
       path: "/product/:id",
@@ -39,12 +51,15 @@ const router = createRouter({
       path: "/producers",
       props: true,
       component: FarmProducers,
+      children: [
+        {
+          path: ":id",
+          props: true,
+          component: FarmProducers,
+        },
+      ],
     },
-    {
-      path: "/producers/:id",
-      props: true,
-      component: FarmProducers,
-    },
+
     {
       path: "/login",
       name: "login",
