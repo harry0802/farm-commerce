@@ -1,12 +1,18 @@
 <template>
-  <div class=" details__buttons flex w-full  place-content-end gap-5">
-    <button @click="showSubscribe" v-if="!Subscribe" class="u-subscribe-btn w-auto max-h-11 group">
-      <p v-if="!clacWindowSize">定期配送</p>
+  <div v-if="!theSubscribe && !clacWindowSize" class="  details__buttons flex w-full  place-content-end gap-5">
+    <button v-if="!clacWindowSize && !Subscribe" @click="showSubscribe" class="u-subscribe-btn w-auto max-h-11 group">
+      <p>定期配送</p>
       <Icon class=" group-hover:-rotate-180" icon="entypo:cycle" />
     </button>
     <button class="w-auto  max-h-11 product-button u-pirmary-button ">
       <p v-if="!clacWindowSize">加到購物車</p>
-      <Icon v-else icon="prime:cart-arrow-down" class="text-xl" />
+    </button>
+  </div>
+
+  <div v-else-if="clacWindowSize" class="  details__buttons flex w-full  place-content-end gap-5">
+    <MobileShopItemSubscribe />
+    <button class="w-auto  max-h-11 product-button u-pirmary-button ">
+      <Icon icon="prime:cart-arrow-down" class="text-xl" />
     </button>
   </div>
 </template>
@@ -14,14 +20,19 @@
 <script setup>
 import { Icon, } from '@iconify/vue';
 import { computed, inject } from "vue";
-import { useWindowSize } from '@vueuse/core'
-const { width } = useWindowSize()
-const clacWindowSize = computed(() => width.value < 600)
+import MobileShopItemSubscribe from "@/common/components/ui/popup/profile/MobileShopItemSubscribe.vue";
+const clacWindowSize = computed(() => watchWindowSize.value < 600)
 const props = defineProps({
   Subscribe: { type: Boolean },
   Limited: { type: String }
 })
+const { theSubscribe } = inject('subscribe')
+
+
 const { showSubscribe } = inject('subscribe')
+const watchWindowSize = inject('watchWindowSize')
+
+
 
 </script>
 

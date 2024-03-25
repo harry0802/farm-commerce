@@ -17,7 +17,10 @@ import { useProduct } from "@/store/modules/product/useProduct.js";
 import { initData } from '@/Plugins/Initialization.js'
 import { tryOnMounted } from "@vueuse/core";
 import { ref, watch, provide } from "vue";
+import { useWindowSize } from '@vueuse/core'
 import { storeToRefs } from "pinia";
+const { width: watchWindowWidth } = useWindowSize()
+
 
 const route = useRoute()
 const store = useProduct()
@@ -41,6 +44,7 @@ const init = async function (urlId) {
 
 provide('ProductPageSection', { renderPage, setBbserverCurrentID: setBbserverCurrentID })
 provide('observerCurrentID', observerCurrentID)
+provide('watchWindowSize', watchWindowWidth)
 
 watch(() => route.params.id, async (newId, oldId) => {
   if (newId !== oldId) {

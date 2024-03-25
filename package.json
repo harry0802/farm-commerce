@@ -34,6 +34,7 @@
     "tailwindcss-animate": "^1.0.7",
     "twzipcode.js": "^3.0.1",
     "uuid": "^9.0.1",
+    "vaul-vue": "^0.1.0",
     "vee-validate": "^4.12.5",
     "vue-router": "^4.2.5",
     "vue-sonner": "^1.0.3",

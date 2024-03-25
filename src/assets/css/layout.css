@@ -153,17 +153,26 @@
     transform: scale(0.99) translateX(1px);
   }
 
-  .u-subscribe-btn.cancel {
+  .u-subscribe-btn.cancel,
+  .u-subscribe-btn[type="button"].cancel,
+  .u-subscribe-btn[type="submit"].cancel {
     background: #fff;
     border: 2px solid #f0a500;
   }
-  .u-subscribe-btn.confirm {
-    background: #f0a500;
-  }
-  .cancel:hover {
+
+  .cancel:hover,
+  .u-subscribe-btn[type="button"].cancel:hover,
+  .u-subscribe-btn[type="submit"].cancel:hover {
     background: #ffcfb0;
   }
-  .confirm:hover {
+  .u-subscribe-btn.confirm,
+  .u-subscribe-btn[type="button"].confirm,
+  .u-subscribe-btn[type="submit"].confirm {
+    background: #f0a500;
+  }
+  .confirm:hover,
+  .u-subscribe-btn[type="button"].confirm:hover,
+  .u-subscribe-btn[type="submit"].confirm:hover {
     background: #ffc33e;
   }
 

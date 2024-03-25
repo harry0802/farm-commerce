@@ -11,7 +11,7 @@
       </div>
     </div>
     <!-- 切割組件 多種按鈕 -->
-    <shop-product-item-buttoon v-if="!theSubscribe" v-bind="productItem" />
+    <shop-product-item-buttoon v-bind="productItem" />
   </div>
 
 
@@ -21,7 +21,8 @@
 import ShopProductItemButtoon from "../../ui/button/ShopProductItemButtoon.vue";
 import { inject } from "vue";
 const productItem = inject('productItem')
-const { theSubscribe } = inject('subscribe')
+
+
 </script>
 
 
