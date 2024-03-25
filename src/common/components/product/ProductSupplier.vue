@@ -36,22 +36,6 @@ const handleUpdateComponents = function (newComponents) {
     currentComponents.value = newComponents
 }
 
-// const init = function (storage, ingredients) {
-//     const productStorageLength = storage ? storage.length : 0
-//     const productIngredientsLength = ingredients ? ingredients.length : 0
-//     navBtn.storagetips.state = calcBoolean(productStorageLength)
-//     navBtn.ingredicents.state = calcBoolean(productIngredientsLength)
-
-// }
-
-// const calcBoolean = (length) => length > 0;
-
-// tryOnMounted(() => {
-//     init(productStorage, productIngredients);
-//     loading.value = false;
-// })
-
-
 
 
 </script>

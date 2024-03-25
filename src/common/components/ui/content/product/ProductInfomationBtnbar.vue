@@ -2,7 +2,7 @@
     <div class="info__control flex  flex-col  ">
         <div v-if="!theSubscribe" class="control__button pt-6  min-[950px]:flex ">
             <ShopBtnCard />
-            <ShopSubscribe @click="showSubscribe" />
+            <ShopSubscribe @click="showSubscribe" class="mt-4" />
         </div>
         <div v-else class="control__subscribe">
             <ProdictFormCard>

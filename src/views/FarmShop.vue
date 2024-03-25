@@ -54,7 +54,6 @@ watch(() => route.params.id, async (newId, oldId) => {
 
 tryOnMounted(() => {
   setShopUrlId(urlId.value)
-
   init(urlId.value)
 })
 

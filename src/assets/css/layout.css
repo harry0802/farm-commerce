@@ -122,6 +122,52 @@
   .u-pirmary-button:hover {
     background: #f0c500;
   }
+  .u-pirmary-button:active {
+    transform: scale(0.99) translateX(1px);
+  }
+  /* 訂閱案紐 */
+  .u-subscribe-btn,
+  .u-subscribe-btn[type="button"],
+  .u-subscribe-btn[type="submit"] {
+    display: inline-flex;
+    width: 100%;
+    padding: 0 24px;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3),
+      -1px -1px 3px rgba(255, 255, 255, 0.3);
+    border-radius: 32px;
+    font-size: 14px;
+    font-family: GalmuriMono9;
+    font-weight: 500;
+    background: transparent;
+    color: #1b1a17;
+    letter-spacing: 0.142857em;
+    cursor: pointer;
+    transition: all 0.4s;
+    border: 0.8px solid;
+    @apply text-color-primary-light border-color-grey-dark gap-2 transition-colors duration-300  hover:bg-b-color-green-light;
+  }
+
+  .u-subscribe-btn:active {
+    transform: scale(0.99) translateX(1px);
+  }
+
+  .u-subscribe-btn.cancel {
+    background: #fff;
+    border: 2px solid #f0a500;
+  }
+  .u-subscribe-btn.confirm {
+    background: #f0a500;
+  }
+  .cancel:hover {
+    background: #ffcfb0;
+  }
+  .confirm:hover {
+    background: #ffc33e;
+  }
+
+  /*  */
 
   .overlay {
     display: none;

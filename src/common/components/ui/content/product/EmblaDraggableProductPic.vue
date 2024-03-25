@@ -3,7 +3,7 @@
         <div class="photo__draggable  overflow-hidden" ref="emblaNode">
             <div class="draggable__content ">
                 <div v-if="imgpath.length < 0">
-                    <div v-for=" (path, i) in imgpath " class="rounded-lg" :key="i">
+                    <div v-for=" (path, i) in imgpath " class="rounded-lg " :key="i">
                         <img :src="path" alt="">
                     </div>
                 </div>
@@ -19,12 +19,14 @@
 import { defineProps } from "vue";
 import emblaCarouselVue from 'embla-carousel-vue'
 const [emblaNode, emblaApi] = emblaCarouselVue({ loop: false, })
-emblaApi
-
 defineProps({
     imgpath: Array
 })
 
 </script>
 
-<style scoped></style>
+<style scoped>
+img {
+    width: 100%;
+}
+</style>
