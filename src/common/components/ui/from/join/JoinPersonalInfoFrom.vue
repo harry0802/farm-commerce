@@ -40,7 +40,7 @@
         <p class="">密碼必須包含 1 個大寫字母、1 個小寫字母、1 個數字，長度介於 8 到 47 個字元之間。</p>
 
         <div class="flex gap-4 m-auto ">
-            <div class="flex items-center border-2 relative rounded">
+            <div class="flex items-center border-2 relative rounded   w-6 h-6">
                 <input type="checkbox" id="sign-up">
                 <Icon class="sign-up-icon text-white bg-color-primary " icon="memory:check" />
             </div>

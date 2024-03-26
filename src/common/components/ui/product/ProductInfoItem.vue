@@ -26,4 +26,3 @@ const productInfo = inject('productInfo')
 
 }
 </style>
-

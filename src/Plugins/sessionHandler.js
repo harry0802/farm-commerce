@@ -3,13 +3,15 @@ import { useThrottleFn } from "@vueuse/core";
 import { getAccountInfo } from "@/common/composables/profileData.js";
 
 const throttledLoginHandler = useThrottleFn((event, session) => {
-  if (event === "SIGNED_IN" || session.user) {
+  if (event === "SIGNED_IN" || (event === "INITIAL_SESSION" && session.user)) {
     getAccountInfo();
+  }
+
+  if (event === "SIGNED_IN") {
   }
   // 处理登录状态的变化
   if (event === "SIGNED_OUT") {
     console.log("User signed out");
-    // 处理用户登出状态，例如重置全局状态或执行其他操作
   }
 }, 1000);
 

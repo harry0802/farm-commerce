@@ -1,6 +1,6 @@
 <template>
-    <button class="relative pb-2 text-color-primary cursor-pointer" :class="{ 'isSelector': curremtCp === data.components }"
-        @click="scrollToSlide(index)" v-if="data.state">{{
+    <button class="relative pb-2 text-color-primary cursor-pointer"
+        :class="{ 'isSelector': curremtCp === data.components }" @click="scrollToSlide(index)" v-if="data.state">{{
             data.title }}</button>
 </template>
 
@@ -25,12 +25,6 @@ const scrollToSlide = (index) => {
     emit('updateComponents', props.data.components)
 
 };
-
-
-
-
-
-
 </script>
 
 <style scoped>

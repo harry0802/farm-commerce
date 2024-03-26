@@ -3,7 +3,7 @@
         <PoducerTitle :primaryTitle="producerInfo.producer__name" :secondary="producerInfo.producer__location" />
         <div class="producer__text">
             <p class="text-color-eva-dark-green"> {{ producerInfo.producer__description
-            }}</p>
+                }}</p>
         </div>
     </div>
 </template>

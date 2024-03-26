@@ -1,7 +1,6 @@
 <template>
-    <!-- 點擊顯示配送選項 -->
     <button
-        class="group flex items-center mt-4 u-pirmary-button  transition-colors duration-300  hover:bg-b-color-green-light">
+        class=" group flex items-center u-pirmary-button  transition-colors duration-300  hover:bg-b-color-green-light">
         定期配送
         <Icon class=" group-hover:-rotate-180" icon="entypo:cycle" />
     </button>
@@ -27,17 +26,6 @@ import { Icon } from '@iconify/vue';
 .iconify--entypo {
     transition: transform .5s;
 }
-
-
-@media screen and (min-width: 950px) {
-    .u-pirmary-button {
-        min-width: 120px;
-        min-height: 48px;
-        width: 181px;
-    }
-
-}
-
 
 .iconify--entypo {
     stroke-width: 1px;

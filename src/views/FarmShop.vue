@@ -19,6 +19,7 @@ import { tryOnMounted } from "@vueuse/core";
 import { ref, watch, provide } from "vue";
 import { storeToRefs } from "pinia";
 
+
 const route = useRoute()
 const store = useProduct()
 const { sideListData, setShopUrlId, setCheckpoint, setBbserverCurrentID } = store
@@ -42,6 +43,7 @@ const init = async function (urlId) {
 provide('ProductPageSection', { renderPage, setBbserverCurrentID: setBbserverCurrentID })
 provide('observerCurrentID', observerCurrentID)
 
+
 watch(() => route.params.id, async (newId, oldId) => {
   if (newId !== oldId) {
     urlId.value = newId
@@ -54,7 +56,6 @@ watch(() => route.params.id, async (newId, oldId) => {
 
 tryOnMounted(() => {
   setShopUrlId(urlId.value)
-
   init(urlId.value)
 })
 

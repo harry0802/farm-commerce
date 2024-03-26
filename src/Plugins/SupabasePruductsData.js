@@ -51,7 +51,7 @@ export const getShopData = async function () {
       }
     });
   } catch (err) {
-    console.log(err);
+    console.error(err);
   }
 };
 

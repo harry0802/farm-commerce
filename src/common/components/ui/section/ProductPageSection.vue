@@ -16,9 +16,6 @@ import ProductPageTitle from "../../ui/title/ProductPageTitle.vue";
 import { tryOnMounted, useIntersectionObserver } from '@vueuse/core'
 const { renderPage, setBbserverCurrentID } = inject('ProductPageSection')
 const target = ref(null)
-
-
-
 tryOnMounted(() => {
     useIntersectionObserver(target, (api) => {
         const [IntersectionObserverEntry] = api

@@ -9,7 +9,7 @@
 <script setup></script>
 
 <style scoped>
-.u-pirmary-button {
+button.u-pirmary-button {
     background: #f0a500;
     max-width: 100%;
     transition: background-color .3s;
@@ -27,7 +27,7 @@
 
 
 @media screen and (min-width: 599px) {
-    .u-pirmary-button {
+    button.u-pirmary-button {
         max-width: 276px;
         margin-top: 1rem;
     }
@@ -35,8 +35,8 @@
 }
 
 @media screen and (min-width: 950px) {
-    .u-pirmary-button {
-        max-width: 120px;
+    button.u-pirmary-button {
+        max-width: 180px;
         margin-right: 1rem;
     }
 

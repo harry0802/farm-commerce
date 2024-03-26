@@ -19,13 +19,11 @@ import CostomInput from "@/common/components/ui/from/CostomInput.vue";
 import { inject } from "vue";
 import { Form, FormField } from "@/common/composables/ui/form";
 import { verifyEmailOtp } from "@/Plugins/zodValidators.js";
-import { useRouter } from 'vue-router';
-const router = useRouter()
 const {
     loading,
     handleSubmit,
 } = verifyEmailOtp()
-const { loginEmailOTP } = inject('verifyEmailOtp')
+const { loginEmailOTP, router } = inject('verifyEmailOtp')
 
 const onSubmit = handleSubmit(async ({ pin }) => {
     try {

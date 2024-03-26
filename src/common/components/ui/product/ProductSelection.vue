@@ -1,10 +1,10 @@
 <template>
-    <div v-if="loopData" class="field__container flex flex-col mt-4">
+    <div v-if="loopData" class="field__container flex flex-col ">
         <label class="mb-1" :for="id">下拉列表</label>
         <select :name="id" v-model="selectedItem"
             class="border-solid border-[1px] border-color-grey-dark py-4 px-3.5 rounded	">
             <option v-for=" item in loopData " :selected="item" :key="item" :value="item"> {{
-                item }}</option>
+        item }}</option>
         </select>
         <!-- v-if="item !== defaultOption" -->
     </div>
