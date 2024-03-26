@@ -3,10 +3,15 @@
         class=" lowerline relative pb-2 text-color-primary cursor-pointer" :exact-active-class="'isSelector'">
         {{ navs.title }}
     </RouterLink>
-    <button class="relative  pb-2 lowerline">安全登出</button>
+    <div class="btn-wrap relative  pb-2 lowerline">
+        <DesktopLogOutDialog />
+    </div>
+
 </template>
 
 <script setup>
+import DesktopLogOutDialog from "@/common/components/ui/popup/DesktopLogOutDialog.vue";
+
 const routerNavInfo = [
     { title: '會員訂閱', path: 'subscriptions' },
     { title: '宅配時間表', path: 'delivery-schedule' },
@@ -50,7 +55,7 @@ a:not(:first-of-type) {
     opacity: 1;
 }
 
-button {
+.btn-wrap {
     @apply ml-10 sm:ml-20
 }
 </style>

@@ -7,22 +7,27 @@
       </div>
       <div class="texts__price-and-weight flex justify-between pt-1.5 pb-2.5 auto ">
         <p class="price-and-weight--weight">{{ productItem.weight }}</p>
-        <strong class="price-and-weight--price font-bold">{{ productItem.price }} 元</strong>
+
+        <strong class="price-and-weight--price font-bold ">
+          <span v-if="salePrice" class="mr-2 text-color-validate-error font-sans font-extrabold">{{
+          productItem.SALE.price }}元</span>
+          <span :class="saleStyle">{{ productItem.price }}
+            元</span>
+        </strong>
       </div>
     </div>
     <!-- 切割組件 多種按鈕 -->
     <shop-product-item-buttoon v-bind="productItem" />
   </div>
 
-
 </template>
 
 <script setup>
 import ShopProductItemButtoon from "../../ui/button/ShopProductItemButtoon.vue";
-import { inject } from "vue";
+import { inject, computed } from "vue";
 const productItem = inject('productItem')
-
-
+const saleStyle = computed(() => productItem.SALE ? !!productItem.SALE.price ? 'onsaleDelete' : '' : '')
+const salePrice = computed(() => productItem.SALE ? !!productItem.SALE.price ? productItem.SALE.price : '' : '')
 </script>
 
 
@@ -33,6 +38,10 @@ const productItem = inject('productItem')
 <style scoped>
 * {
   @apply text-color-primary
+}
+
+.onsaleDelete {
+  text-decoration: line-through;
 }
 
 .roduct-item__details {

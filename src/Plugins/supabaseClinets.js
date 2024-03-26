@@ -93,7 +93,7 @@ const signInWithPassword = async function (userEnter) {
 // Zxc123123
 const signinWithEmail = async function (userEnter) {
   try {
-    const { data, error } = await supabase.auth.signInWithOtp({
+    const { error } = await supabase.auth.signInWithOtp({
       email: userEnter,
       options: {
         emailRedirectTo: "http://localhost:5173/?#/home",
@@ -109,7 +109,17 @@ const signinWithEmail = async function (userEnter) {
 
 // signInWithPassword();
 
-// const { error } = await supabase.auth.signOut();
+const signOutSpabase = async function () {
+  try {
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
+    toast.success("已成功安全登出");
+  } catch (error) {
+    handleSupabaseError(error);
+    console.error(err.message);
+    throw error;
+  }
+};
 
 const queryZipCode = async function (zip) {
   try {
@@ -148,5 +158,6 @@ export {
   getUserInfo,
   signInWithPassword,
   signinWithEmail,
+  signOutSpabase,
   toast,
 };

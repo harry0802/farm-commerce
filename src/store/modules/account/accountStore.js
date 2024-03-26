@@ -4,6 +4,7 @@ import {
   userInsertRows,
   queryZipCode,
   verifyOtp,
+  getUserInfo,
 } from "@/Plugins/supabaseClinets.js";
 // 註冊帳戶紀錄
 const useAccountStore = defineStore("accountStore", {
@@ -45,7 +46,8 @@ const useAccountStore = defineStore("accountStore", {
 
     async registerClientAddress(address) {
       try {
-        address.clients_id = this.userState.user.id;
+        const getUser = await getUserInfo();
+        address.clients_id = getUser.id;
         const zipcode = await queryZipCode(address.user_ZipCode);
         if (!zipcode.length > 0) return;
         return await userInsertRows("deliveryAddress", address);
@@ -60,7 +62,6 @@ const useAccountStore = defineStore("accountStore", {
         const token = verifyCode;
         const response = await verifyOtp(userInfo.user_Email, token);
         if (response) {
-          this.userState = response;
           userInfo.user_id = response.user.id;
         }
 

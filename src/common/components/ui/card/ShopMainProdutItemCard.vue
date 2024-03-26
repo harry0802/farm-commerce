@@ -1,16 +1,17 @@
 <template>
   <div class=" product-item__wrapper p-0.5 pb-10 ">
     <div class="relative  product-item__container p-1.5 flex flex-col h-full  sm:min-h-[400px]">
+      <!-- 產品圖片 -->
       <div class="relative product-item__photo">
-        <div
-          class="absolute  flex w-8 h-8 right-2 top-2 rounded-full bg-white    cursor-pointer hover:scale-110 active:scale-90 transition-transform duration-300 ">
-          <Icon class="w-6 h-6 m-auto text-[#e2e2e2]" icon="lets-icons:favorite" />
-        </div>
+
+        <MarkFavoriteBtn class="right-2 top-2" />
         <RouterLink class="photo__links " :to="`/product/${data.product_name + '-' + data.product_code}`">
           <img class="object-cover rounded-lg" :src=data.image_url alt="" />
         </RouterLink>
+        <MarkTextIcon v-if=!!data.SALE v-bind='data' class="left-2  top-2" />
       </div>
-      <shop-product-itemText />
+      <!-- 產品訊息 -->
+      <ShopProductItemText />
 
       <!-- 表單 -->
       <ProdictFormCard v-if="theSubscribe && clacWindowSize"
@@ -35,29 +36,34 @@
 </template>
 
 <script setup>
-import ShopProductItemText from "../../ui/text/ShopProductItemText.vue";
+import ShopProductItemText from "@/common/components/ui/text/ShopProductItemText.vue";
 import ProdictFormCard from '@/common/components/ui/card/ProdictFormCard.vue'
 import ProductSelection from "@/common/components/ui/product/ProductSelection.vue";
-import { provide, ref, inject, computed, watchEffect } from "vue";
-import { Icon, } from '@iconify/vue';
+import { provide, ref, computed, watchEffect } from "vue";
+import { useWindowSize } from '@vueuse/core'
+import MarkFavoriteBtn from "@/common/components/ui/button/MarkFavoriteBtn.vue";
+import MarkTextIcon from "@/common/components/ui/icon/MarkTextIcon.vue";
+const { width: watchWindowWidth } = useWindowSize()
+
 const props = defineProps({
   data: Object
 });
+console.log(props.data.SALE);
+
 
 
 const theSubscribe = ref(false)
 
-const showSubscribe = function () {
-  theSubscribe.value = true
-}
-const closeSubscribe = function () {
-  theSubscribe.value = false
-}
+
+const showSubscribe = () => theSubscribe.value = true
+const closeSubscribe = () => theSubscribe.value = false
+const clacWindowSize = computed(() => watchWindowWidth.value > 600)
+
+
 provide('productItem', props.data)
 provide('subscribe', { theSubscribe, showSubscribe })
+provide('watchWindowSize', watchWindowWidth)
 
-const watchWindowSize = inject('watchWindowSize')
-const clacWindowSize = computed(() => watchWindowSize.value > 600)
 
 watchEffect(() => {
   clacWindowSize.value ? closeSubscribe() : clacWindowSize.value
@@ -70,6 +76,7 @@ watchEffect(() => {
   background: #ffffffeb;
   aspect-ratio: 1/.67;
 }
+
 
 button.u-subscribe-btn {
   @apply text-color-primary
