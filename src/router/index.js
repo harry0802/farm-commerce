@@ -1,8 +1,5 @@
 import { accountStore } from "@/common/composables/profileData.js";
 import { createRouter, createWebHashHistory } from "vue-router";
-
-import useAccountStore from "@/store/modules/account/accountStore.js";
-
 import FarmHome from "@/views/FarmHome.vue";
 import FarmShop from "@/views/FarmShop.vue";
 import FarmProduct from "@/views/FarmProduct.vue";
@@ -178,34 +175,18 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from) => {
-  const store = useAccountStore();
-
-  // 未登入不可訪問
+  // 未登入不可訪問頁面
   if (to.meta.requiresAuth && !accountStore.isaAuthenticated) {
     return { name: "login" };
   }
-
-  if (to.meta.entryControl && !store.allow) {
+  // 不可隨意訪問頁面
+  if (to.meta.entryControl && !accountStore.allow) {
     return { name: "home" };
   }
-
-  // // 以完成註冊不可訪問頁面
-  // if (to.meta.isjoin && accountStore.getRegistration) {
-  //   return { name: "home" };
-  // }
-
-  console.log(store.isaAuthenticated);
-
-  // 需要完成上一步驟才能進入
+  //已註冊不可訪問
+  if (to.meta.isjoin && accountStore.getRegistration) {
+    return { name: "home" };
+  }
 });
-
-// router.afterEach((to, from) => {
-//   console.log(accountStore.allow);
-// });
-const aa = function () {
-  if (to.meta.entryControl && !to.meta.allow) {
-    return { name: "home" };
-  }
-};
 
 export default router;
