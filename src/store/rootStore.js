@@ -7,6 +7,8 @@ import youtube from "@/assets/imgs/social/emoji_sns_youtube.png";
 export const rootStore = defineStore("rootStore", {
   state() {
     return {
+      login: false,
+
       communityItem: [
         {
           imgs: facebook,

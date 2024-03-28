@@ -14,7 +14,7 @@
 
         <div class="secondary-nav__user--accout user__button">
           <Icon icon="ri:user-5-fill" />
-          <RouterLink :to="{ name: 'login' }">登陸</RouterLink>
+          <RouterLink :to="{ name: 'login', query: { redirect: '/home' } }">登陸</RouterLink>
           <span>|</span>
           <RouterLink :to="{ name: 'zip-check' }">註冊</RouterLink>
         </div>

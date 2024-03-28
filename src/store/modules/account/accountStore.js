@@ -10,6 +10,12 @@ import {
 const useAccountStore = defineStore("accountStore", {
   state() {
     return {
+      allow: false,
+      registration: {
+        personalinfo: false,
+        deliveryaddress: false,
+        paymentinfo: false,
+      },
       userState: {},
       userArea: {},
       userInfo: {
@@ -21,8 +27,25 @@ const useAccountStore = defineStore("accountStore", {
       userAddress: {},
     };
   },
-  getters: {},
+  getters: {
+    isaAuthenticated: (state) => !!state.userState.role,
+    hasUserEmail: (state) => !!state.userInfo.user_Email,
+    getRegistration: (state) =>
+      state.registration?.personalinfo &&
+      state.registration?.deliveryaddress &&
+      state.registration?.paymentinfo,
+
+    regPersonalinfo: (state) => state.registration.personalinfo,
+    regDeliveryaddress: (state) => state.registration.deliveryaddress,
+    regPaymentinfo: (state) => state.registration.paymentinfo,
+  },
   actions: {
+    checkAllow() {
+      this.allow = true;
+    },
+    closeAllow() {
+      this.allow = false;
+    },
     setUserArea(area) {
       const [data] = area;
       this.userArea = data;
@@ -30,7 +53,9 @@ const useAccountStore = defineStore("accountStore", {
     setUserInfo(info) {
       this.userInfo = { ...info };
     },
-
+    setAuthenticated(authenticated) {
+      this.userState = authenticated;
+    },
     async registerClient(userDatas) {
       this.userInfo = {
         user_FirstName: userDatas.userFirstName,
