@@ -1,10 +1,10 @@
 import useProfileInfoStore from "@/store/modules/profile/profileStore.js";
+import useAccountStore from "@/store/modules/account/accountStore.js";
 import { supabase } from "@/config/FarmPruductsItemManage.js";
-import { createPinia } from "pinia";
-const pinia = createPinia();
+import pinia from "@/store/pinia.js";
 const store = useProfileInfoStore(pinia);
-
-const testId = "c32a1e24-58bf-4714-b0a4-5e8e7e3421c9";
+const accountStore = useAccountStore(pinia);
+const { registration } = accountStore;
 
 function updateValueIfDifferent(originalValue, newValue) {
   return originalValue === newValue ? originalValue : newValue;
@@ -33,7 +33,7 @@ const multipleTablesChannel = supabase
     },
     (payload) => {
       const { new: newData } = payload;
-      if (newData.user_id === testId) {
+      if (newData.user_id === accountStore.userState.id) {
         store.notifications = newData.notifications;
         store.email.val = newData.user_Email;
         resetProfile(store.personalInfo, newData);
@@ -49,7 +49,7 @@ const multipleTablesChannel = supabase
     },
     (payload) => {
       const { new: newData } = payload;
-      if (newData.clients_id === testId) {
+      if (newData.clients_id === accountStore.userState.id) {
         resetProfile(store.deliveryAddress, newData);
         resetProfile(store.personalInfo, newData);
         store.driverInstructions.suer_driverTips = newData.suer_driverTips;
@@ -65,7 +65,7 @@ const multipleTablesChannel = supabase
     },
     (payload) => {
       const { new: newData } = payload;
-      if (newData.clients_id === testId) {
+      if (newData.clients_id === accountStore.userState.id) {
         resetProfile(store.billingAddress, newData);
       }
     }
@@ -79,7 +79,7 @@ const multipleTablesChannel = supabase
     },
     (payload) => {
       const { new: newData } = payload;
-      if (newData.client_id === testId) {
+      if (newData.client_id === accountStore.userState.id) {
         console.log(newData);
       }
     }
@@ -91,7 +91,7 @@ const getSupabaseSpecificData = async (spFrom, spSelect, spEq) => {
     let { data, error } = await supabase
       .from(spFrom)
       .select(spSelect)
-      .eq(spEq, testId);
+      .eq(spEq, accountStore.userState.id);
 
     if (error) throw error;
     if (data) return data;
@@ -105,18 +105,22 @@ const getAccountInfo = async function () {
     await Promise.all([
       getSupabaseSpecificData(
         "clients",
-        "user_FirstName,user_LastName,user_Email,notifications",
+        "user_FirstName,user_LastName,user_Email,notifications,user_id",
         "user_id"
       ),
       getSupabaseSpecificData("deliveryAddress", "*", "clients_id"),
       getSupabaseSpecificData("BillingAddress", "*", "clients_id"),
       getSupabaseSpecificData(
         "PaymentInfo",
-        "card_cardNumber,card_date",
+        "card_cardNumber,card_date,client_id",
         "client_id"
       ),
     ]);
+  const userid = accountStore.userState.id;
 
+  registration.deliveryaddress = deliveryAddress?.[0]?.clients_id === userid;
+  registration.personalinfo = client?.[0]?.user_id === userid;
+  registration.paymentinfo = paymentInfo?.[0]?.client_id === userid;
   store.setAccountProfileInfo(
     client,
     deliveryAddress,
@@ -131,7 +135,7 @@ const updateAccount = async function (spFrom, columnVal, spEq) {
     const { data, error } = await supabase
       .from(spFrom)
       .update(columnVal)
-      .eq(spEq, testId)
+      .eq(spEq, accountStore.userState.id)
       .select("id");
     if (error) throw error;
     if (data) {
@@ -142,4 +146,10 @@ const updateAccount = async function (spFrom, columnVal, spEq) {
   }
 };
 
-export { store, multipleTablesChannel, updateAccount, getAccountInfo };
+export {
+  store,
+  accountStore,
+  multipleTablesChannel,
+  updateAccount,
+  getAccountInfo,
+};

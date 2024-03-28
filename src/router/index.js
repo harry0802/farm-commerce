@@ -1,5 +1,5 @@
+import { accountStore } from "@/common/composables/profileData.js";
 import { createRouter, createWebHashHistory } from "vue-router";
-
 import FarmHome from "@/views/FarmHome.vue";
 import FarmShop from "@/views/FarmShop.vue";
 import FarmProduct from "@/views/FarmProduct.vue";
@@ -8,6 +8,7 @@ import FarmJoin from "@/views/FarmJoin.vue";
 import FarmAccount from "@/views/FarmAccount.vue";
 import FarmLogin from "@/views/FarmLogin.vue";
 import FarmLoggedInHome from "@/views/FarmLoggedInHome.vue";
+
 const router = createRouter({
   history: createWebHashHistory(),
   routes: [
@@ -35,11 +36,6 @@ const router = createRouter({
         },
       ],
     },
-    // {
-    //   path: "/shop/:id",
-    //   props: true,
-    //   component: FarmShop,
-    // },
 
     {
       path: "/product/:id",
@@ -63,12 +59,14 @@ const router = createRouter({
     {
       path: "/login",
       name: "login",
+      meta: { isjoin: true },
       props: true,
       component: FarmLogin,
     },
     {
       path: "/join",
       name: "join",
+      meta: { isjoin: true },
       component: FarmJoin,
       children: [
         {
@@ -80,6 +78,12 @@ const router = createRouter({
           path: "in-area",
           name: "in-area",
           component: () => import("@/common/components/join/JoinInArea.vue"),
+          beforeEnter: (to, from) => {
+            console.log(accountStore.allow);
+
+            console.log(to);
+            console.log(from);
+          },
         },
         {
           path: "out-area",
@@ -89,6 +93,9 @@ const router = createRouter({
         {
           path: "personal-info",
           name: "personal-info",
+          meta: {
+            entryControl: true,
+          },
           component: () =>
             import("@/common/components/join/JoinPersonalInfo.vue"),
         },
@@ -97,17 +104,26 @@ const router = createRouter({
           name: "verify-email-otp",
           component: () =>
             import("@/common/components/join/JoinVerifyEmailOtp.vue"),
+          beforeEnter: () => {
+            if (!accountStore.hasUserEmail) return { name: "home" };
+          },
         },
 
         {
           path: "delivery-address",
           name: "delivery-address",
+          meta: {
+            entryControl: true,
+          },
           component: () =>
             import("@/common/components/join/JoinDeliveryAddress.vue"),
         },
         {
           path: "payment-info",
           name: "payment-info",
+          meta: {
+            entryControl: true,
+          },
           component: () =>
             import("@/common/components/join/JoinPaymentInfo.vue"),
         },
@@ -121,6 +137,7 @@ const router = createRouter({
     {
       path: "/account",
       component: FarmAccount,
+      meta: { requiresAuth: true },
       children: [
         {
           path: "subscriptions",
@@ -155,6 +172,21 @@ const router = createRouter({
       ],
     },
   ],
+});
+
+router.beforeEach((to, from) => {
+  // 未登入不可訪問頁面
+  if (to.meta.requiresAuth && !accountStore.isaAuthenticated) {
+    return { name: "login" };
+  }
+  // 不可隨意訪問頁面
+  if (to.meta.entryControl && !accountStore.allow) {
+    return { name: "home" };
+  }
+  //已註冊不可訪問
+  if (to.meta.isjoin && accountStore.getRegistration) {
+    return { name: "home" };
+  }
 });
 
 export default router;

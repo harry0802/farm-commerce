@@ -18,7 +18,8 @@ import { inject } from "vue";
 const { userLoginEmail } = inject('zodValidators')
 const { handleSubmit, loading } = userLoginEmail()
 
-const { signinWithEmail, } = inject('supabaseClinets')
+const { signinWithEmail } = inject('supabaseClinets')
+
 
 const onSubmit = handleSubmit(async ({ userEmail }) => {
     try {

@@ -9,7 +9,6 @@
 <script setup>
 import JoinVerifyEmailOtpFrom from '../../../ui/from/join/JoinVerifyEmailOtpFrom.vue'
 import { inject } from "vue";
-
 const { store } = inject('verifyEmailOtp')
 
 

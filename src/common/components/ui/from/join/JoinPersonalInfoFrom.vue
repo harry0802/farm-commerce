@@ -60,9 +60,9 @@ import CostomInput from "@/common/components/ui/from/CostomInput.vue";
 import { userFields } from "@/Plugins/zodValidators.js";
 import { inject } from "vue";
 import { Icon } from '@iconify/vue';
-import { useRouter } from "vue-router";
+
 import LoadingCat2 from '../../../ui/animat/LoadingCat2.vue'
-const { registerClient } = inject('personall')
+const { registerClient, router, allow } = inject('personall')
 const { onSubmit,
     passwordIcon,
     passwordType,
@@ -72,10 +72,6 @@ const { onSubmit,
 
 
 
-
-
-
-const router = useRouter()
 const sendRequset = async function () {
     try {
         loading.value = true
@@ -83,7 +79,7 @@ const sendRequset = async function () {
         if (!data) return
         const response = await registerClient.value(data)
         if (!response) return
-        router.push({ name: 'verify-email-otp' })
+        router.push({ name: 'verify-email-otp', })
     } finally {
         loading.value = false
     }

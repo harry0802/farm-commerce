@@ -5,7 +5,7 @@
             <p class="text-color-primary max-w-[272px] mx-auto mt-6">目前，我們僅在台灣提供配送服務，<br />不包括外島地區和特定限定區域。</p>
         </div>
         <div class="join-page__link flex justify-evenly text-color-primary-light">
-            <RouterLink :to="{ name: 'zip-check' }">返回再次輸入</RouterLink>
+            <RouterLink :to="{ name: 'zip-check', }">返回再次輸入</RouterLink>
             <a href="" class="ml-3">不知道郵遞區號?</a>
         </div>
     </div>
