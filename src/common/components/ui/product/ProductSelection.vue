@@ -8,8 +8,6 @@
         </select>
         <!-- v-if="item !== defaultOption" -->
     </div>
-
-
     <div class=""></div>
 </template>
 
@@ -17,7 +15,6 @@
 import { defineProps, ref, watch } from "vue";
 const props = defineProps({
     id: String,
-    // loopData: Array
 })
 const loopData = 10
 

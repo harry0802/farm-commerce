@@ -1,10 +1,8 @@
-import useProfileInfoStore from "@/store/modules/profile/profileStore.js";
-import useAccountStore from "@/store/modules/account/accountStore.js";
 import { supabase } from "@/config/FarmPruductsItemManage.js";
-import pinia from "@/store/pinia.js";
-const store = useProfileInfoStore(pinia);
-const accountStore = useAccountStore(pinia);
-const { registration } = accountStore;
+import { pinia } from "@/store/pinia.js";
+import { toRefs } from "vue";
+import { useProfileInfoStore } from "@/store/modules/profile/profileStore.js";
+import useAccountStore from "@/store/modules/account/accountStore.js";
 
 function updateValueIfDifferent(originalValue, newValue) {
   return originalValue === newValue ? originalValue : newValue;
@@ -22,72 +20,77 @@ const resetProfile = function (data, newData) {
   }
 };
 
-const multipleTablesChannel = supabase
-  .channel("multiple-tables-changes")
-  .on(
-    "postgres_changes",
-    {
-      event: "UPDATE",
-      schema: "public",
-      table: "clients",
-    },
-    (payload) => {
-      const { new: newData } = payload;
-      if (newData.user_id === accountStore.userState.id) {
-        store.notifications = newData.notifications;
-        store.email.val = newData.user_Email;
-        resetProfile(store.personalInfo, newData);
+const multipleTablesChannel = () => {
+  const store = useProfileInfoStore(pinia);
+  const accountStore = useAccountStore(pinia);
+  supabase
+    .channel("multiple-tables-changes")
+    .on(
+      "postgres_changes",
+      {
+        event: "UPDATE",
+        schema: "public",
+        table: "clients",
+      },
+      (payload) => {
+        const { new: newData } = payload;
+        if (newData.user_id === accountStore.userState.id) {
+          store.notifications = newData.notifications;
+          store.email.val = newData.user_Email;
+          resetProfile(store.personalInfo, newData);
+        }
       }
-    }
-  )
-  .on(
-    "postgres_changes",
-    {
-      event: "UPDATE",
-      schema: "public",
-      table: "deliveryAddress",
-    },
-    (payload) => {
-      const { new: newData } = payload;
-      if (newData.clients_id === accountStore.userState.id) {
-        resetProfile(store.deliveryAddress, newData);
-        resetProfile(store.personalInfo, newData);
-        store.driverInstructions.suer_driverTips = newData.suer_driverTips;
+    )
+    .on(
+      "postgres_changes",
+      {
+        event: "UPDATE",
+        schema: "public",
+        table: "deliveryAddress",
+      },
+      (payload) => {
+        const { new: newData } = payload;
+        if (newData.clients_id === accountStore.userState.id) {
+          resetProfile(store.deliveryAddress, newData);
+          resetProfile(store.personalInfo, newData);
+          store.driverInstructions.suer_driverTips = newData.suer_driverTips;
+        }
       }
-    }
-  )
-  .on(
-    "postgres_changes",
-    {
-      event: "UPDATE",
-      schema: "public",
-      table: "BillingAddress",
-    },
-    (payload) => {
-      const { new: newData } = payload;
-      if (newData.clients_id === accountStore.userState.id) {
-        resetProfile(store.billingAddress, newData);
+    )
+    .on(
+      "postgres_changes",
+      {
+        event: "UPDATE",
+        schema: "public",
+        table: "BillingAddress",
+      },
+      (payload) => {
+        const { new: newData } = payload;
+        if (newData.clients_id === accountStore.userState.id) {
+          resetProfile(store.billingAddress, newData);
+        }
       }
-    }
-  )
-  .on(
-    "postgres_changes",
-    {
-      event: "UPDATE",
-      schema: "public",
-      table: "PaymentInfo",
-    },
-    (payload) => {
-      const { new: newData } = payload;
-      if (newData.client_id === accountStore.userState.id) {
-        console.log(newData);
+    )
+    .on(
+      "postgres_changes",
+      {
+        event: "UPDATE",
+        schema: "public",
+        table: "PaymentInfo",
+      },
+      (payload) => {
+        const { new: newData } = payload;
+        if (newData.client_id === accountStore.userState.id) {
+          console.log(newData);
+        }
       }
-    }
-  )
-  .subscribe();
+    )
+    .subscribe();
+};
 
 const getSupabaseSpecificData = async (spFrom, spSelect, spEq) => {
   try {
+    const accountStore = useAccountStore(pinia);
     let { data, error } = await supabase
       .from(spFrom)
       .select(spSelect)
@@ -101,6 +104,8 @@ const getSupabaseSpecificData = async (spFrom, spSelect, spEq) => {
 };
 
 const getAccountInfo = async function () {
+  const store = useProfileInfoStore(pinia);
+  const { registration, userState } = toRefs(useAccountStore(pinia));
   const [client, deliveryAddress, billingAddress, paymentInfo] =
     await Promise.all([
       getSupabaseSpecificData(
@@ -116,11 +121,13 @@ const getAccountInfo = async function () {
         "client_id"
       ),
     ]);
-  const userid = accountStore.userState.id;
 
-  registration.deliveryaddress = deliveryAddress?.[0]?.clients_id === userid;
-  registration.personalinfo = client?.[0]?.user_id === userid;
-  registration.paymentinfo = paymentInfo?.[0]?.client_id === userid;
+  const userid = userState.value.id;
+  registration.value.deliveryaddress =
+    deliveryAddress?.[0]?.clients_id === userid;
+  registration.value.personalinfo = client?.[0]?.user_id === userid;
+  registration.value.paymentinfo = paymentInfo?.[0]?.client_id === userid;
+
   store.setAccountProfileInfo(
     client,
     deliveryAddress,
@@ -131,6 +138,7 @@ const getAccountInfo = async function () {
 
 const updateAccount = async function (spFrom, columnVal, spEq) {
   // spEq = 等於 table  user key 的 column 名稱
+  const accountStore = useAccountStore(pinia);
   try {
     const { data, error } = await supabase
       .from(spFrom)
@@ -146,10 +154,4 @@ const updateAccount = async function (spFrom, columnVal, spEq) {
   }
 };
 
-export {
-  store,
-  accountStore,
-  multipleTablesChannel,
-  updateAccount,
-  getAccountInfo,
-};
+export { updateAccount, getAccountInfo, multipleTablesChannel };

@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-const useProfileInfoStore = defineStore("ProfileInfoStore", {
+export const useProfileInfoStore = defineStore("ProfileInfoStore", {
   state() {
     return {
       personalInfo: {
@@ -87,6 +87,8 @@ const useProfileInfoStore = defineStore("ProfileInfoStore", {
       );
     },
   },
-});
 
-export default useProfileInfoStore;
+  persist: {
+    storage: window.sessionStorage,
+  },
+});

@@ -23,9 +23,7 @@ import { storeToRefs } from "pinia";
 const route = useRoute()
 const store = useProduct()
 const { sideListData, setShopUrlId, setCheckpoint, setBbserverCurrentID } = store
-
 const { observerCurrentID } = storeToRefs(store)
-
 const urlId = ref(route.params.id)
 const navigator = ref(null)
 const renderPage = ref(null)

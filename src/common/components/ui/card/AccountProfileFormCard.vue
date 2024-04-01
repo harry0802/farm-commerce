@@ -1,5 +1,5 @@
 <template>
-    <form @submit="onSubmit">
+    <form @submit.prevent="onSubmit">
         <slot name="form-tiitle"></slot>
         <div class="catd-fields">
             <slot name="form-table"></slot>
@@ -13,6 +13,7 @@
 
 <script setup>
 defineProps('onSubmit')
+import { Form } from "@/common/composables/ui/form";
 </script>
 <style scoped>
 .join-input__control>input {

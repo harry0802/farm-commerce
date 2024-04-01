@@ -1,4 +1,5 @@
-import { accountStore } from "@/common/composables/profileData.js";
+import { pinia } from "@/store/pinia.js";
+import useAccountStore from "@/store/modules/account/accountStore.js";
 import { createRouter, createWebHashHistory } from "vue-router";
 import FarmHome from "@/views/FarmHome.vue";
 import FarmShop from "@/views/FarmShop.vue";
@@ -105,7 +106,7 @@ const router = createRouter({
           component: () =>
             import("@/common/components/join/JoinVerifyEmailOtp.vue"),
           beforeEnter: () => {
-            if (!accountStore.hasUserEmail) return { name: "home" };
+            // if (!accountStore.hasUserEmail) return { name: "home" };
           },
         },
 
@@ -175,16 +176,17 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from) => {
+  const store = useAccountStore(pinia);
   // 未登入不可訪問頁面
-  if (to.meta.requiresAuth && !accountStore.isaAuthenticated) {
+  if (to.meta.requiresAuth && !store.isaAuthenticated) {
     return { name: "login" };
   }
-  // 不可隨意訪問頁面
-  if (to.meta.entryControl && !accountStore.allow) {
+  // // 不可隨意訪問頁面
+  if (to.meta.entryControl && !store.allow) {
     return { name: "home" };
   }
-  //已註冊不可訪問
-  if (to.meta.isjoin && accountStore.getRegistration) {
+  // //已註冊不可訪問
+  if (to.meta.isjoin && store.getRegistration) {
     return { name: "home" };
   }
 });

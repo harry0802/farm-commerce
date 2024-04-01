@@ -4,7 +4,7 @@
       <!-- 產品圖片 -->
       <div class="relative product-item__photo">
 
-        <MarkFavoriteBtn class="right-2 top-2" />
+        <MarkFavoriteBtn :data="data" class="right-2 top-2" />
         <RouterLink class="photo__links " :to="`/product/${data.product_name + '-' + data.product_code}`">
           <img class="object-cover rounded-lg" :src=data.image_url alt="" />
         </RouterLink>
@@ -48,10 +48,6 @@ const { width: watchWindowWidth } = useWindowSize()
 const props = defineProps({
   data: Object
 });
-console.log(props.data.SALE);
-
-
-
 const theSubscribe = ref(false)
 
 

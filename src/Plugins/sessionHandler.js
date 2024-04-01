@@ -1,28 +1,25 @@
 import { supabase } from "@/config/FarmPruductsItemManage.js";
+import { pinia } from "@/store/pinia.js";
 import { useThrottleFn } from "@vueuse/core";
-import {
-  getAccountInfo,
-  accountStore,
-  store as profileStore,
-} from "@/common/composables/profileData.js";
-// setAuthenticated
+import useAccountStore from "@/store/modules/account/accountStore.js";
 
-// userState;
+import { getAccountInfo } from "@/common/composables/profileData.js";
+
 const throttledLoginHandler = useThrottleFn((event, session) => {
+  const store = useAccountStore(pinia);
   if (event === "SIGNED_IN" || (event === "INITIAL_SESSION" && session)) {
-    accountStore.setAuthenticated(session.user);
+    store.setAuthenticated(session.user);
     getAccountInfo();
   }
 
   if (event === "SIGNED_IN") {
-    accountStore.setAuthenticated(session.user);
+    store.setAuthenticated(session.user);
     getAccountInfo();
   }
   // 处理登录状态的变化
   if (event === "SIGNED_OUT") {
     console.log("User signed out");
-    accountStore.$reset();
-    profileStore.$reset();
+    store.$reset();
   }
 }, 1000);
 

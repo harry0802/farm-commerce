@@ -7,6 +7,7 @@ import {
   getUserInfo,
 } from "@/Plugins/supabaseClinets.js";
 // 註冊帳戶紀錄
+
 const useAccountStore = defineStore("accountStore", {
   state() {
     return {
@@ -25,8 +26,10 @@ const useAccountStore = defineStore("accountStore", {
         user_Password: "",
       },
       userAddress: {},
+      test: null,
     };
   },
+
   getters: {
     isaAuthenticated: (state) => !!state.userState.role,
     hasUserEmail: (state) => !!state.userInfo.user_Email,
@@ -95,10 +98,14 @@ const useAccountStore = defineStore("accountStore", {
         throw err;
       }
     },
+    settest() {
+      this.test = 123 + "ABc";
+      return this.test;
+    },
   },
   persist: {
     storage: window.sessionStorage,
-    paths: ["userArea", "userState", "userInfo"],
+    paths: ["userArea", "userState", "userInfo", "registration"],
   },
 });
 

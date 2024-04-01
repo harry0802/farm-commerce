@@ -14,9 +14,11 @@
 </template>
 
 <script setup lang="ts">
-import { provide, } from "vue";
+import { provide, onMounted } from "vue";
 import { toast } from 'vue-sonner'
-import { updateAccount, store } from "@/common/composables/profileData.js";
+import { useProfileInfoStore } from "@/store/modules/profile/profileStore.js";
+
+import { updateAccount, multipleTablesChannel } from "@/common/composables/profileData.js";
 import {
     ProfileInfomation,
     ProfileDeliveryAddress,
@@ -29,9 +31,21 @@ import {
     ProfileBillingAddress,
     ProfileChangePassword
 } from "@/common/components/account/profile/index.js";
+
+const store = useProfileInfoStore();
+
+
+
 provide('store', { updateAccount, store })
 provide('toast', toast)
 
+
+
+
+onMounted(() => {
+    multipleTablesChannel()
+
+})
 </script>
 
 <style scoped>

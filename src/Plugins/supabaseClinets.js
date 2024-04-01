@@ -29,11 +29,10 @@ const userSignUp = async function (userEmail, userPassword) {
     });
 
     if (error) throw error;
-    console.log(data.user_metadata);
-    console.log(data);
+
     return data;
   } catch (err) {
-    console.error(err.message);
+    console.error(`Handle_SupabaseAPI_ERROR 💣:${error.message}`);
     handleSupabaseError(err);
   }
 };
@@ -70,7 +69,7 @@ const userInsertRows = async function (fromName, userData) {
     if (error) throw error;
     return data;
   } catch (err) {
-    console.error(err.message);
+    console.error(`Handle_SupabaseAPI_ERROR 💣:${error.message}`);
     handleSupabaseError(err);
     throw err;
   }
@@ -103,11 +102,9 @@ const signinWithEmail = async function (userEnter) {
     toast.success("已寄送登入信件");
   } catch (error) {
     handleSupabaseError(error);
-    console.error(error.message);
+    console.error(`Handle_SupabaseAPI_ERROR 💣:${error.message}`);
   }
 };
-
-// signInWithPassword();
 
 const signOutSpabase = async function () {
   try {
@@ -116,7 +113,7 @@ const signOutSpabase = async function () {
     toast.success("已成功安全登出");
   } catch (error) {
     handleSupabaseError(error);
-    console.error(err.message);
+    console.error(`Handle_SupabaseAPI_ERROR 💣:${error.message}`);
     throw error;
   }
 };
@@ -136,18 +133,23 @@ const queryZipCode = async function (zip) {
       throw error;
     }
   } catch (err) {
-    console.error(err.message);
+    console.error(`Handle_QueryZip_ERROR 💣:${error.message}`);
     throw err;
   }
 };
 
 const getUserInfo = async function () {
-  const {
-    data: { user },
-    error,
-  } = await supabase.auth.getUser();
-  if (error) throw error;
-  if (user) return user;
+  try {
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.getUser();
+    if (error) throw error;
+    if (user) return user;
+  } catch (error) {
+    console.error(`Handle_QueryZip_ERROR 💣:${error.message}`);
+    throw error;
+  }
 };
 
 export {

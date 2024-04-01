@@ -8,7 +8,7 @@ const creatCartList = function () {
   const dateArr = [];
 
   for (let i = 0; i < 31; i++) {
-    const formattedDate = currentDate.add(1, "y").add(i, "day");
+    const formattedDate = currentDate.add(0, "y").add(i, "day");
     const dayOfWeek = formattedDate.day();
 
     const output = {

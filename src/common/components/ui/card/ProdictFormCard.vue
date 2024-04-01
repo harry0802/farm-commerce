@@ -1,5 +1,5 @@
 <template>
-    <form class="product-subscribe--wrapper">
+    <form @submit.prevent="onSubmit" class="product-subscribe--wrapper">
 
         <div class="product-subscribe__selection">
             <div class="product-subscribe__selection--content">
@@ -11,6 +11,10 @@
     </form>
 </template>
 
-<script setup></script>
+<script setup>
+import { Form, } from "@/common/composables/ui/form";
+
+
+</script>
 
 <style scoped></style>
