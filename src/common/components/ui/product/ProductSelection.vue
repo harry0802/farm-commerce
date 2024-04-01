@@ -1,24 +1,48 @@
 <template>
-    <div v-if="loopData" class="field__container flex flex-col ">
-        <label class="mb-1" :for="id">下拉列表</label>
-        <select :name="id" v-model="selectedItem"
-            class="border-solid border-[1px] border-color-grey-dark py-4 px-3.5 rounded	">
-            <option v-for=" item in loopData " :selected="item" :key="item" :value="item"> {{
-        item }}</option>
-        </select>
-        <!-- v-if="item !== defaultOption" -->
+    <div class="">
+        <FormField name="123">
+            123
+            <CostomSelect>
+                <select
+                    class="flex w-full rounded-md border border-input bg-transparent text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 py-4 px-3.5 h-auto  duration-300">
+                    <option v-for="(day, i) in mo" :key="i">{{ day }}</option>
+                </select>
+            </CostomSelect>
+        </FormField>
+        <FormField name="123">
+            <CostomSelect>
+                <select
+                    class="flex w-full rounded-md border border-input bg-transparent text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 py-4 px-3.5 h-auto  duration-300">
+                    <option v-for="(day, i) in mo" :key="i">{{ day }}</option>
+                </select>
+            </CostomSelect>
+        </FormField>
     </div>
-    <div class=""></div>
 </template>
 
 <script setup>
 import { defineProps, ref, watch } from "vue";
+import { FormField } from "@/common/composables/ui/form";
+import CostomSelect from "@/common/components/ui/from/CostomSelect.vue";
+
 const props = defineProps({
     id: String,
 })
 const loopData = 10
 
 const selectedItem = ref(1);
+const mo = ['January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',]
 
 watch(
     () => props.loopData,

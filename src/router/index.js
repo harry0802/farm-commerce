@@ -106,7 +106,8 @@ const router = createRouter({
           component: () =>
             import("@/common/components/join/JoinVerifyEmailOtp.vue"),
           beforeEnter: () => {
-            // if (!accountStore.hasUserEmail) return { name: "home" };
+            const store = useAccountStore(pinia);
+            if (!store.hasUserEmail) return { name: "home" };
           },
         },
 
@@ -178,6 +179,7 @@ const router = createRouter({
 router.beforeEach((to, from) => {
   const store = useAccountStore(pinia);
   // 未登入不可訪問頁面
+
   if (to.meta.requiresAuth && !store.isaAuthenticated) {
     return { name: "login" };
   }

@@ -1,6 +1,6 @@
 <template>
   <div class=" product-item__wrapper p-0.5 pb-10 ">
-    <div class="relative  product-item__container p-1.5 flex flex-col h-full  sm:min-h-[400px]">
+    <div class="relative  product-item__container p-1.5 flex flex-col h-full   ">
       <!-- 產品圖片 -->
       <div class="relative product-item__photo">
 
@@ -15,18 +15,18 @@
 
       <!-- 表單 -->
       <ProdictFormCard v-if="theSubscribe && clacWindowSize"
-        class="	overflow-hidden p-2 rounded-lg border-[2px] border-color-primary-light  h-full  flex flex-col justify-between absolute  top-[-2px] left-[-2px]  right-[-2px]">
+        class=" h-full	overflow-hidden p-2 rounded-lg border-[2px] border-color-primary-light    flex flex-col justify-between absolute  top-[-2px] left-[-2px]  right-[-2px]">
         <template #selection>
-          <div class=" selection__wrap  w-full bg-color-primary ">
-            <ProductSelection />
+          <div class="px-4 selection__wrap   w-full  bg-color-primary ">
             <ProductSelection />
           </div>
         </template>
         <template #buttomBar>
           <div class="  mt-auto h-[44px]  button-controll   flex gap-2    flex-row justify-end">
-            <button type="submit" class="max-w-[140px] u-subscribe-btn confirm text-color-primary">確認</button>
             <button type="button" class="max-w-[140px] u-subscribe-btn cancel text-color-primary"
               @click="closeSubscribe">取消</button>
+            <button type="submit" class="max-w-[140px] u-subscribe-btn confirm text-color-primary">確認</button>
+
           </div>
         </template>
       </ProdictFormCard>

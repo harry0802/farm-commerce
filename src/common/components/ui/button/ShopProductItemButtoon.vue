@@ -15,6 +15,8 @@
       <Icon icon="prime:cart-arrow-down" class="text-xl" />
     </button>
   </div>
+  <div v-else class="min-h-11" />
+
 </template>
 
 <script setup>

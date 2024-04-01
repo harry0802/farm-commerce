@@ -12,8 +12,8 @@
 </template>
 
 <script setup>
-import { Form, } from "@/common/composables/ui/form";
-
+import { Form } from "@/common/composables/ui/form";
+defineProps('onSubmit')
 
 </script>
 
