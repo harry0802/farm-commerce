@@ -1,19 +1,18 @@
 <template>
-    <div class="">
+    <div class="grid gap-6">
         <FormField name="123">
-            123
-            <CostomSelect>
+            <CostomSelect user-label="數量">
                 <select
                     class="flex w-full rounded-md border border-input bg-transparent text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 py-4 px-3.5 h-auto  duration-300">
-                    <option v-for="(day, i) in mo" :key="i">{{ day }}</option>
+                    <option v-for="(qy, i) in loopData" :key="i">{{ qy }}</option>
                 </select>
             </CostomSelect>
         </FormField>
         <FormField name="123">
-            <CostomSelect>
+            <CostomSelect user-label="配送週期">
                 <select
                     class="flex w-full rounded-md border border-input bg-transparent text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 py-4 px-3.5 h-auto  duration-300">
-                    <option v-for="(day, i) in mo" :key="i">{{ day }}</option>
+                    <option v-for="(day, i) in fq" :key="i">{{ day }}</option>
                 </select>
             </CostomSelect>
         </FormField>
@@ -29,28 +28,12 @@ const props = defineProps({
     id: String,
 })
 const loopData = 10
+const fq = ['每周一次',
+    '隔週一次',
+    '每月一次']
 
-const selectedItem = ref(1);
-const mo = ['January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',]
 
-watch(
-    () => props.loopData,
-    (newValue) => {
-        // Update selected item when loopData changes
-        selectedItem.value = newValue[0]; // Set to the first item, or adjust as needed
-    }
-);
+
 </script>
 
 <style scoped>
