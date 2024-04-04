@@ -14,11 +14,11 @@
       <ShopProductItemText />
 
       <!-- 表單 -->
-      <ProdictFormCard v-if="theSubscribe && clacWindowSize"
+      <ProdictFormCard :onsubmit="onsubmit" v-if="theSubscribe && clacWindowSize"
         class=" h-full	overflow-hidden p-2 rounded-lg border-[2px] border-color-primary-light    flex flex-col justify-between absolute  top-[-2px] left-[-2px]  right-[-2px]">
         <template #selection>
           <div class="px-4 selection__wrap   w-full  bg-color-primary ">
-            <ProductSelection />
+            <ProductSelection v-model:handleSubmit="handleSubmit" />
           </div>
         </template>
         <template #buttomBar>
@@ -39,18 +39,19 @@
 import ShopProductItemText from "@/common/components/ui/text/ShopProductItemText.vue";
 import ProdictFormCard from '@/common/components/ui/card/ProdictFormCard.vue'
 import ProductSelection from "@/common/components/ui/product/ProductSelection.vue";
-import { provide, ref, computed, watchEffect } from "vue";
+import { provide, ref, computed, watchEffect, watch } from "vue";
 import { useWindowSize } from '@vueuse/core'
 import MarkFavoriteBtn from "@/common/components/ui/button/MarkFavoriteBtn.vue";
 import MarkTextIcon from "@/common/components/ui/icon/MarkTextIcon.vue";
+
+
+
 const { width: watchWindowWidth } = useWindowSize()
 
 const props = defineProps({
   data: Object
 });
 const theSubscribe = ref(false)
-
-
 const showSubscribe = () => theSubscribe.value = true
 const closeSubscribe = () => theSubscribe.value = false
 const clacWindowSize = computed(() => watchWindowWidth.value > 600)
@@ -60,10 +61,23 @@ provide('productItem', props.data)
 provide('subscribe', { theSubscribe, showSubscribe })
 provide('watchWindowSize', watchWindowWidth)
 
-
 watchEffect(() => {
   clacWindowSize.value ? closeSubscribe() : clacWindowSize.value
 })
+
+const handleSubmit = ref(null)
+
+const onsubmit = (vl) => {
+  const orderid = props.data.product_id
+  const receiveVl = handleSubmit.value(val => {
+
+    console.log(val);
+  })
+  receiveVl(vl)
+}
+
+
+
 
 </script>
 

@@ -1,7 +1,7 @@
 <template>
     <DrawerRoot>
         <DrawerTrigger asChild>
-            <button class="u-subscribe-btn w-auto max-h-11 group">
+            <button class=" u-subscribe-btn w-auto max-h-11 group">
                 <p v-if="clacWindowSize"> 訂購</p>
                 <Icon class=" group-hover:-rotate-180" icon="entypo:cycle" />
             </button>
@@ -17,7 +17,6 @@
 
                 <div class="  w-full mx-auto flex flex-col  p-[30px] rounded-t-[10px] ">
                     <div class="max-w-[60%]">
-                        <ProductSelection />
                         <ProductSelection />
                     </div>
                     <div class="details__texts flex flex-col grow h-full min-h-[115px]">

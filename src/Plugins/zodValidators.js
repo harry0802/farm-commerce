@@ -273,9 +273,7 @@ const profileUserEmail = (initialValues) => {
 
 // order
 
-const subscribe
-
-
+const personalSubscribe = function () {};
 
 export {
   useField,

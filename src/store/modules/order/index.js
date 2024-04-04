@@ -1,8 +1,8 @@
 import { defineStore } from "pinia";
-import { ref, computed, watch } from "vue";
+import { ref } from "vue";
 import { getClientOrder, upDateOrder } from "@/Plugins/supabaseOrder.js";
 import { useDebounceFn } from "@vueuse/core";
-
+import { creatOrderList } from "@/Plugins/day.js";
 // .uuid({ message: "Invalid UUID" })
 export const useOrderStore = defineStore("order", () => {
   /*
@@ -91,7 +91,21 @@ export const useOrderStore = defineStore("order", () => {
     recentlyViewed.value = response;
   };
 
-  const addSubscribe = function () {};
+  const addSubscribe = async function (item) {
+    const { getToday } = await creatOrderList().filteredDates();
+    const sendData = {
+      product_id: item.orderid,
+      Quantity: item.quantity,
+      Frequency: item.frequencyv,
+      DeliveryDay: getToday.dayOfWeek,
+      NextDelivery_Date: getToday.date,
+    };
+    const response = await upDateOrder({
+      subscription: sendData,
+    });
+
+    subscription.value = response;
+  };
 
   return {
     myfavorite,
@@ -103,5 +117,6 @@ export const useOrderStore = defineStore("order", () => {
     // fn
     addMyfavorite,
     addrecentlyVie,
+    addSubscribe,
   };
 });

@@ -1,6 +1,6 @@
 <template>
   <div v-if="!theSubscribe && !clacWindowSize" class="  details__buttons flex w-full  place-content-end gap-5">
-    <button v-if="!clacWindowSize && !Subscribe" @click="showSubscribe" class="u-subscribe-btn w-auto max-h-11 group">
+    <button v-if="!clacWindowSize && Subscribe" @click="showSubscribe" class="u-subscribe-btn w-auto max-h-11 group">
       <p>定期配送</p>
       <Icon class=" group-hover:-rotate-180" icon="entypo:cycle" />
     </button>
@@ -10,7 +10,7 @@
   </div>
 
   <div v-else-if="clacWindowSize" class="  details__buttons flex w-full  place-content-end gap-5">
-    <MobileShopItemSubscribe />
+    <MobileShopItemSubscribe v-if="Subscribe" />
     <button class="w-auto  max-h-11 product-button u-pirmary-button ">
       <Icon icon="prime:cart-arrow-down" class="text-xl" />
     </button>
