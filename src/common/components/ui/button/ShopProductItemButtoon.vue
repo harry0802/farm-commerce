@@ -35,7 +35,6 @@ const { showSubscribe } = inject('subscribe')
 const watchWindowSize = inject('watchWindowSize')
 
 
-
 </script>
 
 

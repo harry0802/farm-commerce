@@ -3,13 +3,21 @@
     <div class="relative  product-item__container p-1.5 flex flex-col h-full   ">
       <!-- 產品圖片 -->
       <div class="relative product-item__photo">
-
-        <MarkFavoriteBtn :data="data" class="right-2 top-2" />
-        <RouterLink class="photo__links " :to="`/product/${data.product_name + '-' + data.product_code}`">
-          <img class="object-cover rounded-lg" :src=data.image_url alt="" />
+        <MarkFavoriteBtn :data="data" class="right-2 top-2 z-[1]" />
+        <RouterLink @click="addrecentlyVie(data)" class="photo__links"
+          :to="`/product/${data.product_name + '-' + data.product_code}`">
+          <div>
+            <img class="object-cover rounded-lg" :src=data.image_url alt="" />
+            <p v-if="getOrderSubscription"
+              class="absolute flex flex-col  w-full h-full inset-0 place-content-center place-items-center  rounded-lg bg-[#07261e73] text-white ">
+              <span class="u-text-large font-[Yagoinini]">{{ getOrderSubscription.Quantity }}</span>
+              <span class="font-[Yagoinini]  tracking-widest u-text-small">加入訂單</span>
+            </p>
+          </div>
         </RouterLink>
         <MarkTextIcon v-if=!!data.SALE v-bind='data' class="left-2  top-2" />
       </div>
+
       <!-- 產品訊息 -->
       <ShopProductItemText />
 
@@ -18,7 +26,7 @@
         class=" h-full	overflow-hidden p-2 rounded-lg border-[2px] border-color-primary-light    flex flex-col justify-between absolute  top-[-2px] left-[-2px]  right-[-2px]">
         <template #selection>
           <div class="px-4 selection__wrap   w-full  bg-color-primary ">
-            <ProductSelection v-model:handleSubmit="handleSubmit" />
+            <ProductSelection v-model:handleSubmit="handleSubmit" :order-data="getOrderSubscription" />
           </div>
         </template>
         <template #buttomBar>
@@ -39,43 +47,68 @@
 import ShopProductItemText from "@/common/components/ui/text/ShopProductItemText.vue";
 import ProdictFormCard from '@/common/components/ui/card/ProdictFormCard.vue'
 import ProductSelection from "@/common/components/ui/product/ProductSelection.vue";
-import { provide, ref, computed, watchEffect, watch } from "vue";
-import { useWindowSize } from '@vueuse/core'
 import MarkFavoriteBtn from "@/common/components/ui/button/MarkFavoriteBtn.vue";
 import MarkTextIcon from "@/common/components/ui/icon/MarkTextIcon.vue";
+import { provide, ref, computed, watchEffect, toRefs, } from "vue";
+import { useWindowSize } from '@vueuse/core'
+import { useOrderStore } from "@/store/modules/order/index.js";
 
 
+
+
+
+const { addSubscribe, addrecentlyVie } = useOrderStore()
+const { subscription, } = toRefs(useOrderStore())
 
 const { width: watchWindowWidth } = useWindowSize()
+
+
 
 const props = defineProps({
   data: Object
 });
+
+const handleSubmit = ref(null)
 const theSubscribe = ref(false)
+
+
+
 const showSubscribe = () => theSubscribe.value = true
 const closeSubscribe = () => theSubscribe.value = false
 const clacWindowSize = computed(() => watchWindowWidth.value > 600)
+
+// filter Data
+const getOrderSubscription = computed(() =>
+  subscription.value.find(
+    (item) => item.product_id === props.data.product_id
+  ))
 
 
 provide('productItem', props.data)
 provide('subscribe', { theSubscribe, showSubscribe })
 provide('watchWindowSize', watchWindowWidth)
+provide('getOrderSubscription', getOrderSubscription)
+provide('sendSubScript', { addSubscribe, handleSubmit })
 
 watchEffect(() => {
   clacWindowSize.value ? closeSubscribe() : clacWindowSize.value
 })
 
-const handleSubmit = ref(null)
 
-const onsubmit = (vl) => {
-  const orderid = props.data.product_id
-  const receiveVl = handleSubmit.value(val => {
 
-    console.log(val);
-  })
-  receiveVl(vl)
+
+
+
+
+const onsubmit = async (vl) => {
+  const orderid = props.data.product_id;
+  await (handleSubmit.value(({ quantity,
+    frequency }) => {
+    addSubscribe({ quantity, frequency, orderid })
+  }))(vl)
+
+  closeSubscribe()
 }
-
 
 
 

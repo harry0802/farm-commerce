@@ -87,6 +87,7 @@ const creatOrderList = function () {
 
   const filteredDates = async () => {
     const createDate = await creatSpecificList();
+
     const getToday = createDate[0];
     const specificWeekDay = (week) =>
       createDate.filter((item) => item.dayOfWeek === week);

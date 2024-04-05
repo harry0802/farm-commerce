@@ -4,7 +4,7 @@
             <CostomSelect user-label="數量">
                 <select v-model="quantityVl"
                     class="flex w-full rounded-md border border-input bg-transparent text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 py-4 px-3.5 h-auto  duration-300">
-                    <option v-for="(qy, i) in loopData" :key="i" :selected="value" :value="qy">{{ qy }}</option>
+                    <option v-for="(qy, i) in loopData" :key="i">{{ qy }}</option>
                 </select>
             </CostomSelect>
         </FormField>
@@ -22,45 +22,34 @@
 </template>
 
 <script setup>
-import { defineProps, } from "vue";
+import { defineProps, inject } from "vue";
 import { FormField } from "@/common/composables/ui/form";
 import CostomSelect from "@/common/components/ui/from/CostomSelect.vue";
 import { useForm, useField } from "vee-validate";
-// import { } from "module";
-
-
-
-const props = defineProps({
-    id: String,
-})
+// const props = defineProps({
+//     orderData: Object
+// })
 const loopData = 10
-const fq = ['每周一次',
-    '隔週一次',
-    '每月一次']
+const fq = ['每周一次', '隔週一次', '每月一次']
 
-
-
+const getOrderSubscription = inject('getOrderSubscription')
 
 const { handleSubmit } = useForm(
     {
         initialValues: {
-            quantity: 1,
-            frequency: fq[0]
+            quantity: getOrderSubscription.value ? getOrderSubscription.value.Quantity : 1,
+            frequency: getOrderSubscription.value ? getOrderSubscription.value.Frequency : fq[0]
         }
     })
 
 
 
 
-const { value: quantityVl } = useField('quantity')
+const { value: quantityVl } = useField('quantity',)
 const { value: frequencyVl, } = useField('frequency')
 
 const sendHandleSubmit = defineModel('handleSubmit')
 sendHandleSubmit.value = handleSubmit
-
-
-
-
 
 
 
@@ -69,9 +58,9 @@ sendHandleSubmit.value = handleSubmit
 2. 配送週期 ， 
 
 default 
-每周一次 ? 1. 星期幾    2. 下一筆訂單的日期   tips:對應到該星期的日期   3. 添加到訂單， 到月底前的每週一筆 （7）
-隔週一次 ? 1. 星期幾    2. 下一筆訂單的日期   tips:對應到該星期的日期   3. 添加到訂單， 到月底前的每隔週一筆 (14)
-每月一次 ?  1. 星期幾    2. 下一筆訂單的日期   tips:對應到該星期的日期   3. 添加到訂單， 到月底前的每隔週一筆 (28)
+每周一次 ? 1. 星期幾    2. 下一筆訂單的日期   tips:對應到該星期的日期   3. 添加到訂單， 到月底前的每週一筆 （1）
+隔週一次 ? 1. 星期幾    2. 下一筆訂單的日期   tips:對應到該星期的日期   3. 添加到訂單， 到月底前的每隔週一筆 (7)
+每月一次 ?  1. 星期幾    2. 下一筆訂單的日期   tips:對應到該星期的日期   3. 添加到訂單， 到月底前的每隔週一筆 (14)
 */
 
 

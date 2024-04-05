@@ -13,7 +13,9 @@
 
 <script setup>
 import { Form } from "@/common/composables/ui/form";
-defineProps('onSubmit')
+const props = defineProps({ onSubmit: Function })
+
+
 
 </script>
 

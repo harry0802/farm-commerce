@@ -10,14 +10,14 @@
 </template>
 
 <script setup>
-import { ref, computed, toRefs } from "vue";
+import { computed, toRefs } from "vue";
 import { Icon, } from '@iconify/vue';
 import { useOrderStore } from "@/store/modules/order/index.js";
 
 
 const props = defineProps({ data: { type: Object } })
 
-const { myfavorite, addMyfavorite, addrecentlyVie } = toRefs(useOrderStore())
+const { myfavorite, addMyfavorite, } = toRefs(useOrderStore())
 
 const toggleFavor = () => addMyfavorite.value(props.data)
 
