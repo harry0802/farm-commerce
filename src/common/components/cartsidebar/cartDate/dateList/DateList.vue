@@ -1,6 +1,5 @@
 <template>
   <!-- 在尚未有商品時 循環日期 -->
-
   <component :is="haveOder ? DateProductList : DateCreateList" />
 </template>
 

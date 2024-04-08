@@ -68,32 +68,20 @@ const getToday = async function () {
 };
 
 const creatOrderList = function () {
-  const formattedDate = currentDate;
-
   const creatSpecificList = async () => {
-    const dateArr = [];
-    const limit = currentMonth.daysInMonth() - currentDate.day();
-
-    for (let i = 0; i < limit; i++) {
-      const formattedDate = currentDate.add(0, "y").add(i, "day");
-      const output = {
-        date: formattedDate.format("YYYY/M/D"),
-        dayOfWeek: formattedDate.format("dd"),
-      };
-      dateArr.push(output);
-    }
-    return await filterHolidayDay(dateArr);
+    return await filterHolidayDay(creatCartList());
   };
 
   const filteredDates = async () => {
     const createDate = await creatSpecificList();
-
+    const workDayList = createDate;
     const getToday = createDate[0];
     const specificWeekDay = (week) =>
       createDate.filter((item) => item.dayOfWeek === week);
     return {
       specificWeekDay,
       getToday,
+      workDayList,
     };
   };
 
@@ -101,7 +89,6 @@ const creatOrderList = function () {
     filteredDates,
   };
 };
-
 const createDate = await filterHolidayDay(creatCartList);
 
 export { getToday, createDate, creatOrderList };

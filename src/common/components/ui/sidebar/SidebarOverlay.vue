@@ -1,10 +1,10 @@
 <template>
-  <div class="overlay" :class="{ open: switchOverlay }"></div>
+  <div class="overlay fixed inset-0  h-full " :class="{ open: switchOverlay }"></div>
 </template>
 
 <script setup>
 import { onClickOutside } from "@vueuse/core";
-import { defineProps, watch } from "vue";
+import { watch, } from "vue";
 
 const props = defineProps({
   switchOverlay: Boolean,
@@ -22,5 +22,17 @@ watch(
     }
   }
 );
+
+
+watch(() => props.switchOverlay, (newVal) => {
+  console.log(newVal);
+  newVal ?
+    document.body.style.overflow = 'hidden' :
+    document.body.style.overflow = 'auto'
+})
+
+
+
+
 </script>
 <style scoped></style>

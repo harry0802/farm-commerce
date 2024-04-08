@@ -79,12 +79,6 @@ const router = createRouter({
           path: "in-area",
           name: "in-area",
           component: () => import("@/common/components/join/JoinInArea.vue"),
-          beforeEnter: (to, from) => {
-            console.log(accountStore.allow);
-
-            console.log(to);
-            console.log(from);
-          },
         },
         {
           path: "out-area",

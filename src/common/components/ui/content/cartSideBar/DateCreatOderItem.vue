@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from "vue";
+import { defineEmits } from "vue";
 import { Icon } from "@iconify/vue";
 const props = defineProps({
   date: String,
@@ -86,4 +86,5 @@ p {
   border: 3px dashed #5f2a62;
   padding: 2px;
   color: #52d053;
-}</style>
+}
+</style>

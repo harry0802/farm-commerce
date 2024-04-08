@@ -1,26 +1,32 @@
 <template>
   <div id="cart">
-    <transition name="overlay">
-      <div v-show="store.showCart">
-        <sidebar-overlay :switchOverlay="store.showCart" :switchOverlayFn="store.closeCart" :target="target"
-          class="z-[1]" />
-      </div>
-    </transition>
-    <transition>
-      <div class="cart__container" ref="target" v-show="store.showCart">
-        <aside class="cart__content">
-          <header-side-bar-selector-btn />
-          <cart-date v-if="!store.showProductItem"></cart-date>
-          <cart-produt v-else />
-        </aside>
-      </div>
-    </transition>
+    <teleport to="body">
+      <transition name="fade">
+        <div v-if="store.showCart">
+          <div class="overlay fixed  w-full inset-0  h-full  z-[0]" :class="{ open: store.showCart }"></div>
+        </div>
+      </transition>
+    </teleport>
+    <teleport to="#header">
+      <transition>
+        <div class="cart__container" ref="target" v-if="store.showCart">
+          <aside class="cart__content">
+            <header-side-bar-selector-btn />
+            <cart-date v-if="!store.showProductItem"></cart-date>
+            <cart-produt v-else />
+          </aside>
+        </div>
+      </transition>
+    </teleport>
+
   </div>
+
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import HeaderSideBarSelectorBtn from "../ui/button/HeaderSideBarSelectorBtn.vue";
+import { onClickOutside } from "@vueuse/core";
 // import DynamicPhoto from "../ui/content/cartSideBar/DynamicPhoto.vue";
 // import ProcutLowesMinimum from  '../cartsidebar/procutItem/ProcutLowesMinimum.vue'
 import SidebarOverlay from "../ui/sidebar/SidebarOverlay.vue";
@@ -32,11 +38,26 @@ import cartStore from "@/store/modules/cart/cartStore.js";
 const store = cartStore();
 
 const target = ref(null);
+
+
+onClickOutside(target, () => {
+  store.closeCart()
+})
+
+
+watch(() => store.showCart, (newVal) => {
+  newVal ?
+    document.body.style.overflow = 'hidden' :
+    document.body.style.overflow = 'auto'
+})
+
+
+
 </script>
 
 <style scoped>
 .cart__container {
-  position: fixed;
+  position: absolute;
   top: 64px;
   right: 0;
   z-index: 2;
@@ -73,20 +94,14 @@ const target = ref(null);
 .v-leave-to {
   /* 从右侧滑入 */
   transform: translateX(100%);
+
 }
 
-.overlay-enter-active,
-.overlay-leave-active {
-  transition: opacity 0.4s;
+.fade-leave-active {
+  transition: opacity 0.1s ease;
 }
 
-.overlay-enter-from,
-.overlay-leave-to {
+.fade-leave-to {
   opacity: 0;
-}
-
-.overlay-enter-to,
-.overlay-leave-from {
-  opacity: 1;
 }
 </style>
