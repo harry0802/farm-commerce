@@ -24,6 +24,7 @@ const selectDate = (index, date, theweek) => {
 onMounted(() => {
   createDate;
 });
+
 </script>
 
 <style scoped>

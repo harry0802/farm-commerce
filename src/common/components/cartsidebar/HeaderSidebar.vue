@@ -1,5 +1,6 @@
 <template>
   <div id="cart">
+
     <teleport to="body">
       <transition name="fade">
         <div v-if="store.showCart">
@@ -9,8 +10,10 @@
     </teleport>
     <teleport to="#header">
       <transition>
-        <div class="cart__container" ref="target" v-if="store.showCart">
-          <aside class="cart__content">
+        <div class="cart__container" ref="target" :style="{ marginTop: width > 950 ? marginTop + 'px' : '' }"
+          v-if="store.showCart">
+          <aside class="cart__content" :style="{ height: width > 950 ? `calc(100vh - ${80 + marginTop}px)` : '' }">
+
             <header-side-bar-selector-btn />
             <cart-date v-if="!store.showProductItem"></cart-date>
             <cart-produt v-else />
@@ -19,31 +22,29 @@
       </transition>
     </teleport>
 
+
   </div>
 
 </template>
 
 <script setup>
-import { ref, watch } from "vue";
+import { ref, onMounted, watch, onBeforeUnmount, computed } from "vue";
 import HeaderSideBarSelectorBtn from "../ui/button/HeaderSideBarSelectorBtn.vue";
-import { onClickOutside } from "@vueuse/core";
+import { onClickOutside, useWindowSize } from "@vueuse/core";
 // import DynamicPhoto from "../ui/content/cartSideBar/DynamicPhoto.vue";
 // import ProcutLowesMinimum from  '../cartsidebar/procutItem/ProcutLowesMinimum.vue'
-import SidebarOverlay from "../ui/sidebar/SidebarOverlay.vue";
-
 import CartProdut from "../cartsidebar/cartProdut/CartProdut.vue";
 import cartDate from "../../components/cartsidebar/cartDate/CartDate.vue";
 import cartStore from "@/store/modules/cart/cartStore.js";
 
 const store = cartStore();
-
 const target = ref(null);
-
+const marginTop = ref(40);
+const { width } = useWindowSize()
 
 onClickOutside(target, () => {
   store.closeCart()
 })
-
 
 watch(() => store.showCart, (newVal) => {
   newVal ?
@@ -52,12 +53,23 @@ watch(() => store.showCart, (newVal) => {
 })
 
 
+const handleScroll = () => {
+  const scrollTop = window.scrollY;
+  marginTop.value = scrollTop <= 40 ? 40 - scrollTop : 0;
+}
 
+onMounted(() => {
+  window.addEventListener("scroll", handleScroll)
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("scroll", handleScroll);
+})
 </script>
 
 <style scoped>
 .cart__container {
-  position: absolute;
+  position: fixed;
   top: 64px;
   right: 0;
   z-index: 2;
@@ -76,12 +88,12 @@ watch(() => store.showCart, (newVal) => {
 
 @media only screen and (min-width: 950px) {
   .cart__container {
-    top: 120px;
+    top: 80px;
   }
 
   .cart__content {
     width: 500px;
-    height: calc(100vh - 120px);
+    height: calc(100vh - 80px);
   }
 }
 
