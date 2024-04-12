@@ -15,6 +15,19 @@ import MobileNav from "@/common/components/header/mobile/MobileNav.vue";
 import MobileMenuSiderbar from "@/common/components/header/mobile/MobileMenuSiderbar.vue";
 import NavigationSecondary from "@/common/components/header/NavigationSecondary.vue";
 import NavigationPrimary from "@/common/components/header/NavigationPrimary.vue";
+import useAccountStore from "@/store/modules/account/accountStore.js";
+import store from "@/store/modules/cart/cartStore.js";
+
+import { provide } from "vue";
+const account = useAccountStore()
+const cartStore = store()
+
+
+
+provide('accountStore', account)
+provide('cartStore', cartStore)
+
+
 </script>
 
 <style scoped>

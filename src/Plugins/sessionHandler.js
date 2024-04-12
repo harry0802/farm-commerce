@@ -4,26 +4,28 @@ import { useThrottleFn } from "@vueuse/core";
 import useAccountStore from "@/store/modules/account/accountStore.js";
 import { useOrderStore } from "@/store/modules/order/index.js";
 import { getAccountInfo } from "@/common/composables/profileData.js";
+import { creatOrderList } from "@/Plugins/day.js";
+import cartStore from "@/store/modules/cart/cartStore.js";
 
-const throttledLoginHandler = useThrottleFn((event, session) => {
-  const store = useAccountStore(pinia);
+const throttledLoginHandler = useThrottleFn(async (event, session) => {
+  const accountStore = useAccountStore(pinia);
+  const cart = cartStore(pinia);
   const { initializeOrderStore } = useOrderStore();
 
-  if (event === "SIGNED_IN" || (event === "INITIAL_SESSION" && session)) {
-    store.setAuthenticated(session.user);
-    initializeOrderStore();
-    getAccountInfo();
+  cart.workDay = await creatOrderList().filteredDates();
+
+  if (event === "INITIAL_SESSION") {
   }
 
   if (event === "SIGNED_IN") {
-    store.setAuthenticated(session.user);
+    accountStore.setAuthenticated(session.user);
     getAccountInfo();
     initializeOrderStore();
   }
   // 处理登录状态的变化
   if (event === "SIGNED_OUT") {
     console.log("User signed out");
-    store.$reset();
+    accountStore.$reset();
   }
 }, 1000);
 

@@ -1,5 +1,7 @@
 import dayjs from "dayjs";
 import { getSupabaseData } from "@/config/FarmPruductsItemManage.js";
+import store from "@/store/modules/cart/cartStore.js";
+import { computed } from "vue";
 import updateLocale from "dayjs/plugin/updateLocale";
 dayjs.extend(updateLocale);
 dayjs.updateLocale("en", {
@@ -60,12 +62,12 @@ const filterHolidayDay = async function (date) {
 };
 
 // 暴露函數
-const getToday = async function () {
-  const createDate = await filterHolidayDay(creatCartList);
-  const firstday = createDate[0];
-  const { date, dayOfWeek } = firstday;
-  return `${date.slice(5)}/${dayOfWeek}`;
-};
+// const getToday = async function () {
+//   const createDate = await filterHolidayDay(creatCartList);
+//   const firstday = createDate[0];
+//   const { date, dayOfWeek } = firstday;
+//   return `${date.slice(5)}/${dayOfWeek}`;
+// };
 
 const creatOrderList = function () {
   const creatSpecificList = async () => {
@@ -84,11 +86,9 @@ const creatOrderList = function () {
       workDayList,
     };
   };
-
   return {
     filteredDates,
   };
 };
-const createDate = await filterHolidayDay(creatCartList);
 
-export { getToday, createDate, creatOrderList };
+export { creatOrderList };

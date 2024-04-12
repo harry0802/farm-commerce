@@ -16,27 +16,30 @@ import ShopMainPage from "../common/components/shop/ShopMainPage.vue";
 import { useProduct } from "@/store/modules/product/useProduct.js";
 import { initData } from '@/Plugins/Initialization.js'
 import { tryOnMounted } from "@vueuse/core";
-import { ref, watch, provide } from "vue";
+import { ref, watch, provide, } from "vue";
 import { storeToRefs } from "pinia";
+
+import { getShopData } from "@/Plugins/SupabasePruductsData.js";
 
 
 const route = useRoute()
 const store = useProduct()
-const { sideListData, setShopUrlId, setCheckpoint, setBbserverCurrentID } = store
+const { setShopUrlId, setCheckpoint, setBbserverCurrentID } = store
 const { observerCurrentID } = storeToRefs(store)
 const urlId = ref(route.params.id)
 const navigator = ref(null)
 const renderPage = ref(null)
 const overview = ref(false)
-
+const productData = ref(null)
 
 const init = async function (urlId) {
-  const init = await initData(sideListData, urlId)
+  const init = await initData(productData.value, urlId)
   navigator.value = init.currentData
   setCheckpoint(navigator.value.keywords)
   renderPage.value = init.pageData
   overview.value = navigator.value.project === urlId
 }
+
 
 provide('ProductPageSection', { renderPage, setBbserverCurrentID: setBbserverCurrentID })
 provide('observerCurrentID', observerCurrentID)
@@ -53,8 +56,11 @@ watch(() => route.params.id, async (newId, oldId) => {
 
 
 tryOnMounted(() => {
-  setShopUrlId(urlId.value)
-  init(urlId.value)
+  (async () => {
+    productData.value = await getShopData()
+    setShopUrlId(urlId.value)
+    init(urlId.value)
+  })()
 })
 
 

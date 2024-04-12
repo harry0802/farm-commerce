@@ -50,12 +50,11 @@ export const getShopData = async function () {
         };
       }
     });
+    return callbackStack;
   } catch (err) {
     console.error(err);
   }
 };
-
-getShopData();
 
 export const renderingPageData = async function (request, value) {
   try {

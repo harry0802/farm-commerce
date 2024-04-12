@@ -5,7 +5,7 @@
         <p class="item__title u-text-small">
           {{ props.date }}/{{ props.theweek }}
         </p>
-        <p class="item__text">配送時間：{{ props.deliverywindow }}</p>
+        <p class="item__text">配送時間：8:00 AM - 5:00 PM</p>
       </div>
       <!-- 當被點選才顯示 -->
       <Icon v-if="isSelected" icon="pixelarticons:check-double" />
@@ -23,11 +23,12 @@ const props = defineProps({
   isSelected: Boolean,
 });
 
-const emit = defineEmits("select");
+
+const emit = defineEmits(["update:selectWorkDay"]);
 
 const handleDateSelect = () => {
   if (!props.isSelected) {
-    emit("select", props.date, props.theweek);
+    emit("update:selectWorkDay", props.date, props.theweek);
   }
 };
 </script>

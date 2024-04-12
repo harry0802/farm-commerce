@@ -1,5 +1,6 @@
 import { keywordSearch } from "@/Plugins/SupabasePruductsData.js";
 
+// const shops = await getShopData();
 export const initData = async function (obj, urlKey) {
   if (!obj || !urlKey) return;
 

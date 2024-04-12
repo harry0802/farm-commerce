@@ -2,16 +2,16 @@
   <dynamic-wrapper>
     <template #list>
       <dynamic-photo v-if="!haveproduct">
-        <figcaption class="u-text-medium text-color-eva-dark-green mb-4">
+        <figcaption class="u-text-medium text-color-eva-dark-yellow mb-4">
           請添加商品
         </figcaption>
-        <img src="@/assets/imgs/cartImg/pixel-art-box.png" alt="" />
+        <img class=" inset-0" src="@/assets/imgs/cartImg/pixel-art-box.png" alt="" />
       </dynamic-photo>
-      <cart-product-oder v-else></cart-product-oder>
+      <cart-product-oder v-else />
     </template>
 
     <template #bottom>
-      <cart-product-bottom-btn></cart-product-bottom-btn>
+      <cart-product-bottom-btn />
     </template>
   </dynamic-wrapper>
 </template>
@@ -24,7 +24,7 @@ import CartProductBottomBtn from "../../ui/button/CartProductBottomBtn.vue";
 
 import { ref } from "vue";
 
-const haveproduct = ref(true);
+const haveproduct = ref(false);
 </script>
 
 <style scoped>
@@ -34,7 +34,8 @@ const haveproduct = ref(true);
 
 img {
   margin: auto;
-  width: 300px;
+  max-width: 300px;
+  aspect-ratio: 16/8;
 }
 
 figcaption {

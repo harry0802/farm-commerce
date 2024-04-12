@@ -7,9 +7,11 @@
       </div>
 
       <div class="secondary-nav__section secondary-nav__user">
-        <button aria-label="call Shopping car" class="user__button">
+        <button @click="cartStore.toggleCart" aria-label="call Shopping car" class="user__button">
           <Icon icon="memory:calendar-month" />
-          <span>請選擇出貨日期</span>
+
+          <span v-if="accountStore.isaAuthenticated">{{ cartStore.calcUserSelectDay }}</span>
+          <span v-else> 請選擇出貨日期</span>
         </button>
 
         <div class="secondary-nav__user--accout user__button">
@@ -25,7 +27,13 @@
 
 <script setup>
 import BaseNavigations from "../ui/navigations/BaseNavigations.vue";
+import { inject, toRefs, onMounted, computed, ref } from "vue";
 import { Icon } from "@iconify/vue";
+const accountStore = inject('accountStore')
+const cartStore = inject('cartStore')
+
+
+
 </script>
 
 <style scoped>

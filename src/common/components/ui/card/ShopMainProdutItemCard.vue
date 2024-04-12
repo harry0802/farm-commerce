@@ -57,7 +57,7 @@ import { useOrderStore } from "@/store/modules/order/index.js";
 
 
 
-const { addSubscribe, addrecentlyVie } = useOrderStore()
+const { addSubscribe, addrecentlyVie, handleOrderAdd } = useOrderStore()
 const { subscription, } = toRefs(useOrderStore())
 
 const { width: watchWindowWidth } = useWindowSize()
@@ -89,6 +89,7 @@ provide('subscribe', { theSubscribe, showSubscribe })
 provide('watchWindowSize', watchWindowWidth)
 provide('getOrderSubscription', getOrderSubscription)
 provide('sendSubScript', { addSubscribe, handleSubmit })
+provide('handleOrderAdd', handleOrderAdd)
 
 watchEffect(() => {
   clacWindowSize.value ? closeSubscribe() : clacWindowSize.value

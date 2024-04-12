@@ -1,8 +1,10 @@
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { ref, toRefs } from "vue";
 import { getClientOrder, upDateOrder } from "@/Plugins/supabaseOrder.js";
 import { useDebounceFn } from "@vueuse/core";
 import { creatOrderList } from "@/Plugins/day.js";
+import dayjs from "dayjs";
+import useCartStore from "@/store/modules/cart/cartStore.js";
 import { v4 as uuidv4 } from "uuid";
 
 // .uuid({ message: "Invalid UUID" })
@@ -49,6 +51,7 @@ export const useOrderStore = defineStore("order", () => {
   const myorder = ref([]);
   const subscription = ref([]);
   const recentlyViewed = ref([]);
+  const workDayList = ref(null);
   const uid = uuidv4();
   // getter
 
@@ -68,15 +71,14 @@ export const useOrderStore = defineStore("order", () => {
   //---------- helperFn Order Data ----------
 
   const createOrder = function (date) {
-    const uid = uuidv4();
     const order = {
-      order_id: uid,
+      order_id: uuidv4(),
       products: [],
       order_date: date,
     };
     return order;
   };
-
+  // Find an order for the given date, create a new one if not found
   const findOrCreateOrder = (orders, date) => {
     const index = orders.findIndex((order) => order.order_date === date);
 
@@ -88,6 +90,49 @@ export const useOrderStore = defineStore("order", () => {
       return newOrder;
     }
   };
+
+  const removeProductAndEmptyOrders = (orders, productId) => {
+    // 移除产品
+    orders.forEach((order) => {
+      const index = order.products.findIndex(
+        (product) => product.product_id === productId
+      );
+      if (index !== -1) {
+        order.products.splice(index, 1);
+      }
+    });
+
+    // 移除空订单
+    const filteredOrders = orders.filter(
+      (order) => order.products.length !== 0
+    );
+    return filteredOrders;
+  };
+  const removeProductAndEmptyOrdersByDate = (orders, date, productId) => {
+    const order = orders.find((order) => order.order_date === date);
+
+    // 如果找到了订单
+    if (order) {
+      // 移除订单中指定产品
+      const index = order.products.findIndex(
+        (product) => product.product_id === productId
+      );
+
+      if (index !== -1) {
+        order.products.splice(index, 1);
+      }
+
+      if (order.products.length === 0) {
+        const indexToRemove = orders.findIndex((o) => o.order_date === date);
+        if (indexToRemove !== -1) {
+          orders.splice(indexToRemove, 1);
+        }
+      }
+    }
+
+    return orders;
+  };
+
   const updateOrCreateProduct = (products, product) => {
     const index = products.findIndex(
       (p) => p.product_id === product.product_id
@@ -98,8 +143,8 @@ export const useOrderStore = defineStore("order", () => {
       products.push(product);
     }
   };
-
-  const processOrder = (orders, date, product) => {
+  //
+  const processOrder = async (orders, date, product) => {
     const order = findOrCreateOrder(orders, date);
     updateOrCreateProduct(order.products, product);
   };
@@ -166,63 +211,97 @@ export const useOrderStore = defineStore("order", () => {
 
     subscription.value = response;
   };
-
-  const addOrder = async function (item) {
-    // {
-    //   order_id: '123',
-    //   products: [ { price: 0, quantity: '', product_id: '456' } ],
-    //   order_date: ''
-    // }
-
-    // ['每周一次', '隔週一次', '每月一次']
-    // 取得添加的次數
-    // 31  / 7 基底 尋找陣列中的符合值 用索引乘法   最後 - 31 取模 (索引需要 +1)
-
+  // 創建操作order的基本資料
+  const createOrderManipulate = async () => {
+    const { workDayList } = await creatOrderList().filteredDates();
+    const { selectionDay } = toRefs(useCartStore());
+    const selectIndex = selectionDay.value.selectionIndex;
+    const calcUserSelectDay = workDayList[selectIndex];
+    const orders = myorder.value;
+    return { calcUserSelectDay, orders };
+  };
+  // item -> 產品資料， callback ->  需要做什麼操作
+  const handleOrderAdd = async function (item, callback) {
+    const { calcUserSelectDay, orders } = await createOrderManipulate();
+    let sendData;
     // 添加訂單
     const product = {
-      product_id: "456",
-      price: 3,
+      product_id: item.product_id,
+      product_name: item.product_name,
+      price: item.price,
+      image_url: item.image_url,
       quantity: "",
     };
-    const orders = myorder.value;
 
-    const loopFq = frequencyFindAndCreate(item);
+    // 確認選擇日期與配送週期是否有衝突
+    const isBeforeDate = (target) => {
+      const date1 = dayjs(calcUserSelectDay);
+      const date2 = dayjs(target);
+      return date1.isBefore(date2);
+    };
 
-    // 循環次數進行判斷添加 ，循環過程中需要 透過週期天數設定日期 ,這部分是設定預設行為 設定今天日期
-    // 必須得知用戶目前選擇的日期
-
-    //   7 * i[1] etc
-
-    /*
-     * 1. 把所有週期取出來
-     * 2. 比對用戶的日期，只取之後的
-     */
-
-    for (let i = 0; i <= loopFq; i++) {
-      const element = array[index];
-      console.log(7 * i);
+    // 訂閱商品
+    if (item && item.Frequency) {
+      const loopFq = frequencyFindAndCreate(item.Frequency);
+      for (let i = 0; i < loopFq; i++) {
+        const filterDay = workDayList[5 * i];
+        isBeforeDate(filterDay) ? "" : processOrder(orders, filterDay, product);
+      }
+    } else {
+      processOrder(orders, calcUserSelectDay, product);
     }
 
-    // -----循環中--------
-    // outsild Data
+    // 使用的是普通商品
 
-    // processOrder(orders, getToday.date, product);
+    myorder.value = await upDateOrder({
+      order: myorder.value,
+    });
   };
 
-  const test = async () => {
-    const { getToday, workDayList } = await creatOrderList().filteredDates();
-    const orders = myorder.value;
-    const product = {
-      product_id: "456",
-      price: 3,
-      quantity: "",
-    };
+  // 移除商品
 
-    processOrder(orders, getToday.date, product);
+  const handleOrderRemoveSubScribe = async function (item) {
+    const orders = myorder.value;
+    removeProductAndEmptyOrders(orders, item.id);
     console.log(orders);
   };
 
-  // test();
+  const handleOrderRemoveItem = async function (item) {
+    let test = [
+      {
+        order_id: "123",
+        products: [
+          {
+            price: 0,
+            quantity: "被刪除",
+            product_id: "456",
+          },
+          {
+            price: 0,
+            quantity: "被保留",
+            product_id: "459",
+          },
+        ],
+        order_date: "1991113",
+      },
+      {
+        order_id: "223",
+        products: [
+          {
+            price: 0,
+            quantity: "",
+            product_id: "416",
+          },
+        ],
+        order_date: "1991112",
+      },
+    ];
+    // orders, date, productId
+    test = removeProductAndEmptyOrdersByDate(test, "1991113", "456");
+
+    console.log(test);
+  };
+
   // 添加到訂單
 
   /* 兩種商品的判斷
@@ -255,5 +334,8 @@ export const useOrderStore = defineStore("order", () => {
     addMyfavorite,
     addrecentlyVie,
     addSubscribe,
+    handleOrderAdd,
+    handleOrderRemoveItem,
+    handleOrderRemoveSubScribe,
   };
 });

@@ -1,29 +1,33 @@
 <template>
   <!-- <ul v-if="!haveOder" class="create__oder-list"> -->
   <ul class="create__oder-list u-scroll-eva-ion text-color-eva-light-purple">
-    <date-creat-oder-item v-for="(data, index) in createDate" :key="data.date" :date="data.date"
+    <date-creat-oder-item v-for="(data, index) in workDay.workDayList" :key="data.date" :date="data.date"
       :theweek="data.dayOfWeek" :isSelected="index === selectedDateIndex"
-      @select="selectDate(index, data.date, data.dayOfWeek)" />
-
+      @update:selectWorkDay="selectDate(index, data.date, data.dayOfWeek)" />
   </ul>
 </template>
 
-<script setup>
-import DateCreatOderItem from "../../../ui/content/cartSideBar/DateCreatOderItem.vue";
-import { onMounted, ref } from "vue";
-import { createDate } from "@/Plugins/day.js";
 
+<script setup>
+
+import DateCreatOderItem from "../../../ui/content/cartSideBar/DateCreatOderItem.vue";
+import { ref, toRefs } from "vue";
+import { inject } from "vue";
+const store = inject('store')
 const selectedDateIndex = ref(-1);
 const clickedItemTitle = ref("");
+const { currentDay, workDay } = toRefs(store)
+
+
 const selectDate = (index, date, theweek) => {
   const monthDay = date.slice(5);
   clickedItemTitle.value = `${monthDay}/${theweek}`;
-  selectedDateIndex.value = index; // 当日期项被选中时更新 selectedDateIndex 的值
+  selectedDateIndex.value = index;
+  currentDay.value.currentWorkDay = clickedItemTitle.value
+  currentDay.value.selectionIndex = selectedDateIndex.value
 };
 
-onMounted(() => {
-  createDate;
-});
+
 
 </script>
 

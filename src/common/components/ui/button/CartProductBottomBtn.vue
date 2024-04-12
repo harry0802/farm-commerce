@@ -8,7 +8,8 @@
       <p>
         請在
         <strong> 9 月 30 日星期六上午 11:59</strong>
-        之前建立帳戶，否則您購物車中的商品將被刪除。已經是會員 ？登入
+        之前建立帳戶，否則您購物車中的商品將被刪除。已經是會員 ？
+        登入
       </p>
     </div>
     <div class="flex-1 flex justify-center" v-else>

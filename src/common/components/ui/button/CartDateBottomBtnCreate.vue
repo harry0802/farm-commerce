@@ -1,9 +1,5 @@
 <template>
-  <button
-    type="button"
-    class="btn__creare u-pirmary-button"
-    @click="store.openList"
-  >
+  <button type="button" class="btn__creare u-pirmary-button" @click="store.openList">
     添加新日期
   </button>
 </template>

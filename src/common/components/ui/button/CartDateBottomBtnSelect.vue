@@ -1,18 +1,16 @@
 <template>
   <div class="buttom-bar__select">
-    <button
-      class="btn__cancel cancel u-pirmary-button"
-      @click="store.closeList"
-    >
+    <button class="btn__cancel cancel u-pirmary-button" @click="store.closeList">
       取消
     </button>
-    <button class="btn__creare u-pirmary-button">添加</button>
+    <button @click="store.setSelectionDay" class="btn__creare u-pirmary-button">添加</button>
   </div>
 </template>
 
 <script setup>
-import cartStore from "@/store/modules/cart/cartStore.js";
-const store = cartStore();
+
+import { inject } from "vue";
+const store = inject('store')
 </script>
 
 <style scoped>
@@ -31,6 +29,7 @@ button {
   font-size: 25px;
   /* border-radius: 20px; */
 }
+
 button.cancel {
   background: #0c1d00;
   border: 3px solid #e6770b;

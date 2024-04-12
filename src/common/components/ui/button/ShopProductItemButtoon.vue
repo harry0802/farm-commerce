@@ -4,7 +4,7 @@
       <p>定期配送</p>
       <Icon class=" group-hover:-rotate-180" icon="entypo:cycle" />
     </button>
-    <button class="w-auto  max-h-11 product-button u-pirmary-button ">
+    <button @click="handleorder" class="w-auto  max-h-11 product-button u-pirmary-button ">
       <p v-if="!clacWindowSize">加到購物車</p>
     </button>
   </div>
@@ -28,11 +28,13 @@ const props = defineProps({
   Subscribe: { type: Boolean },
   Limited: { type: String }
 })
-const { theSubscribe } = inject('subscribe')
 
-
-const { showSubscribe } = inject('subscribe')
+const { theSubscribe, showSubscribe } = inject('subscribe')
+const handleOrderAdd = inject('handleOrderAdd')
 const watchWindowSize = inject('watchWindowSize')
+const productItem = inject('productItem')
+
+const handleorder = () => handleOrderAdd(productItem)
 
 
 </script>

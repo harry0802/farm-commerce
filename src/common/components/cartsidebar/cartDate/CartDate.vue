@@ -20,5 +20,3 @@ import DateDynamicButtonBar from "../../cartsidebar/cartDate/dateList/DateDynami
 import cartStore from "@/store/modules/cart/cartStore.js";
 const store = cartStore();
 </script>
-
-<style></style>
