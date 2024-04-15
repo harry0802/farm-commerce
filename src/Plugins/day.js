@@ -1,9 +1,9 @@
 import dayjs from "dayjs";
 import { getSupabaseData } from "@/config/FarmPruductsItemManage.js";
-import store from "@/store/modules/cart/cartStore.js";
-import { computed } from "vue";
+import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import updateLocale from "dayjs/plugin/updateLocale";
 dayjs.extend(updateLocale);
+dayjs.extend(isSameOrBefore);
 dayjs.updateLocale("en", {
   months: [
     "一月",

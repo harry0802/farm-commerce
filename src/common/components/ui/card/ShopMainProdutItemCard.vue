@@ -3,15 +3,16 @@
     <div class="relative  product-item__container p-1.5 flex flex-col h-full   ">
       <!-- 產品圖片 -->
       <div class="relative product-item__photo">
-        <MarkFavoriteBtn :data="data" class="right-2 top-2 z-[1]" />
+        <MarkFavoriteBtn :data="data" class="right-2 top-2 z-[0]" />
         <RouterLink @click="addrecentlyVie(data)" class="photo__links"
           :to="`/product/${data.product_name + '-' + data.product_code}`">
           <div>
             <img class="object-cover rounded-lg" :src=data.image_url alt="" />
-            <p v-if="getOrderSubscription"
+            <p v-if="getOderFrequency"
               class="absolute flex flex-col  w-full h-full inset-0 place-content-center place-items-center  rounded-lg bg-[#07261e73] text-white ">
-              <span class="u-text-large font-[Yagoinini]">{{ getOrderSubscription.Quantity }}</span>
+              <span class="u-text-large font-[Yagoinini]">{{ getOderFrequency }}</span>
               <span class="font-[Yagoinini]  tracking-widest u-text-small">加入訂單</span>
+
             </p>
           </div>
         </RouterLink>
@@ -34,10 +35,10 @@
             <button type="button" class="max-w-[140px] u-subscribe-btn cancel text-color-primary"
               @click="closeSubscribe">取消</button>
             <button type="submit" class="max-w-[140px] u-subscribe-btn confirm text-color-primary">確認</button>
-
           </div>
         </template>
       </ProdictFormCard>
+
     </div>
   </div>
 
@@ -49,19 +50,20 @@ import ProdictFormCard from '@/common/components/ui/card/ProdictFormCard.vue'
 import ProductSelection from "@/common/components/ui/product/ProductSelection.vue";
 import MarkFavoriteBtn from "@/common/components/ui/button/MarkFavoriteBtn.vue";
 import MarkTextIcon from "@/common/components/ui/icon/MarkTextIcon.vue";
-import { provide, ref, computed, watchEffect, toRefs, } from "vue";
+import useCartStore from "@/store/modules/cart/cartStore.js";
+import { provide, ref, computed, watchEffect, toRefs, onMounted, } from "vue";
 import { useWindowSize } from '@vueuse/core'
 import { useOrderStore } from "@/store/modules/order/index.js";
 
 
 
 
-
 const { addSubscribe, addrecentlyVie, handleOrderAdd } = useOrderStore()
-const { subscription, } = toRefs(useOrderStore())
+const { subscription, myorder, workDayLists } = toRefs(useOrderStore())
+const { selectionDay } = toRefs(useCartStore());
 
 const { width: watchWindowWidth } = useWindowSize()
-
+const userSelectOrder = ref(null)
 
 
 const props = defineProps({
@@ -78,10 +80,24 @@ const closeSubscribe = () => theSubscribe.value = false
 const clacWindowSize = computed(() => watchWindowWidth.value > 600)
 
 // filter Data
+
 const getOrderSubscription = computed(() =>
   subscription.value.find(
     (item) => item.product_id === props.data.product_id
   ))
+
+
+const getOderFrequency = computed(() => {
+  if (!workDayLists.value) return
+  const selectIndex = selectionDay.value.selectionIndex;
+  const calcUserSelectDay = workDayLists.value[selectIndex];
+  const findDate = myorder.value.find((d) => d.order_date === calcUserSelectDay.date)
+  if (!findDate) return
+  const { products } = findDate
+  const [order] = products.filter((p) => p.product_id === props.data.product_id);
+  return order?.quantity
+}
+)
 
 
 provide('productItem', props.data)
@@ -101,16 +117,14 @@ watchEffect(() => {
 
 
 
+
 const onsubmit = async (vl) => {
-  const orderid = props.data.product_id;
   await (handleSubmit.value(({ quantity,
     frequency }) => {
-    addSubscribe({ quantity, frequency, orderid })
+    addSubscribe({ quantity, frequency, ...props.data })
   }))(vl)
-
   closeSubscribe()
 }
-
 
 
 </script>

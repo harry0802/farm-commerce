@@ -51,8 +51,7 @@ export const useOrderStore = defineStore("order", () => {
   const myorder = ref([]);
   const subscription = ref([]);
   const recentlyViewed = ref([]);
-  const workDayList = ref(null);
-  const uid = uuidv4();
+  const workDayLists = ref(null);
   // getter
 
   //  helper FN
@@ -64,7 +63,7 @@ export const useOrderStore = defineStore("order", () => {
 
   const frequencyFindAndCreate = (sendData) => {
     const frequency = ["每周一次", "隔週一次", "每月一次"];
-    const index = checkContent(frequency, (fq) => fq === sendData.Frequency);
+    const index = checkContent(frequency, (fq) => fq === sendData);
     return Math.floor(31 / (7 * (index + 1)));
   };
 
@@ -80,17 +79,32 @@ export const useOrderStore = defineStore("order", () => {
   };
   // Find an order for the given date, create a new one if not found
   const findOrCreateOrder = (orders, date) => {
-    const index = orders.findIndex((order) => order.order_date === date);
+    const index = orders.findIndex((order) => order.order_date === date.date);
 
     if (index !== -1) {
       return orders[index];
     } else {
-      const newOrder = createOrder(date); // 假設這裡有一個創建新訂單的函式
+      const newOrder = createOrder(date.date);
       orders.push(newOrder);
       return newOrder;
     }
   };
 
+  const updateOrCreateProduct = (products, product) => {
+    const index = products.findIndex(
+      (p) => p.product_id === product.product_id
+    );
+    if (index !== -1) {
+      products[index] = product;
+    } else {
+      products.push(product);
+    }
+  };
+  //
+  const processOrder = async (orders, date, product) => {
+    const { products } = findOrCreateOrder(orders, date);
+    updateOrCreateProduct(products, product);
+  };
   const removeProductAndEmptyOrders = (orders, productId) => {
     // 移除产品
     orders.forEach((order) => {
@@ -133,29 +147,18 @@ export const useOrderStore = defineStore("order", () => {
     return orders;
   };
 
-  const updateOrCreateProduct = (products, product) => {
-    const index = products.findIndex(
-      (p) => p.product_id === product.product_id
-    );
-    if (index !== -1) {
-      products[index] = product;
-    } else {
-      products.push(product);
-    }
-  };
-  //
-  const processOrder = async (orders, date, product) => {
-    const order = findOrCreateOrder(orders, date);
-    updateOrCreateProduct(order.products, product);
-  };
-
   //  init
   const initializeOrderStore = async function () {
-    const reponse = await getClientOrder();
+    const [reponse, { workDayList }] = await Promise.all([
+      await getClientOrder(),
+      await creatOrderList().filteredDates(),
+    ]);
+
     myfavorite.value = reponse.favorite;
     myorder.value = reponse.order;
     subscription.value = reponse.subscription;
     recentlyViewed.value = reponse.recently_viewed;
+    workDayLists.value = workDayList;
   };
 
   // added Array
@@ -189,7 +192,7 @@ export const useOrderStore = defineStore("order", () => {
     const { getToday } = await creatOrderList().filteredDates();
 
     const sendData = {
-      product_id: item.orderid,
+      product_id: item.product_id,
       Quantity: item.quantity,
       Frequency: item.frequency,
       DeliveryDay: getToday.dayOfWeek,
@@ -205,11 +208,14 @@ export const useOrderStore = defineStore("order", () => {
       ? (subscription.value[index] = sendData)
       : subscription.value.push(sendData);
 
-    const response = await upDateOrder({
-      subscription: subscription.value,
-    });
+    const [subscriptionSp] = await Promise.all([
+      upDateOrder({
+        subscription: subscription.value,
+      }),
+      handleOrderAdd(item),
+    ]);
 
-    subscription.value = response;
+    subscription.value = subscriptionSp;
   };
   // 創建操作order的基本資料
   const createOrderManipulate = async () => {
@@ -218,48 +224,49 @@ export const useOrderStore = defineStore("order", () => {
     const selectIndex = selectionDay.value.selectionIndex;
     const calcUserSelectDay = workDayList[selectIndex];
     const orders = myorder.value;
-    return { calcUserSelectDay, orders };
+    return { calcUserSelectDay, orders, workDayList };
   };
   // item -> 產品資料， callback ->  需要做什麼操作
-  const handleOrderAdd = async function (item, callback) {
-    const { calcUserSelectDay, orders } = await createOrderManipulate();
-    let sendData;
+  const handleOrderAdd = async function (item) {
+    const { calcUserSelectDay, orders, workDayList } =
+      await createOrderManipulate();
+
     // 添加訂單
     const product = {
       product_id: item.product_id,
       product_name: item.product_name,
       price: item.price,
       image_url: item.image_url,
-      quantity: "",
+      quantity: item.quantity || "1",
     };
 
     // 確認選擇日期與配送週期是否有衝突
-    const isBeforeDate = (target) => {
-      const date1 = dayjs(calcUserSelectDay);
+    const isSameOrBeforeDate = (target) => {
+      const date1 = dayjs(calcUserSelectDay.date);
       const date2 = dayjs(target);
-      return date1.isBefore(date2);
+      return date1.isSameOrBefore(date2);
     };
 
     // 訂閱商品
-    if (item && item.Frequency) {
-      const loopFq = frequencyFindAndCreate(item.Frequency);
+    if (item && item.frequency) {
+      const loopFq = frequencyFindAndCreate(item.frequency);
       for (let i = 0; i < loopFq; i++) {
         const filterDay = workDayList[5 * i];
-        isBeforeDate(filterDay) ? "" : processOrder(orders, filterDay, product);
+        isSameOrBeforeDate(filterDay.date)
+          ? processOrder(myorder.value, filterDay, product)
+          : "";
       }
     } else {
-      processOrder(orders, calcUserSelectDay, product);
+      processOrder(myorder.value, calcUserSelectDay, product);
     }
 
     // 使用的是普通商品
-
     myorder.value = await upDateOrder({
       order: myorder.value,
     });
   };
 
   // 移除商品
-
   const handleOrderRemoveSubScribe = async function (item) {
     const orders = myorder.value;
     removeProductAndEmptyOrders(orders, item.id);
@@ -302,34 +309,17 @@ export const useOrderStore = defineStore("order", () => {
     console.log(test);
   };
 
-  // 添加到訂單
-
-  /* 兩種商品的判斷
-
-       -查閱是否有該日期 ? 預設第一個工作天, 透過改變行程，更改工作天
-       -查閱是否有該日期 ? 使用日期檢查 * 格式需要統一
-
-
-   * 1. 直接添加 -> 查閱是否有該日期？ 創建新日期 : 添加到該日期的行列
- 
-
-
-   * 2. 訂閱 -> 判斷訂閱的週期  
-       * 由於是使用預設添加所以都會是週一 (每週的第一個工作天)
-        每周一次 ?  添加到訂單， 到月底前的每週一筆 （1）
-        隔週一次 ?  添加到訂單， 到月底前的每隔週一筆 (7)
-        每月一次 ?  添加到訂單， 到月底前的每隔週一筆 (14)
-   */
-
   return {
     //state
     myfavorite,
     myorder,
     subscription,
     recentlyViewed,
+    workDayLists,
     // getter
 
     // fn
+
     initializeOrderStore,
     addMyfavorite,
     addrecentlyVie,
@@ -337,5 +327,7 @@ export const useOrderStore = defineStore("order", () => {
     handleOrderAdd,
     handleOrderRemoveItem,
     handleOrderRemoveSubScribe,
+    //
+    createOrderManipulate,
   };
 });
