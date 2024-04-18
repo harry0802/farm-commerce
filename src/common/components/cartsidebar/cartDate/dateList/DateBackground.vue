@@ -1,6 +1,6 @@
 <template>
   <dynamic-photo>
-    <p class="u-text-small">目前尚未建立任何訂單</p>
+    <p class="u-text-small text-color-grey-light  tracking-widest">目前尚未建立任何訂單</p>
     <!--
     如果用戶有訂閱商品的話？
         <div>
@@ -20,7 +20,5 @@ export default {
 <style scoped>
 p {
   font-family: Yagoinini;
-  letter-spacing: 2px;
-  color: #0c1d00;
 }
 </style>

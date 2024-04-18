@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref, toRefs } from "vue";
+import { ref, toRefs, computed } from "vue";
 import { getClientOrder, upDateOrder } from "@/Plugins/supabaseOrder.js";
 import { useDebounceFn } from "@vueuse/core";
 import { creatOrderList } from "@/Plugins/day.js";
@@ -54,6 +54,8 @@ export const useOrderStore = defineStore("order", () => {
   const workDayLists = ref(null);
   // getter
 
+  const calcOrderState = computed(() => myorder.value.length !== 0);
+
   //  helper FN
   const debonseUpDateOrder = useDebounceFn(() => {
     return upDateOrder({ favorite: myfavorite.value });
@@ -79,12 +81,14 @@ export const useOrderStore = defineStore("order", () => {
   };
   // Find an order for the given date, create a new one if not found
   const findOrCreateOrder = (orders, date) => {
-    const index = orders.findIndex((order) => order.order_date === date.date);
+    const index = orders.findIndex(
+      (order) => order.order_date.date === date.date
+    );
 
     if (index !== -1) {
       return orders[index];
     } else {
-      const newOrder = createOrder(date.date);
+      const newOrder = createOrder(date);
       orders.push(newOrder);
       return newOrder;
     }
@@ -147,18 +151,25 @@ export const useOrderStore = defineStore("order", () => {
     return orders;
   };
 
+  // 移除過期訂單
+  const removeExpiredOrders = (dayList, order) => {
+    const currentDay = dayjs(dayList[0].date);
+    myorder.value = order.filter((pd) =>
+      currentDay.isSameOrBefore(dayjs(pd.order_date.date))
+    );
+  };
   //  init
   const initializeOrderStore = async function () {
     const [reponse, { workDayList }] = await Promise.all([
       await getClientOrder(),
       await creatOrderList().filteredDates(),
     ]);
-
     myfavorite.value = reponse.favorite;
-    myorder.value = reponse.order;
+    // myorder.value = reponse.order;
     subscription.value = reponse.subscription;
     recentlyViewed.value = reponse.recently_viewed;
     workDayLists.value = workDayList;
+    removeExpiredOrders(workDayList, reponse.order);
   };
 
   // added Array
@@ -217,6 +228,7 @@ export const useOrderStore = defineStore("order", () => {
 
     subscription.value = subscriptionSp;
   };
+
   // 創建操作order的基本資料
   const createOrderManipulate = async () => {
     const { workDayList } = await creatOrderList().filteredDates();
@@ -228,8 +240,7 @@ export const useOrderStore = defineStore("order", () => {
   };
   // item -> 產品資料， callback ->  需要做什麼操作
   const handleOrderAdd = async function (item) {
-    const { calcUserSelectDay, orders, workDayList } =
-      await createOrderManipulate();
+    const { calcUserSelectDay, workDayList } = await createOrderManipulate();
 
     // 添加訂單
     const product = {
@@ -317,10 +328,10 @@ export const useOrderStore = defineStore("order", () => {
     recentlyViewed,
     workDayLists,
     // getter
-
+    calcOrderState,
     // fn
-
     initializeOrderStore,
+    createOrderManipulate,
     addMyfavorite,
     addrecentlyVie,
     addSubscribe,
@@ -328,6 +339,5 @@ export const useOrderStore = defineStore("order", () => {
     handleOrderRemoveItem,
     handleOrderRemoveSubScribe,
     //
-    createOrderManipulate,
   };
 });

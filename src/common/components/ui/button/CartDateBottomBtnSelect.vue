@@ -1,6 +1,6 @@
 <template>
   <div class="buttom-bar__select">
-    <button class="btn__cancel cancel u-pirmary-button" @click="store.closeList">
+    <button class="btn__cancel cancel u-pirmary-button" @click="handleCancel">
       取消
     </button>
     <button @click="store.setSelectionDay" class="btn__creare u-pirmary-button">添加</button>
@@ -11,6 +11,12 @@
 
 import { inject } from "vue";
 const store = inject('store')
+const handleCancel = () => {
+  store.currentDay = { currentWorkDay: null, selectionIndex: 0 }
+  store.closeList()
+}
+
+
 </script>
 
 <style scoped>

@@ -25,18 +25,22 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, onBeforeUnmount, provide } from "vue";
+import { ref, onMounted, watch, onBeforeUnmount, provide, toRefs } from "vue";
 import HeaderSideBarSelectorBtn from "../ui/button/HeaderSideBarSelectorBtn.vue";
 import { onClickOutside, useWindowSize } from "@vueuse/core";
 import CartProdut from "../cartsidebar/cartProdut/CartProdut.vue";
 import cartDate from "../../components/cartsidebar/cartDate/CartDate.vue";
 import cartStore from "@/store/modules/cart/cartStore.js";
+import { useOrderStore } from "@/store/modules/order/index.js";
 
+const { workDayLists, myorder, calcOrderState, dailyOrdersLookup } = toRefs(useOrderStore());
 const store = cartStore();
 
 const marginTop = ref(40);
 const { width } = useWindowSize()
-const workDayList = ref(null)
+
+
+
 
 
 
@@ -52,6 +56,9 @@ const handleScroll = () => {
   marginTop.value = scrollTop <= 40 ? 40 - scrollTop : 0;
 }
 
+
+
+
 onMounted(() => {
   const header = document.getElementById('header')
   onClickOutside(header, () => {
@@ -65,6 +72,7 @@ onBeforeUnmount(() => {
 })
 
 provide('store', store)
+provide('orderStore', { myorder, calcOrderState, dailyOrdersLookup, workDayLists })
 
 </script>
 

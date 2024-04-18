@@ -13,16 +13,15 @@
 </template>
 
 <script setup>
-import { computed, toRefs, } from "vue";
-import cartStore from "@/store/modules/cart/cartStore.js";
-
-const store = cartStore();
+import { computed, toRefs, inject } from "vue";
+const store = inject('store')
 const { calcUserSelectDay } = toRefs(store)
-
-
 const scalcTextRight = computed(() =>
-  store.getExistenceProduct ? "我的訂單" : "訂單日期"
+  store.getshowList ? "訂單日期" : "我的訂單"
 );
+
+
+
 
 const selectButtom = function () {
   store.showProductItem = !store.showProductItem;

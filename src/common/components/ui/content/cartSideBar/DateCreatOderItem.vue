@@ -63,7 +63,7 @@ p {
 }
 
 .oder__item--btn:hover {
-  background: hsl(274, 30%, 60%);
+  background: #9d7ab8;
 }
 
 .active.oder__item--btn {

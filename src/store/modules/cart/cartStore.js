@@ -1,4 +1,4 @@
-import { defineStore } from "pinia";
+import { defineStore, storeToRefs } from "pinia";
 import { toast } from "vue-sonner";
 
 const store = defineStore("cartStore", {
@@ -11,13 +11,13 @@ const store = defineStore("cartStore", {
       currentDay: { currentWorkDay: null, selectionIndex: 0 },
       selectionDay: { currentWorkDay: null, selectionIndex: 0 },
       workDay: {},
+      product: null,
     };
   },
   getters: {
     getshowCart: (state) => state.showCart,
     getExistenceProduct: (state) => state.existenceProduct,
     getshowList: (state) => state.showList,
-
     calcUserSelectDay: (state) => {
       if (!state.workDay.getToday) return;
       const { date, dayOfWeek } = state.workDay.getToday;

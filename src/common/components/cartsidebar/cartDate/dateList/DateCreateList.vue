@@ -1,6 +1,6 @@
 <template>
   <!-- <ul v-if="!haveOder" class="create__oder-list"> -->
-  <ul class="create__oder-list u-scroll-eva-ion text-color-eva-light-purple">
+  <ul class="create__oder-list u-scroll-eva-ion ">
     <date-creat-oder-item v-for="(data, index) in workDay.workDayList" :key="data.date" :date="data.date"
       :theweek="data.dayOfWeek" :isSelected="index === selectedDateIndex"
       @update:selectWorkDay="selectDate(index, data.date, data.dayOfWeek)" />

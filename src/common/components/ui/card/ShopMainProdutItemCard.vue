@@ -63,7 +63,6 @@ const { subscription, myorder, workDayLists } = toRefs(useOrderStore())
 const { selectionDay } = toRefs(useCartStore());
 
 const { width: watchWindowWidth } = useWindowSize()
-const userSelectOrder = ref(null)
 
 
 const props = defineProps({
@@ -91,7 +90,7 @@ const getOderFrequency = computed(() => {
   if (!workDayLists.value) return
   const selectIndex = selectionDay.value.selectionIndex;
   const calcUserSelectDay = workDayLists.value[selectIndex];
-  const findDate = myorder.value.find((d) => d.order_date === calcUserSelectDay.date)
+  const findDate = myorder.value.find((d) => d.order_date.date === calcUserSelectDay.date)
   if (!findDate) return
   const { products } = findDate
   const [order] = products.filter((p) => p.product_id === props.data.product_id);

@@ -30,7 +30,7 @@ const creatCartList = function () {
   const dateArr = [];
   const limit = currentMonth.daysInMonth();
   for (let i = 0; i < limit; i++) {
-    const formattedDate = currentDate.add(0, "y").add(i, "day");
+    const formattedDate = currentDate.add(0, "y").add(i + 1, "day");
     const output = {
       date: formattedDate.format("YYYY/M/D"),
       dayOfWeek: formattedDate.format("dd"),
