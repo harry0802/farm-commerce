@@ -2,7 +2,8 @@
   <dynamic-wrapper>
     <!-- 當為型態 2 時將會被隱藏 if -->
     <template #list>
-      <component v-if="!store.getshowList" :is="calcOrderState? DateProductList:DateBackground" />
+      <component v-if="calcOrderState ? store.getshowList : !store.getshowList"
+        :is="calcOrderState? DateProductList:DateBackground" />
       <date-list v-else />
     </template>
     <template #bottom>

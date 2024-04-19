@@ -1,7 +1,7 @@
 <template>
   <dynamic-wrapper>
     <template #list>
-      <dynamic-photo v-if="calcOrderState">
+      <dynamic-photo v-if="!calcOrderState">
         <figcaption class="u-text-medium text-color-eva-dark-yellow mb-4">
           請添加商品
         </figcaption>
@@ -22,10 +22,9 @@ import DynamicPhoto from "../../ui/content/cartSideBar/DynamicPhoto.vue";
 import CartProductOder from "../cartProdut/CartProductOder.vue";
 import CartProductBottomBtn from "../../ui/button/CartProductBottomBtn.vue";
 
-import { ref, inject } from "vue";
-
-const haveproduct = ref(false);
+import { inject } from "vue";
 const { calcOrderState } = inject('orderStore')
+
 </script>
 
 <style scoped>

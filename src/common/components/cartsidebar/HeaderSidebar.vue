@@ -33,7 +33,7 @@ import cartDate from "../../components/cartsidebar/cartDate/CartDate.vue";
 import cartStore from "@/store/modules/cart/cartStore.js";
 import { useOrderStore } from "@/store/modules/order/index.js";
 
-const { workDayLists, myorder, calcOrderState, dailyOrdersLookup } = toRefs(useOrderStore());
+const { workDayLists, myorder, calcOrderState, setProductCart, productCart, handleSelectionDay } = toRefs(useOrderStore());
 const store = cartStore();
 
 const marginTop = ref(40);
@@ -58,7 +58,6 @@ const handleScroll = () => {
 
 
 
-
 onMounted(() => {
   const header = document.getElementById('header')
   onClickOutside(header, () => {
@@ -72,7 +71,7 @@ onBeforeUnmount(() => {
 })
 
 provide('store', store)
-provide('orderStore', { myorder, calcOrderState, dailyOrdersLookup, workDayLists })
+provide('orderStore', { myorder, calcOrderState, workDayLists, setProductCart, productCart, handleSelectionDay })
 
 </script>
 

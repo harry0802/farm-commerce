@@ -15,10 +15,13 @@
 <script setup>
 import { computed, toRefs, inject } from "vue";
 const store = inject('store')
-const { calcUserSelectDay } = toRefs(store)
+const { calcUserSelectDay, } = toRefs(store)
+const { calcOrderState } = inject('orderStore')
+
 const scalcTextRight = computed(() =>
-  store.getshowList ? "訂單日期" : "我的訂單"
+  calcOrderState.value ? store.getshowList ? "我的訂單" : "訂單日期" : store.getshowList ? "訂單日期" : "我的訂單"
 );
+
 
 
 

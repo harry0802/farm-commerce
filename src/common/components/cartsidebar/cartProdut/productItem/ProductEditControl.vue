@@ -1,6 +1,6 @@
 <template>
   <li class="item__list--edit">
-    <p class="edit__price">價格待定</p>
+    <p class="edit__price">{{ price }}</p>
     <!-- 數量與移除 -->
     <div class="edit__control">
       <div class="edit__contro--select">
@@ -13,6 +13,11 @@
 
 <script setup>
 import ProductEditSelect from "../../../cartsidebar/cartProdut/productItem/ProductEditSelect.vue";
+defineProps({
+  price: String,
+  quantity: String,
+})
+
 </script>
 
 <style scoped>
@@ -22,6 +27,7 @@ import ProductEditSelect from "../../../cartsidebar/cartProdut/productItem/Produ
   font-size: 14px;
   letter-spacing: 2px;
 }
+
 .item__list--edit {
   height: 100%;
   display: flex;
@@ -30,6 +36,7 @@ import ProductEditSelect from "../../../cartsidebar/cartProdut/productItem/Produ
   text-align: right;
   align-items: flex-end;
 }
+
 .edit__contro--select {
   display: flex;
   flex-direction: column;

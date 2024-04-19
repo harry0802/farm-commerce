@@ -1,7 +1,7 @@
 <template>
-  <li @click="handleSelectionDay(orders.order_date)"
+  <li @click="handleSelectionDay(orders)"
     class=" oder__item relative bg-color-eva-light-purple py-8 px-4 transition-colors duration-200 hover:bg-[#9d7ab8]"
-    v-for="(orders, i) in   myorder  " :key="orders.clients_id">
+    v-for="(orders, i) in  myorder  " :key="orders.clients_id">
     <button>
       <div class="text-left">
         <!-- 他只有在第最近的日期出現 -->
@@ -36,21 +36,14 @@
 </template>
 
 <script setup>
-import { computed, inject, toRefs } from "vue";
+import { computed, inject, } from "vue";
 import { Icon } from "@iconify/vue";
 
 const props = defineProps({
   deadline: Boolean,
-  deliveryTime: { type: String, default: "10:00 AM - 4:00 PM" },
-  lastEdit: { type: String, default: "Tuesday, October 24 at 11 : 59 AM" },
 });
 
-const { myorder, workDayLists } = inject('orderStore')
-const store = inject('store')
-const { selectionDay, } = toRefs(store)
-
-
-console.log();
+const { myorder, calcOrderState, handleSelectionDay } = inject('orderStore')
 
 const haveOderIcon = computed(() =>
   props.deadline ? "iconoir:delivery-truck" : "fluent:clock-alarm-24-filled"
@@ -74,15 +67,6 @@ const productState = computed(() =>
 const lastEditTrans = (day) => {
   let [m, d] = day.slice(5).split('/')
   return `${m} 月 ${+d - 1} 號`
-}
-
-
-const handleSelectionDay = (day) => {
-  const indx = workDayLists.value.findIndex((d) => d.date === day.date)
-  const { date, dayOfWeek } = day
-  selectionDay.value.currentWorkDay = `${date.slice(5)}/${dayOfWeek}`
-  selectionDay.value.selectionIndex = indx
-  store.showProductItem = !store.showProductItem;
 }
 
 

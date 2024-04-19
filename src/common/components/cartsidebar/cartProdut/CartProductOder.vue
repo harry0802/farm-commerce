@@ -73,6 +73,9 @@
 import SideBarOderItem from "../../ui/content/cartSideBar/SideBarOderItem.vue";
 import ProductProgress from "./productItem/ProductSummaryProgress.vue";
 import ProductSummary from "../../cartsidebar/cartProdut/productItem/ProductSummary.vue";
+import { inject } from "vue";
+
+const { productCart } = inject('orderStore')
 </script>
 
 <style scoped>

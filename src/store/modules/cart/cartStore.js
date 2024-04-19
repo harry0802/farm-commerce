@@ -1,4 +1,4 @@
-import { defineStore, storeToRefs } from "pinia";
+import { defineStore } from "pinia";
 import { toast } from "vue-sonner";
 
 const store = defineStore("cartStore", {

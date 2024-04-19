@@ -11,9 +11,10 @@
 
 import { inject } from "vue";
 const store = inject('store')
+const { calcOrderState } = inject('orderStore')
 const handleCancel = () => {
   store.currentDay = { currentWorkDay: null, selectionIndex: 0 }
-  store.closeList()
+  calcOrderState.value ? store.openList() : store.closeList()
 }
 
 

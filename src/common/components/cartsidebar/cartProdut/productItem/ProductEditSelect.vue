@@ -1,15 +1,7 @@
 <template>
-  <select
-    class="select__detail text-color-eva-dark-green focus:border-color-eva-dark-green"
-    v-model="selectedQuantity"
-  >
-    <option value="">請選擇數量</option>
-    <oder-edit-slect-option
-      v-model="selectedQuantity"
-      v-for="option in options"
-      :key="option"
-      :optionValue="option"
-    ></oder-edit-slect-option>
+  <select class="select__detail text-color-eva-dark-green focus:border-color-eva-dark-green" v-model="selectedQuantity">
+    <option disabled>請選擇數量</option>
+    <oder-edit-slect-option v-model="selectedQuantity" v-for="option in options" :key="option" :optionValue="option" />
   </select>
 </template>
 

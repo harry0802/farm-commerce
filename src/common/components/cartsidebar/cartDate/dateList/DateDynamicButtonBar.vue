@@ -1,7 +1,7 @@
 <template>
   <dynamic-bottom-bar>
     <component :is="
-        store.getshowList ? CartDateBottomBtnSelect : CartDateBottomBtnCreate
+        calcOrderState ? store.getshowList ? CartDateBottomBtnCreate: CartDateBottomBtnSelect : store.getshowList ? CartDateBottomBtnSelect : CartDateBottomBtnCreate
       "></component>
   </dynamic-bottom-bar>
 </template>
@@ -12,6 +12,7 @@ import CartDateBottomBtnCreate from "../../../ui/button/CartDateBottomBtnCreate.
 import CartDateBottomBtnSelect from "../../../ui/button/CartDateBottomBtnSelect.vue";
 import { inject } from "vue";
 const store = inject('store')
+const { calcOrderState } = inject('orderStore')
 
 </script>
 
