@@ -14,6 +14,18 @@ const createOrderManipulate = async (order) => {
   return { calcUserSelectDay, orders, workDayList };
 };
 
+// set UserSelection default firstOrder
+const setDefaultFirstOrder = function (order, workDayLists) {
+  if (order.value.length === 0) return;
+  const indx = workDayLists.findIndex(
+    (d) => d.date === order.value[0].order_date.date
+  );
+  const { selectionDay } = toRefs(useCartStore());
+  const { date, dayOfWeek } = order.value[0].order_date;
+  selectionDay.value.currentWorkDay = `${date.slice(5)}/${dayOfWeek}`;
+  selectionDay.value.selectionIndex = indx;
+};
+
 // 移除過期訂單
 const removeExpiredOrders = (dayList, orderSp, order) => {
   const currentDay = dayjs(dayList[0].date);
@@ -123,4 +135,5 @@ export {
   processOrder,
   frequencyFindAndCreate,
   orderDataSorter,
+  setDefaultFirstOrder,
 };

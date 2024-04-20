@@ -43,7 +43,7 @@ const props = defineProps({
   deadline: Boolean,
 });
 
-const { myorder, calcOrderState, handleSelectionDay } = inject('orderStore')
+const { myorder, handleSelectionDay } = inject('orderStore')
 
 const haveOderIcon = computed(() =>
   props.deadline ? "iconoir:delivery-truck" : "fluent:clock-alarm-24-filled"

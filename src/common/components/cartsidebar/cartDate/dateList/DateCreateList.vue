@@ -3,7 +3,7 @@
   <ul class="create__oder-list u-scroll-eva-ion ">
     <date-creat-oder-item v-for="(data, index) in workDay.workDayList" :key="data.date" :date="data.date"
       :theweek="data.dayOfWeek" :isSelected="index === selectedDateIndex"
-      @update:selectWorkDay="selectDate(index, data.date, data.dayOfWeek)" />
+      @update:selectWorkDay="selectDate(index, data)" />
   </ul>
 </template>
 
@@ -29,12 +29,13 @@ const filterOrderSchedule = function () {
 
 
 
-const selectDate = (index, date, theweek) => {
+const selectDate = (index, dates) => {
+  const { date, theweek } = dates
   const monthDay = date.slice(5);
   clickedItemTitle.value = `${monthDay}/${theweek}`;
   selectedDateIndex.value = index;
   currentDay.value.currentWorkDay = clickedItemTitle.value
-  currentDay.value.selectionIndex = selectedDateIndex.value
+  currentDay.value.selectionIndex = index
 };
 
 

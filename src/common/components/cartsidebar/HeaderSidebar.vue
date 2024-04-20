@@ -51,10 +51,13 @@ watch(() => store.showCart, (newVal) => {
 })
 
 
+
 const handleScroll = () => {
   const scrollTop = window.scrollY;
   marginTop.value = scrollTop <= 40 ? 40 - scrollTop : 0;
 }
+
+
 
 
 

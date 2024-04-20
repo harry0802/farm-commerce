@@ -26,6 +26,7 @@ const throttledLoginHandler = useThrottleFn(async (event, session) => {
   if (event === "SIGNED_OUT") {
     console.log("User signed out");
     accountStore.$reset();
+    cart.$reset();
     resetOrder();
   }
 }, 1000);

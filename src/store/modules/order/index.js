@@ -14,6 +14,7 @@ import {
   processOrder,
   frequencyFindAndCreate,
   orderDataSorter,
+  setDefaultFirstOrder,
 } from "@/store/modules/order/orderContext.js";
 
 // .uuid({ message: "Invalid UUID" })
@@ -46,7 +47,9 @@ export const useOrderStore = defineStore(
       subscription.value = reponse.subscription;
       recentlyViewed.value = reponse.recently_viewed;
       workDayLists.value = workDayList;
+
       removeExpiredOrders(workDayList, reponse.order, myorder);
+      setDefaultFirstOrder(myorder, workDayList);
     };
 
     // userhandle
@@ -133,8 +136,16 @@ export const useOrderStore = defineStore(
       // 訂閱商品
       if (item && item.frequency) {
         const loopFq = frequencyFindAndCreate(item.frequency);
+        const indexDate = workDayList.findIndex(
+          (d) => d.date === calcUserSelectDay.date
+        );
         for (let i = 0; i < loopFq; i++) {
-          const filterDay = workDayList[5 * i];
+          let filterDay;
+          if (~indexDate) {
+            filterDay = workDayList[indexDate + 5 * i];
+          } else {
+            filterDay = workDayList[5 * i];
+          }
           isSameOrBeforeDate(filterDay.date)
             ? processOrder(myorder.value, filterDay, product)
             : "";
