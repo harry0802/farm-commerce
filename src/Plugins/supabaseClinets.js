@@ -21,11 +21,14 @@ function handleSupabaseError(err) {
   }
 }
 
-const userSignUp = async function (userEmail, userPassword) {
+const userSignUp = async function (userEmail, userPassword, name) {
   try {
     const { data, error } = await supabase.auth.signUp({
       email: userEmail,
       password: userPassword,
+      options: {
+        last_name: name,
+      },
     });
 
     if (error) throw error;
@@ -47,7 +50,6 @@ const verifyOtp = async function (email, token) {
       token,
       type: "email",
     });
-    console.log(session);
     if (error) throw error;
     return session;
   } catch (err) {

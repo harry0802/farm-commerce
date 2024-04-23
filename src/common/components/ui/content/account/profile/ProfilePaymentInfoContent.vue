@@ -35,7 +35,7 @@
 import AccountProfileInfoCard from '@/common/components/ui/card/AccountProfileInfoCard.vue'
 import { inject, computed } from "vue";
 import { Icon } from '@iconify/vue';
-const { updateAccount, store } = inject('store')
+const { store } = inject('store')
 
 const card_cardNumber = computed(() => {
     const card = store.paymentInfo.card_cardNumber + ''

@@ -4,7 +4,7 @@
       <div class="nav-categories-wrap">
         <RouterLink :to="'/shop/' + `${menus.project}`">{{ menus.project }}</RouterLink>
         <div class="nav-dropdown-wrap">
-          <div class="nav-dropdown" v-for="( menuCategories) in menus.categories">
+          <div class="nav-dropdown " v-for="( menuCategories) in menus.categories">
             <RouterLink :to="'/shop/' + `${menuCategories.category}`">{{ menuCategories.category }}</RouterLink>
           </div>
         </div>
@@ -62,7 +62,8 @@ const store = useProduct()
 
 .nav-dropdown>a {
   min-width: 200px;
-  padding: 16px;
+  padding: 8px;
+  padding-left: 16px;
 }
 
 .nav-categories-wrap>a::after {
@@ -108,14 +109,15 @@ const store = useProduct()
   z-index: -1;
   transform: translateX(-100%);
   clip-path: polygon(0 0, 100% 0%, 75% 100%, 0% 100%);
-  transition: transform 0.3s cubic-bezier(0.5, 1, 0.89, 1);
   opacity: 0;
+  transition: transform 0.3s cubic-bezier(0.5, 1, 0.89, 1), opacity .4s;
   @apply bg-b-color-green-light;
 }
 
 .nav-dropdown>a:hover:before {
   opacity: 1;
   transform: translateX(0%);
+  transition: transform 0.4s cubic-bezier(0.5, 1, 0.89, 1), opacity .1s ease-in;
 }
 
 .nav-dropdown> :not(:last-child) {

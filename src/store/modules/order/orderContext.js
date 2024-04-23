@@ -20,19 +20,25 @@ const setDefaultFirstOrder = function (order, workDayLists) {
   const indx = workDayLists.findIndex(
     (d) => d.date === order.value[0].order_date.date
   );
-  const { selectionDay } = toRefs(useCartStore());
+  const { setSelection } = useCartStore();
   const { date, dayOfWeek } = order.value[0].order_date;
-  selectionDay.value.currentWorkDay = `${date.slice(5)}/${dayOfWeek}`;
-  selectionDay.value.selectionIndex = indx;
+  setSelection(date, indx, `${date.slice(5)}/${dayOfWeek}`);
 };
 
 // 移除過期訂單
 const removeExpiredOrders = (dayList, orderSp, order) => {
   const currentDay = dayjs(dayList[0].date);
-  order.value = orderSp.filter((pd) =>
-    currentDay.isSameOrBefore(dayjs(pd.order_date.date))
+  order.value = orderSp.filter(
+    (pd) => !currentDay.isSameOrAfter(dayjs(pd.order_date.date))
   );
 };
+// 尋找產品訂單
+const findOrderDate = function (pd) {
+  const select = selectionDay.value.orderDate;
+  pd = myorder.value.find((i) => i.order_date.date === select);
+  if (product.value) setProductCart.value(product.value.products);
+};
+
 // Find an order for the given date, create a new one if not found
 
 const createOrder = function (date) {

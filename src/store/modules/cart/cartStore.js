@@ -8,8 +8,12 @@ const store = defineStore("cartStore", {
       existenceProduct: null,
       showProductItem: true,
       showList: true,
-      currentDay: { currentWorkDay: null, selectionIndex: 0 },
-      selectionDay: { currentWorkDay: null, selectionIndex: 0 },
+      currentDay: { currentWorkDay: null, selectionIndex: 0, orderDate: null },
+      selectionDay: {
+        currentWorkDay: null,
+        selectionIndex: 0,
+        orderDate: null,
+      },
       workDay: {},
       product: null,
     };
@@ -43,11 +47,26 @@ const store = defineStore("cartStore", {
     openList() {
       this.showList = true;
     },
+    setSelection(date, index, clickedItemTitle) {
+      this.selectionDay.currentWorkDay = clickedItemTitle;
+      this.selectionDay.selectionIndex = index;
+      this.selectionDay.orderDate = date;
+    },
+
+    setCurrentDay(date, index, clickedItemTitle) {
+      this.currentDay.currentWorkDay = clickedItemTitle;
+      this.currentDay.selectionIndex = index;
+      this.currentDay.orderDate = date;
+    },
 
     setSelectionDay() {
       if (this.currentDay.currentWorkDay) {
         this.selectionDay = { ...this.currentDay };
-        this.currentDay = { currentWorkDay: null, selectionIndex: 0 };
+        this.currentDay = {
+          currentWorkDay: null,
+          selectionIndex: 0,
+          orderDate: null,
+        };
         this.showProductItem = !this.showProductItem;
       } else {
         toast.warning("請選擇日期");

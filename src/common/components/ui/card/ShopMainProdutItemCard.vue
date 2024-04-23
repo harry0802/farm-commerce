@@ -86,6 +86,7 @@ const getOrderSubscription = computed(() =>
   ))
 
 
+// console.log(selectionDay.value.selectionIndex);
 const getOderFrequency = computed(() => {
   if (!workDayLists.value) return
   const selectIndex = selectionDay.value.selectionIndex;

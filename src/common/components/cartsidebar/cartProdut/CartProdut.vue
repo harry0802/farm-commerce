@@ -1,7 +1,7 @@
 <template>
   <dynamic-wrapper>
     <template #list>
-      <dynamic-photo v-if="!calcOrderState">
+      <dynamic-photo v-if="!product">
         <figcaption class="u-text-medium text-color-eva-dark-yellow mb-4">
           請添加商品
         </figcaption>
@@ -21,32 +21,12 @@ import DynamicWrapper from "../../ui/content/cartSideBar/DynamicWrapper.vue";
 import DynamicPhoto from "../../ui/content/cartSideBar/DynamicPhoto.vue";
 import CartProductOder from "../cartProdut/CartProductOder.vue";
 import CartProductBottomBtn from "../../ui/button/CartProductBottomBtn.vue";
-import dayjs from "dayjs";
 
-import { inject, toRefs } from "vue";
-const store = inject('store')
-const { calcOrderState, myorder } = inject('orderStore')
-const { selectionDay, } = toRefs(store)
-
-
-console.log(dayjs('5/7').unix());
-
-
-
-console.log(myorder.value);
-
-console.log(dayjs('2024/5/7').unix());
-
-
-
-const findOrderDate = function () {
-  const select = selectionDay.value.currentWorkDay.substring(0, 4)
-
-  // myorder.value.filter((o)=>o.order_date)
-
-
-}
-
+import { inject, onMounted } from "vue";
+const { findOrderDate, product } = inject('findOrderDate')
+onMounted(() => {
+  findOrderDate()
+})
 
 
 </script>

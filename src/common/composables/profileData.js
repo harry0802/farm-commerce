@@ -81,7 +81,8 @@ const multipleTablesChannel = () => {
       (payload) => {
         const { new: newData } = payload;
         if (newData.client_id === accountStore.userState.id) {
-          console.log(newData);
+          store.paymentInfo.card_cardNumber = newData.card_cardNumber;
+          store.paymentInfo.card_date = newData.card_date;
         }
       }
     )
@@ -150,6 +151,7 @@ const updateAccount = async function (spFrom, columnVal, spEq) {
       return data;
     }
   } catch (error) {
+    toast.error("更新失敗");
     throw error;
   }
 };

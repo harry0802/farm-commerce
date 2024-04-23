@@ -79,7 +79,7 @@ defineHandleFn(setuser_City, setuser_State, setZipcode)
 const onSubmit = handleSubmit(async val => {
 
     try {
-        if (store.compareObjects(store.deliveryAddress, val)) {
+        if (store.compareObjects(store.billingAddress, val)) {
             toast.warning('您並沒有更改任何東西')
             return
         }

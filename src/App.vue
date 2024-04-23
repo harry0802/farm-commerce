@@ -22,8 +22,6 @@ import chatbotPage from "@/common/components/chatbot/chatbotPage.vue";
 import { Toaster } from "@/common/composables/ui/sonner";
 import { startAuthStateListener } from "@/Plugins/sessionHandler.js";
 
-
-
 onMounted(() => {
   startAuthStateListener()
 

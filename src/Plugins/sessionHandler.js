@@ -10,7 +10,7 @@ import cartStore from "@/store/modules/cart/cartStore.js";
 const throttledLoginHandler = useThrottleFn(async (event, session) => {
   const accountStore = useAccountStore(pinia);
   const cart = cartStore(pinia);
-  const { initializeOrderStore, resetOrder, calcOrderState } = useOrderStore();
+  const { initializeOrderStore, resetOrder } = useOrderStore();
 
   cart.workDay = await creatOrderList().filteredDates();
 

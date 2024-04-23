@@ -9,16 +9,23 @@
       <div class="secondary-nav__section secondary-nav__user">
         <button @click="cartStore.toggleCart" aria-label="call Shopping car" class="user__button">
           <Icon icon="memory:calendar-month" />
-
-          <span v-if="accountStore.isaAuthenticated">{{ cartStore.calcUserSelectDay }}</span>
+          <span v-if="accountStore.isaAuthenticated">購物日期：{{ cartStore.calcUserSelectDay }}</span>
           <span v-else> 請選擇出貨日期</span>
         </button>
 
         <div class="secondary-nav__user--accout user__button">
           <Icon icon="ri:user-5-fill" />
-          <RouterLink :to="{ name: 'login', query: { redirect: '/home' } }">登陸</RouterLink>
-          <span>|</span>
-          <RouterLink :to="{ name: 'zip-check' }">註冊</RouterLink>
+          <div v-if="!accountStore.isaAuthenticated">
+            <RouterLink :to="{ name: 'login', query: { redirect: '/home' } }">登陸</RouterLink>
+            <span class="p-2">|</span>
+            <RouterLink :to="{ name: 'zip-check' }">註冊</RouterLink>
+          </div>
+          <div class="relative" v-else>
+            <p>嗨 {{ profileInfoStore.personalInfo.user_LastName.val }} !</p>
+          </div>
+          <div class="absolute">
+            123
+          </div>
         </div>
       </div>
     </div>
@@ -31,6 +38,9 @@ import { inject, toRefs, onMounted, computed, ref } from "vue";
 import { Icon } from "@iconify/vue";
 const accountStore = inject('accountStore')
 const cartStore = inject('cartStore')
+const profileInfoStore = inject('profileInfoStore')
+
+
 
 
 

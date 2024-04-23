@@ -62,7 +62,7 @@ import { inject } from "vue";
 import { Icon } from '@iconify/vue';
 
 import LoadingCat2 from '../../../ui/animat/LoadingCat2.vue'
-const { registerClient, router, allow } = inject('personall')
+const { registerClient, router } = inject('personall')
 const { onSubmit,
     passwordIcon,
     passwordType,

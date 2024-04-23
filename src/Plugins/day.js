@@ -2,8 +2,10 @@ import dayjs from "dayjs";
 import { getSupabaseData } from "@/config/FarmPruductsItemManage.js";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import updateLocale from "dayjs/plugin/updateLocale";
+import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 dayjs.extend(updateLocale);
 dayjs.extend(isSameOrBefore);
+dayjs.extend(isSameOrAfter);
 dayjs.updateLocale("en", {
   months: [
     "一月",

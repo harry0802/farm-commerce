@@ -38,7 +38,7 @@
 <script setup>
 import { computed, inject, } from "vue";
 import { Icon } from "@iconify/vue";
-
+import dayjs from "dayjs";
 const props = defineProps({
   deadline: Boolean,
 });
@@ -65,8 +65,8 @@ const productState = computed(() =>
 
 
 const lastEditTrans = (day) => {
-  let [m, d] = day.slice(5).split('/')
-  return `${m} 月 ${+d - 1} 號`
+  let [y, m, d] = day.split('/')
+  return dayjs(`${y}-${m}-${d - 1}`).format("dd, M月D")
 }
 
 

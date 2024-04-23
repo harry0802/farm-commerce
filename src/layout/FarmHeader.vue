@@ -16,16 +16,18 @@ import MobileMenuSiderbar from "@/common/components/header/mobile/MobileMenuSide
 import NavigationSecondary from "@/common/components/header/NavigationSecondary.vue";
 import NavigationPrimary from "@/common/components/header/NavigationPrimary.vue";
 import useAccountStore from "@/store/modules/account/accountStore.js";
+import { useProfileInfoStore } from "@/store/modules/profile/profileStore.js";
 import store from "@/store/modules/cart/cartStore.js";
 
 import { provide } from "vue";
 const account = useAccountStore()
 const cartStore = store()
-
+const profileInfoStore = useProfileInfoStore()
 
 
 provide('accountStore', account)
 provide('cartStore', cartStore)
+provide('profileInfoStore', profileInfoStore)
 
 
 </script>

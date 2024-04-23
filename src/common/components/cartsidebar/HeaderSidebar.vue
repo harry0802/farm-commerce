@@ -37,11 +37,23 @@ const { workDayLists, myorder, calcOrderState, setProductCart, productCart, hand
 const store = cartStore();
 
 const marginTop = ref(40);
+const product = ref(null)
 const { width } = useWindowSize()
 
+const handleScroll = () => {
+  const scrollTop = window.scrollY;
+  marginTop.value = scrollTop <= 40 ? 40 - scrollTop : 0;
+}
 
+const findOrderDate = function () {
+  const select = store.selectionDay.orderDate
+  product.value = myorder.value.find((i) => i.order_date.date === select)
+  if (product.value) setProductCart.value(product.value.products)
+}
 
-
+provide('store', store)
+provide('orderStore', { myorder, calcOrderState, workDayLists, productCart, handleSelectionDay, setProductCart })
+provide('findOrderDate', { findOrderDate, product })
 
 
 watch(() => store.showCart, (newVal) => {
@@ -49,16 +61,6 @@ watch(() => store.showCart, (newVal) => {
     document.body.style.overflow = 'hidden' :
     document.body.style.overflow = 'auto'
 })
-
-
-
-const handleScroll = () => {
-  const scrollTop = window.scrollY;
-  marginTop.value = scrollTop <= 40 ? 40 - scrollTop : 0;
-}
-
-
-
 
 
 onMounted(() => {
@@ -73,8 +75,6 @@ onBeforeUnmount(() => {
   window.removeEventListener("scroll", handleScroll);
 })
 
-provide('store', store)
-provide('orderStore', { myorder, calcOrderState, workDayLists, setProductCart, productCart, handleSelectionDay })
 
 </script>
 

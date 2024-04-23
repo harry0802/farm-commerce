@@ -5,7 +5,6 @@ import { useDebounceFn } from "@vueuse/core";
 import { creatOrderList } from "@/Plugins/day.js";
 import dayjs from "dayjs";
 import useCartStore from "@/store/modules/cart/cartStore.js";
-import { v4 as uuidv4 } from "uuid";
 import {
   removeExpiredOrders,
   createOrderManipulate,
@@ -47,9 +46,8 @@ export const useOrderStore = defineStore(
       subscription.value = reponse.subscription;
       recentlyViewed.value = reponse.recently_viewed;
       workDayLists.value = workDayList;
-
       removeExpiredOrders(workDayList, reponse.order, myorder);
-      setDefaultFirstOrder(myorder, workDayList);
+      // setDefaultFirstOrder(myorder, workDayList);
     };
 
     // userhandle
@@ -171,12 +169,10 @@ export const useOrderStore = defineStore(
       const indx = workDayLists.value.findIndex(
         (d) => d.date === day.order_date.date
       );
-      const { selectionDay, showProductItem } = toRefs(useCartStore());
+      const { showProductItem, setSelection } = toRefs(useCartStore());
       const { date, dayOfWeek } = day.order_date;
-      selectionDay.value.currentWorkDay = `${date.slice(5)}/${dayOfWeek}`;
-      selectionDay.value.selectionIndex = indx;
+      setSelection.value(date, indx, `${date.slice(5)}/${dayOfWeek}`);
       showProductItem.value = !showProductItem.value;
-      setProductCart(day.products);
     };
 
     // 移除商品

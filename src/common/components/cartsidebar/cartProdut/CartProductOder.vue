@@ -27,7 +27,7 @@
 
     <!-- 切割組件 -->
     <!-- 進度條 -->
-    <product-progress :maxValue="1200" :progressLength="166" />
+    <product-progress :maxValue="1200" :progressLength="120" />
     <!-- 進度條 end -->
 
     <!-- 切割組件 -->
@@ -74,8 +74,9 @@ import SideBarOderItem from "../../ui/content/cartSideBar/SideBarOderItem.vue";
 import ProductProgress from "./productItem/ProductSummaryProgress.vue";
 import ProductSummary from "../../cartsidebar/cartProdut/productItem/ProductSummary.vue";
 import { inject } from "vue";
+const { product } = inject('findOrderDate')
 
-const { productCart } = inject('orderStore')
+
 </script>
 
 <style scoped>

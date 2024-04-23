@@ -68,7 +68,8 @@ const useAccountStore = defineStore("accountStore", {
       };
       return await userSignUp(
         this.userInfo.user_Email,
-        this.userInfo.user_Password
+        this.userInfo.user_Password,
+        this.userInfo.user_LastName
       );
     },
 
