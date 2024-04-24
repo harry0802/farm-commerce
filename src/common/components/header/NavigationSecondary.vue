@@ -1,5 +1,5 @@
 <template>
-  <base-navigations class="secondary-nav__wrap" :desc="'Secondary Navigation'">
+  <base-navigations class="secondary-nav__wrap " :desc="'Secondary Navigation'">
     <div class="secondary-nav__container nav-container">
       <div class="secondary-nav__section secondary-nav__link">
         <a href="#" class="secondary-nav__links--item">關於我們</a>
@@ -13,29 +13,30 @@
           <span v-else> 請選擇出貨日期</span>
         </button>
 
-        <div class="secondary-nav__user--accout user__button">
+        <div class="secondary-nav__user--accout user__button relative group cursor-pointer">
           <Icon icon="ri:user-5-fill" />
           <div v-if="!accountStore.isaAuthenticated">
             <RouterLink :to="{ name: 'login', query: { redirect: '/home' } }">登陸</RouterLink>
             <span class="p-2">|</span>
             <RouterLink :to="{ name: 'zip-check' }">註冊</RouterLink>
           </div>
-          <div class="relative" v-else>
+          <div class="relative " v-else>
             <p>嗨 {{ profileInfoStore.personalInfo.user_LastName.val }} !</p>
           </div>
-          <div class="absolute">
-            123
-          </div>
+          <ProfiledMenu />
         </div>
       </div>
     </div>
   </base-navigations>
+
 </template>
 
 <script setup>
 import BaseNavigations from "../ui/navigations/BaseNavigations.vue";
 import { inject, toRefs, onMounted, computed, ref } from "vue";
 import { Icon } from "@iconify/vue";
+import test from "@/common/components/header/test.vue";
+import ProfiledMenu from "@/common/components/ui/menu/ProfiledMenu.vue";
 const accountStore = inject('accountStore')
 const cartStore = inject('cartStore')
 const profileInfoStore = inject('profileInfoStore')
@@ -48,6 +49,8 @@ const profileInfoStore = inject('profileInfoStore')
 
 <style scoped>
 .secondary-nav__wrap {
+  position: relative;
+  z-index: 20;
   height: 40px;
   padding: 0 24px;
   color: #fff;

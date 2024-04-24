@@ -1,16 +1,30 @@
 <template>
     <RouterLink v-for="(navs, i ) in routerNavInfo" :key="i" :to="{ name: navs.path }"
         class=" lowerline relative pb-2 text-color-primary cursor-pointer" :exact-active-class="'isSelector'">
+
         {{ navs.title }}
     </RouterLink>
-    <div class="btn-wrap relative  pb-2 lowerline">
-        <DesktopLogOutDialog />
-    </div>
+
+    <DesktopLogOutDialog>
+        <DialogTrigger as-child>
+            <div class="btn-wrap relative  pb-2 lowerline">
+                <Button class="text-left w-full" variant="outline">
+                    安全登出
+                </Button>
+            </div>
+        </DialogTrigger>
+    </DesktopLogOutDialog>
+
+
+
+
+
 
 </template>
 
 <script setup>
 import DesktopLogOutDialog from "@/common/components/ui/popup/DesktopLogOutDialog.vue";
+import { DialogTrigger } from "@/common/composables/ui/dialog";
 
 const routerNavInfo = [
     { title: '會員訂閱', path: 'subscriptions' },

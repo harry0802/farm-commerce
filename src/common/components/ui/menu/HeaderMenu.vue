@@ -45,7 +45,7 @@ const store = useProduct()
 .nav-dropdown-wrap {
   position: absolute;
   margin-left: -16px;
-  padding-top: 20px;
+  padding-top: 19px;
   opacity: 0;
   pointer-events: none;
 }

@@ -1,0 +1,126 @@
+<template>
+
+    <Icon icon="mdi:triangle"
+        class="absolute text-xs -left-[10px] top-6 opacity-0 group-hover:opacity-100  transition-opacity duration-300 " />
+    <div
+        class="nav-dropdown-wrap group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity duration-300">
+        <div class="nav-dropdown text-color-primary-light ">
+            <RouterLink v-for="(navs, i ) in routerNavInfo" :key="i" :to="{ name: navs.path }"
+                class="  flex place-items-center cursor-pointer" :exact-active-class="'isSelector'">
+                <Icon class=" text-2xl  mr-2" :icon="navs.icon" />
+                {{ navs.title }}
+            </RouterLink>
+            <DesktopLogOutDialog>
+                <DialogTrigger as-child>
+                    <div class="nav-dropdown--link flex">
+                        <Icon class=" text-2xl  mr-2" icon="memory:logout" />
+                        <Button class="text-left w-full" variant="outline">
+                            安全登出
+                        </Button>
+                    </div>
+                </DialogTrigger>
+                <!-- <Icon class=" text-2xl  mr-2" icon="memory:logout" /> -->
+            </DesktopLogOutDialog>
+
+
+        </div>
+    </div>
+</template>
+
+<script setup>
+import { Icon } from "@iconify/vue";
+import DesktopLogOutDialog from "@/common/components/ui/popup/DesktopLogOutDialog.vue";
+import {
+
+    DialogTrigger
+
+} from "@/common/composables/ui/dialog";
+const routerNavInfo = [
+    { title: '會員訂閱', path: 'subscriptions', icon: 'entypo:cycle' },
+    { title: '宅配時間表', path: 'delivery-schedule', icon: 'carbon:delivery' },
+    { title: '用戶檔案', path: 'profile', icon: "ph:user-list-fill" },
+    { title: '訂單紀錄', path: 'order-history', icon: 'icon-park-outline:history-query' },
+    { title: '贈送農產箱，獲得 $25', path: 'referrals', icon: 'ic:twotone-discount' },
+];
+
+</script>
+
+<style scoped>
+.nav-dropdown-wrap>.nav-dropdown>* {
+    font-family: "cjkfonts";
+}
+
+
+
+.nav-dropdown-wrap {
+    position: absolute;
+    left: -150%;
+    margin-left: -16px;
+    top: 0px;
+    padding-top: 32px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.nav-dropdown {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    box-shadow: 0px 0px 3px rgba(7, 38, 30, 0.04),
+        0px 0px 5px rgba(7, 38, 30, 0.04), 0px 0px 3px rgba(7, 38, 30, 0.04);
+
+}
+
+.nav-dropdown>a,
+.nav-dropdown>.nav-dropdown--link {
+    min-width: 250px;
+    padding: 16px;
+    padding-left: 16px;
+}
+
+/* .nav-categorie:hover .nav-dropdown-wrap {
+    opacity: 1;
+    pointer-events: auto;
+} */
+
+.nav-dropdown>a,
+.nav-dropdown>.nav-dropdown--link {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.nav-dropdown>a::before,
+.nav-dropdown>.nav-dropdown--link::before {
+    content: "";
+    display: block;
+    inset: 0;
+    position: absolute;
+    width: 150%;
+    height: 100%;
+    z-index: -1;
+    transform: translateX(-100%);
+    clip-path: polygon(0 0, 100% 0%, 75% 100%, 0% 100%);
+    opacity: 0;
+    transition: transform 0.3s cubic-bezier(0.5, 1, 0.89, 1), opacity .4s;
+    @apply bg-b-color-green-light;
+}
+
+.nav-dropdown>a:hover:before,
+.nav-dropdown--link:hover:before {
+    opacity: 1;
+    transform: translateX(0%);
+    transition: transform 0.4s cubic-bezier(0.5, 1, 0.89, 1), opacity .1s ease-in;
+}
+
+.nav-dropdown> :not(:last-child) {
+    border-bottom: 1px solid #eee8;
+}
+
+.iconify {
+    stroke-width: .5px;
+    stroke: currentColor;
+}
+</style>

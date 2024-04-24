@@ -1,6 +1,6 @@
 <template>
   <base-navigations :desc="'Primary Navigation'">
-    <primary-search-bar v-if="searchState" @closeSearch="closeSearch" :searchState="searchState"></primary-search-bar>
+    <primary-search-bar v-if="searchState" @closeSearch="closeSearch" :searchState="searchState" />
     <div class="primary-nav__content nav-container">
       <div class="nav__icon">
         <figure>

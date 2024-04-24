@@ -1,10 +1,7 @@
 <template>
     <Dialog>
-        <DialogTrigger as-child>
-            <Button class="font-[SentyGoldSand]" variant="outline">
-                安全登出
-            </Button>
-        </DialogTrigger>
+        <slot></slot>
+
         <DialogContent class="text-color-primary py-8 sm:max-w-[500px]  sm:rounded-3xl">
             <DialogHeader>
                 <DialogTitle>
@@ -57,7 +54,7 @@ const signOut = async function () {
 
 <style scoped>
 * {
-    font-family: RiiT_F;
+    /* font-family: RiiT_F; */
 }
 
 .animateBtn {
