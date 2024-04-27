@@ -1,52 +1,33 @@
 <template>
-  <button class="subcategorys__item" @click="backing">
-    <div class="icon__wrap--back">
-      <Icon class="iconify__back" icon="pixelarticons:chevron-right" />
+  <div v-if="currentIndex === project.category" class=" flex flex-col ">
+    <div class="relative ">
+      <Icon @click="store.siderBarMenuPreviou" class="iconify__back absolute inset-y-1/2 transform -translate-y-1/2 "
+        icon="pixelarticons:chevron-right" />
+      <RouterLink class="subcategorys__link flex h-12 ml-10 items-center flex-grow border-b border-color-grey-light"
+        :to="`/shop/${project.category}`"> {{ project.category }}</RouterLink>
     </div>
-  </button>
-  <a class="subcategorys__link" href="#">{{ props.types }}</a>
+    <subcategories-navigations :project="project.subcategories" />
+  </div>
 </template>
 
 <script setup>
 import { Icon } from "@iconify/vue";
-import { defineProps } from "vue";
 import rootStore from "@/store/rootStore.js";
-const props = defineProps({
-  types: {
-    type: String,
-    default: "設定中...",
-  },
+import SubcategoriesNavigations from "@/common/components/ui/navigations/SubcategoriesNavigations.vue";
+const currentIndex = defineModel('currentIndex')
+defineProps({
+  project: {
+    type: Object
+  }
 });
-
 const store = rootStore();
-const backing = function () {
-  store.siderBarMenuPreviou();
-};
 </script>
 
 <style scoped>
-.subcategorys__item {
-  @apply absolute inset-y-1/2 transform -translate-y-1/2 flex items-center justify-between;
-}
-
-.icon__wrap {
-  @apply flex justify-end items-center w-6 h-6;
-}
-
-.icon__wrap--back {
-  justify-content: flex-start;
-  left: 0;
-}
-
 .iconify__back {
   color: #00bd26;
-  stroke-width: 0.5px; /* 设置描边的粗细为 8 像素 */
+  stroke-width: 0.5px;
   stroke: currentColor;
   @apply transform rotate-180;
-}
-
-.subcategorys__link {
-  @apply flex h-12 ml-10 items-center flex-grow border-b;
-  border-color: #f2f2f2;
 }
 </style>

@@ -1,5 +1,4 @@
 <template>
-
     <Icon icon="mdi:triangle"
         class="absolute text-xs -left-[10px] top-6 opacity-0 group-hover:opacity-100  transition-opacity duration-300 " />
     <div
@@ -7,7 +6,7 @@
         <div class="nav-dropdown text-color-primary-light ">
             <RouterLink v-for="(navs, i ) in routerNavInfo" :key="i" :to="{ name: navs.path }"
                 class="  flex place-items-center cursor-pointer" :exact-active-class="'isSelector'">
-                <Icon class=" text-2xl  mr-2" :icon="navs.icon" />
+                <Icon class="   mr-2" :icon="navs.icon" />
                 {{ navs.title }}
             </RouterLink>
             <DesktopLogOutDialog>
@@ -19,10 +18,7 @@
                         </Button>
                     </div>
                 </DialogTrigger>
-                <!-- <Icon class=" text-2xl  mr-2" icon="memory:logout" /> -->
             </DesktopLogOutDialog>
-
-
         </div>
     </div>
 </template>
@@ -30,11 +26,7 @@
 <script setup>
 import { Icon } from "@iconify/vue";
 import DesktopLogOutDialog from "@/common/components/ui/popup/DesktopLogOutDialog.vue";
-import {
-
-    DialogTrigger
-
-} from "@/common/composables/ui/dialog";
+import { DialogTrigger } from "@/common/composables/ui/dialog";
 const routerNavInfo = [
     { title: '會員訂閱', path: 'subscriptions', icon: 'entypo:cycle' },
     { title: '宅配時間表', path: 'delivery-schedule', icon: 'carbon:delivery' },

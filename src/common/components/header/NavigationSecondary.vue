@@ -20,10 +20,10 @@
             <span class="p-2">|</span>
             <RouterLink :to="{ name: 'zip-check' }">註冊</RouterLink>
           </div>
-          <div class="relative " v-else>
+          <div class="relative" v-else>
             <p>嗨 {{ profileInfoStore.personalInfo.user_LastName.val }} !</p>
           </div>
-          <ProfiledMenu />
+          <ProfiledMenu v-if="accountStore.isaAuthenticated" />
         </div>
       </div>
     </div>
@@ -33,9 +33,8 @@
 
 <script setup>
 import BaseNavigations from "../ui/navigations/BaseNavigations.vue";
-import { inject, toRefs, onMounted, computed, ref } from "vue";
+import { inject, } from "vue";
 import { Icon } from "@iconify/vue";
-import test from "@/common/components/header/test.vue";
 import ProfiledMenu from "@/common/components/ui/menu/ProfiledMenu.vue";
 const accountStore = inject('accountStore')
 const cartStore = inject('cartStore')

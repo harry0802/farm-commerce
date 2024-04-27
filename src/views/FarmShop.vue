@@ -67,8 +67,6 @@ tryOnMounted(() => {
 </script>
 
 <style scoped>
-.category__page {}
-
 .category__container {
   min-height: 300px;
   max-width: 1350px;

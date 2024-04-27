@@ -52,6 +52,9 @@ export const useOrderStore = defineStore(
 
     // userhandle
     const addMyfavorite = async function (item) {
+      console.log(item);
+      console.log(myfavorite.value);
+
       const index = checkContent(
         myfavorite.value,
         (arr) => arr.product_id === item.product_id

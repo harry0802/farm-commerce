@@ -14,12 +14,6 @@
             </div>
         </DialogTrigger>
     </DesktopLogOutDialog>
-
-
-
-
-
-
 </template>
 
 <script setup>

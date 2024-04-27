@@ -20,7 +20,6 @@
                 <Button @click="signOut" class="pl-6 animateBtn" type="submit">
                     確定登出
                 </Button>
-
             </DialogFooter>
         </DialogContent>
     </Dialog>
@@ -33,7 +32,6 @@
 import {
     Dialog
     , DialogClose
-    , DialogTrigger
     , DialogHeader
     , DialogTitle
     , DialogDescription
@@ -53,12 +51,7 @@ const signOut = async function () {
 </script>
 
 <style scoped>
-* {
-    /* font-family: RiiT_F; */
-}
-
 .animateBtn {
-
     @apply hover:scale-110 active:scale-100 transition-transform duration-200
 }
 </style>
