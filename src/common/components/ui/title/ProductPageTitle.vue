@@ -3,13 +3,11 @@
         <h2 v-for=" (title, i) in titles " :key="i" class="flex">
             <Icon v-if="i > 0 && !!title && isLargeScreen" class="w-5 m-auto mx-4" icon="pixelarticons:chevron-right" />
             {{ title }}
-
         </h2>
     </div>
 </template>
 
 <script setup>
-import { defineProps, } from "vue";
 import { Icon } from '@iconify/vue';
 import { useMediaQuery } from '@vueuse/core'
 

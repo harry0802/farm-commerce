@@ -1,7 +1,6 @@
 <template>
     <section v-for="( pageitem, i) in renderPage  " :key="i">
-        <div ref="target" class="category__id" :id="!!pageitem.title[1] ? pageitem.title[1] : pageitem.title[0]">
-        </div>
+        <div ref="target" class="category__id" :id="!!pageitem.title[1] ? pageitem.title[1] : pageitem.title[0]" />
         <ProductPageTitle :titles="pageitem.title" />
         <div class="category__product ">
             <shop-main-produt-item-card v-for=" item in pageitem.dataCollection" :key="item.product_id" :data="item" />
@@ -14,7 +13,13 @@ import { inject, ref } from "vue";
 import ShopMainProdutItemCard from "../../ui/card/ShopMainProdutItemCard.vue";
 import ProductPageTitle from "../../ui/title/ProductPageTitle.vue";
 import { tryOnMounted, useIntersectionObserver } from '@vueuse/core'
+
 const { renderPage, setBbserverCurrentID } = inject('ProductPageSection')
+
+
+
+
+
 const target = ref(null)
 tryOnMounted(() => {
     useIntersectionObserver(target, (api) => {

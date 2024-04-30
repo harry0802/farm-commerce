@@ -11,7 +11,6 @@ export const initData = async function (obj, urlKey) {
     if (Object.hasOwnProperty.call(obj, key)) {
       if (key === urlKey) {
         const pageData = await keywordSearch(urlKey);
-
         return {
           currentData,
           pageData,

@@ -31,6 +31,20 @@ const router = createRouter({
       name: "shop",
       children: [
         {
+          path: "/shop/home",
+          props: true,
+          component: () => import("@/views/FarmShopHome.vue"),
+          children: [
+            {
+              path: ":id",
+              component: () =>
+                import(
+                  "@/common/components/shop/home/page/ShopHomeMainPage.vue"
+                ),
+            },
+          ],
+        },
+        {
           path: ":id",
           props: true,
           component: FarmShop,
@@ -38,6 +52,7 @@ const router = createRouter({
       ],
     },
 
+    ,
     {
       path: "/product/:id",
       props: true,

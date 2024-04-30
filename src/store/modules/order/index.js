@@ -13,7 +13,6 @@ import {
   processOrder,
   frequencyFindAndCreate,
   orderDataSorter,
-  setDefaultFirstOrder,
 } from "@/store/modules/order/orderContext.js";
 
 // .uuid({ message: "Invalid UUID" })
@@ -24,8 +23,57 @@ export const useOrderStore = defineStore(
     const myorder = ref([]);
     const subscription = ref([]);
     const recentlyViewed = ref([]);
+    const reorder = ref([]);
+    const recommendedSubscriptions = ref([]);
     const workDayLists = ref(null);
     const productCart = ref(null);
+
+    const personalStyle = {
+      project: "For You",
+      categories: [
+        {
+          category: "已訂購的項目",
+          path: "reorder",
+          renderPage: reorder,
+          emptyPage: {
+            title: "您之前訂購過的商品列表是空的",
+            text: "您可以在這裡找到之前訂購過的商品。",
+          },
+        },
+        {
+          category: "最近瀏覽過的項目",
+          path: "recently-viewed",
+          renderPage: recentlyViewed,
+          emptyPage: {
+            title: "您的最近觀看的商品列表是空的",
+            text: "請點擊您喜歡的產品上來收集你得點閱商品。",
+          },
+        },
+        {
+          category: "收藏夾",
+          path: "favorites",
+          renderPage: myfavorite,
+          emptyPage: {
+            title: "您的收藏夾是空的",
+            text: "請點擊您喜歡的產品上的心形圖標來收集您的喜愛之物。",
+            guidePic: [
+              "src/assets/imgs/personalStyle/guidePicFv1.png",
+              "src/assets/imgs/personalStyle/guidePicFv2.png",
+            ],
+          },
+        },
+        {
+          category: "推薦訂閱",
+          path: "recommended-subscriptions",
+          renderPage: recommendedSubscriptions,
+          emptyPage: {
+            title: " 您的推薦訂閱列表是空的",
+            text: "請點擊您喜歡的產品上的心形圖標來收集您的喜愛之物。",
+          },
+        },
+      ],
+    };
+
     // getter
 
     const calcOrderState = computed(() => myorder.value.length !== 0);
@@ -202,7 +250,6 @@ export const useOrderStore = defineStore(
       myorder.value = [];
       subscription.value = [];
       recentlyViewed.value = [];
-      workDayLists.value = null;
       productCart.value = null;
     };
 
@@ -214,6 +261,7 @@ export const useOrderStore = defineStore(
       recentlyViewed,
       workDayLists,
       productCart,
+      personalStyle,
       // getter
       calcOrderState,
       // fn

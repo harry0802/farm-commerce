@@ -18,7 +18,6 @@ import NavigationPrimary from "@/common/components/header/NavigationPrimary.vue"
 import useAccountStore from "@/store/modules/account/accountStore.js";
 import rootStore from "@/store/rootStore.js";
 import store from "@/store/modules/cart/cartStore.js";
-
 import { onMounted, ref, provide } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useProfileInfoStore } from "@/store/modules/profile/profileStore.js";

@@ -3,7 +3,7 @@
         class="absolute text-xs -left-[10px] top-6 opacity-0 group-hover:opacity-100  transition-opacity duration-300 " />
     <div
         class="nav-dropdown-wrap group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity duration-300">
-        <div class="nav-dropdown text-color-primary-light ">
+        <div class="nav-dropdown text-color-primary-light public__item-link">
             <RouterLink v-for="(navs, i ) in routerNavInfo" :key="i" :to="{ name: navs.path }"
                 class="  flex place-items-center cursor-pointer" :exact-active-class="'isSelector'">
                 <Icon class="   mr-2" :icon="navs.icon" />
@@ -38,6 +38,20 @@ const routerNavInfo = [
 </script>
 
 <style scoped>
+.public__item-link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    top: 26px;
+    width: 103%;
+    background-image: url("@/assets/imgs/texture_01_white.png");
+    background-size: 7px auto;
+    background-color: rgba(67, 83, 52, 0.6);
+    border-radius: 6px;
+    transform: translate(0px, 7px);
+    z-index: -1;
+}
+
 .nav-dropdown-wrap>.nav-dropdown>* {
     font-family: "cjkfonts";
 }

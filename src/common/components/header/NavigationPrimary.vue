@@ -9,10 +9,19 @@
           </RouterLink>
         </figure>
       </div>
+
+
       <nav-menu />
 
-      <div class="nav__car">
-        <button aria-label="Open Serach Bar" class="icon__wrapper" @click="showSearch">
+      <div class="nav__car text-color-primary">
+        <div class="relative  group w-full " v-if="accountStore.isaAuthenticated">
+          <RouterLink :active-class="'active'" class="foryou__link " to="/shop/home/foryou">
+            <Icon class="text-2xl " icon="memory:home-thatched" />
+          </RouterLink>
+          <PersonalStyleMenu class=" " />
+        </div>
+
+        <button aria-label="Open Serach Bar" class="icon__wrapper " @click="showSearch">
           <Icon icon="pixelarticons:search" />
         </button>
 
@@ -33,10 +42,11 @@ import BaseNavigations from "../ui/navigations/BaseNavigations.vue";
 import cartStore from "@/store/modules/cart/cartStore.js";
 import NavMenu from "../ui/menu/HeaderMenu.vue";
 import PrimarySearchBar from "../header/PrimarySearchBar.vue";
-import { ref } from "vue";
+import PersonalStyleMenu from "@/common/components/ui/menu/PersonalStyleMenu.vue";
+import { ref, inject } from "vue";
 import { Icon } from "@iconify/vue";
 const store = cartStore();
-
+const accountStore = inject('accountStore')
 
 
 const searchState = ref(false);
@@ -75,5 +85,33 @@ const closeSearch = function (close) {
 img {
   width: 80px;
   height: 80px;
+}
+
+.foryou__link::after {
+  content: "";
+  position: absolute;
+  display: block;
+  width: 0%;
+  height: 2px;
+  left: 50%;
+  bottom: 50%;
+  transform: translate(-50%, 0px);
+  background: #136450;
+  opacity: 0;
+  border-radius: 20px;
+  transition: all 0.2s cubic-bezier(0.45, 0, 0.55, 1),
+    opacity 0.1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.foryou__link:hover::after {
+  opacity: 1;
+  transform: translate(-50%, 20px);
+  width: 100%;
+}
+
+.active.foryou__link::after {
+  opacity: 1;
+  transform: translate(-50%, 20px);
+  width: 100%;
 }
 </style>

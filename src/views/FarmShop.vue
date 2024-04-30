@@ -3,7 +3,7 @@
     <div class="category__container m-auto">
       <shop-nav-side v-if="navigator" :data="navigator" />
       <shop-main-page v-if="renderPage" :overview="overview" />
-      <slot name="sidebar"></slot>
+      <slot name="sidebar" />
     </div>
   </div>
 </template>
@@ -32,6 +32,7 @@ const renderPage = ref(null)
 const overview = ref(false)
 const productData = ref(null)
 
+
 const init = async function (urlId) {
   const init = await initData(productData.value, urlId)
   navigator.value = init.currentData
@@ -39,8 +40,6 @@ const init = async function (urlId) {
   renderPage.value = init.pageData
   overview.value = navigator.value.project === urlId
 }
-
-
 provide('ProductPageSection', { renderPage, setBbserverCurrentID: setBbserverCurrentID })
 provide('observerCurrentID', observerCurrentID)
 

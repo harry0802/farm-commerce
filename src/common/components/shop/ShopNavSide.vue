@@ -1,9 +1,10 @@
 <template>
   <shop-side-card>
     <template #title>
-      <h1 :id="currentId" class="pb-2 u-text-medium">
-        <RouterLink :to="'/shop/' + data.project">{{
-        data.project }} </RouterLink>
+      <h1 :id="currentId" class="pb-2 u-text-medium border-b border-color-grey-light">
+        <RouterLink :to="`/shop/${data.project}`">
+          {{ data.project }}
+        </RouterLink>
       </h1>
     </template>
     <template #navlist>

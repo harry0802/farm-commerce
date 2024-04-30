@@ -1,10 +1,11 @@
 <template>
   <div class="nav-classification nav-container">
     <div class="nav-categorie" v-for="(menus) in productData" :key="menus">
-      <div class="nav-categories-wrap">
+      <div class="nav-categories-wrap ">
         <RouterLink :class="{ 'active': route.params.id === menus.project }" :to="'/shop/' + `${menus.project}`">{{
-      menus.project }}</RouterLink>
-        <div class="nav-dropdown-wrap">
+      menus.project }}
+        </RouterLink>
+        <div class="nav-dropdown-wrap public__item-link">
           <div class="nav-dropdown " v-for="( menuCategories) in menus.categories">
             <RouterLink :to="'/shop/' + `${menuCategories.category}`">{{ menuCategories.category }}</RouterLink>
           </div>
@@ -15,15 +16,27 @@
 </template>
 
 <script setup>
+
 import { inject, computed } from "vue";
 const productData = inject('productData')
 const { route, router } = inject('vueRouter')
-
-
-
 </script>
 
 <style scoped>
+.public__item-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  top: 12px;
+  width: 103%;
+  background-image: url("@/assets/imgs/texture_01_white.png");
+  background-size: 7px auto;
+  background-color: rgba(67, 83, 52, 0.6);
+  border-radius: 6px;
+  transform: translate(0px, 7px);
+  z-index: -1;
+}
+
 .nav-dropdown-wrap>.nav-dropdown>* {
   font-family: "cjkfonts";
 
@@ -51,6 +64,7 @@ const { route, router } = inject('vueRouter')
   padding-top: 19px;
   opacity: 0;
   pointer-events: none;
+  transition: opacity .3s;
 }
 
 .nav-dropdown {
