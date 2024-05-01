@@ -1,7 +1,7 @@
 <template>
     <nav class=" prodict-supplier__nav p-6 pb-0 sticky top-16 overflow-hidden">
         <div class="section-container nav__draggable w-full embla relative " ref="emblaNode">
-            <div class="nav__content flex relative  will-change-transform ">
+            <div class="nav__content flex relative   will-change-transform ">
                 <slot name="selectorItem"></slot>
             </div>
             <transition name="fade" mode="out-in">

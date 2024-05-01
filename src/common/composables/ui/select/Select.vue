@@ -6,7 +6,6 @@ const props = defineProps({
   defaultOpen: { type: Boolean, required: false },
   defaultValue: { type: String, required: false },
   modelValue: { type: String, required: false },
-  orientation: { type: String, required: false },
   dir: { type: String, required: false },
   name: { type: String, required: false },
   autocomplete: { type: String, required: false },

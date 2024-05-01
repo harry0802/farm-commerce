@@ -119,10 +119,14 @@
     transition: all 0.4s;
   }
 
-  .u-pirmary-button:hover {
+  .u-pirmary-button:hover,
+  .u-pirmary-button[type="button"]:hover,
+  .u-pirmary-button[type="submit"]:hover {
     background: #f0c500;
   }
-  .u-pirmary-button:active {
+  .u-pirmary-button:active,
+  .u-pirmary-button[type="button"]:active,
+  .u-pirmary-button[type="submit"]:active {
     transform: scale(0.99) translateX(1px);
   }
   /* 訂閱案紐 */

@@ -13,23 +13,24 @@
                 </h2>
             </div>
 
-            <div class="category__product  overflow-hidden">
-                <shop-main-produt-item-card v-if="pageitem.renderPage.length > 0" v-for=" item in pageitem.renderPage"
-                    :key="item.product_id" :data="item" />
-
-                <div v-else class="w-full h-full max-w-[350px] rounded-lg v-else">
+            <div v-if="pageitem.renderPage.length > 0" class="category__product  overflow-hidden">
+                <shop-main-produt-item-card v-for=" item in pageitem.renderPage" :key="item.product_id" :data="item" />
+            </div>
+            <div class="category__product overflow-hidden max-sm:grid-cols-1" v-else>
+                <div class=" w-full h-full max-w-[350px] rounded-lg">
                     <div
                         class="flex flex-col  place-content-evenly h-full m-2 p-[50px] bg-b-color-browm text-center  rounded-lg">
-                        <p class="text-color-primary font-extrabold u-text-small my-1 pb-8">
+                        <p class="text-color-primary font-extrabold u-text-small my-1 pb-8 ">
                             {{ pageitem.emptyPage.title }}
                         </p>
                         <p>{{ pageitem.emptyPage.text }}</p>
                     </div>
                 </div>
-                <img v-if="pageitem.emptyPage.guidePic && !pageitem.renderPage.length > 0" class="guidePic"
-                    v-for="pic in pageitem.emptyPage.guidePic" :src="pic" alt="">
+                <img v-if="pageitem.emptyPage.guidePic && !pageitem.renderPage.length > 0"
+                    class="guidePic max-sm:hidden " v-for="pic in pageitem.emptyPage.guidePic" :src="pic" alt="">
 
             </div>
+
         </section>
     </main>
 </template>

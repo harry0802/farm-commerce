@@ -12,7 +12,7 @@
                 </EmblaDraggableNavgition>
             </template>
             <template #subscriptions>
-                <RouterView></RouterView>
+                <RouterView />
             </template>
         </AccountPageCard>
         <slot name="sidebar"></slot>

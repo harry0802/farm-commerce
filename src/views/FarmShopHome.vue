@@ -4,7 +4,6 @@
         <div class="category__container m-auto">
             <ShopHomeNavSide v-model:observerCurrentID="observerCurrentID" :data="personalStyle" />
             <router-view />
-
             <slot name="sidebar" />
         </div>
     </div>

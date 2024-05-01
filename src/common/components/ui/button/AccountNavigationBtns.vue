@@ -1,7 +1,6 @@
 <template>
     <RouterLink v-for="(navs, i ) in routerNavInfo" :key="i" :to="{ name: navs.path }"
         class=" lowerline relative pb-2 text-color-primary cursor-pointer" :exact-active-class="'isSelector'">
-
         {{ navs.title }}
     </RouterLink>
 

@@ -10,15 +10,11 @@ const props = defineProps({
 </script>
 
 <template>
-  <DialogTitle
-    v-bind="props"
-    :class="
-      cn(
-        'text-lg text-foreground font-semibold leading-none tracking-tight',
-        props.class
-      )
-    "
-  >
+  <DialogTitle v-bind="props" :class="cn(
+    'text-lg text-foreground font-semibold leading-none tracking-tight',
+    props.class
+  )
+    ">
     <slot />
   </DialogTitle>
 </template>

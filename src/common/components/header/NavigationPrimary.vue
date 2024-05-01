@@ -47,9 +47,9 @@ import { ref, inject } from "vue";
 import { Icon } from "@iconify/vue";
 const store = cartStore();
 const accountStore = inject('accountStore')
-
-
 const searchState = ref(false);
+
+
 const showSearch = function () {
   searchState.value = true;
 };
@@ -103,7 +103,7 @@ img {
     opacity 0.1s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.foryou__link:hover::after {
+.nav__car>div:hover .foryou__link::after {
   opacity: 1;
   transform: translate(-50%, 20px);
   width: 100%;
