@@ -9,7 +9,6 @@ import {
     FormDescription,
     FormField,
     FormItem,
-    FormLabel,
     FormMessage,
 } from '@/common/composables/ui/form'
 import {
@@ -73,7 +72,7 @@ const test = ['m@example.com', 'm@google.com', 'm@support.com']
         </FormField>
         <div
             class=" text-center max-sm:justify-self-end max-sm:p-3 max-sm:border-t max-sm:border-color-grey-light sm:text-right ">
-            <Button class="sendData u-pirmary-button" type="submit">
+            <Button class="u-pirmary-button sendData " type="submit">
                 儲存
             </Button>
         </div>

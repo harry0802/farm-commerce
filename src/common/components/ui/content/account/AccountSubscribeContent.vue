@@ -9,6 +9,8 @@
         <div class="subscribeCard__details ">
             <slot name="details" />
         </div>
+        <slot name="form" />
+
     </div>
 </template>
 

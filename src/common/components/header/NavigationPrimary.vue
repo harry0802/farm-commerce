@@ -18,7 +18,7 @@
           <RouterLink :active-class="'active'" class="foryou__link " to="/shop/home/foryou">
             <Icon class="text-2xl " icon="memory:home-thatched" />
           </RouterLink>
-          <PersonalStyleMenu class=" " />
+          <PersonalStyleMenu />
         </div>
 
         <button aria-label="Open Serach Bar" class="icon__wrapper " @click="showSearch">

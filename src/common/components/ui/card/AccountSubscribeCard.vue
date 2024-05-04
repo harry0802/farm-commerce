@@ -7,7 +7,8 @@
                 </template>
 
                 <template #button>
-                    <button class="text-sm font-semibold underline ">編輯</button>
+                    <button v-if="!openForm" @click="openForm = true"
+                        class="text-sm font-semibold underline ">編輯</button>
                 </template>
 
                 <template #details>
@@ -18,6 +19,12 @@
                         <time datetime="2024/1/20">禮拜幾 , 1月12日 </time>
                     </div>
                 </template>
+
+                <template #form>
+                    <div class="col-span-full" v-if="openForm">
+                        <SubscribeHandleDetailFrom v-model:openForm="openForm" />
+                    </div>
+                </template>
             </AccountSubscribeContent>
         </div>
     </div>
@@ -26,6 +33,11 @@
 
 <script setup>
 import AccountSubscribeContent from "@/common/components/ui/content/account/AccountSubscribeContent.vue";
+import SubscribeHandleDetailFrom from "@/common/components/ui/from/account/subscriptions/SubscribeHandleDetailFrom.vue";
+import { ref } from "vue";
+const openForm = ref(false)
+
+
 </script>
 
 <style scoped>

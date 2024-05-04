@@ -4,6 +4,10 @@
   transform: scale(0.99) translateX(1px);
 }
 
+.btn__link--animate {
+  @apply hover:scale-110 active:scale-100 transition-transform duration-200;
+}
+
 /* 邊框特效 */
 .card-Img-Border {
   opacity: 0;

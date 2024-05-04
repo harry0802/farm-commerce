@@ -18,11 +18,8 @@ import {
 } from "@/common/components/ui/content/mobile/index.js";
 import rootStore from "@/store/rootStore.js";
 import { ref, toRefs } from "vue";
-
-
 const { toggleSiderBar } = toRefs(rootStore());
 const modalRef = ref(null)
-
 </script>
 
 <style>

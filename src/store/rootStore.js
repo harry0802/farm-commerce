@@ -40,6 +40,25 @@ export const rootStore = defineStore("rootStore", {
           { linkName: "吃喝玩樂，廚房酒吧", linkPath: "" },
         ],
       },
+      mobileSildeBarCategoryNav: [
+        { title: "會員訂閱", path: "subscriptions", icon: "entypo:cycle" },
+        {
+          title: "宅配時間表",
+          path: "delivery-schedule",
+          icon: "carbon:delivery",
+        },
+        { title: "用戶檔案", path: "profile", icon: "ph:user-list-fill" },
+        {
+          title: "訂單紀錄",
+          path: "order-history",
+          icon: "icon-park-outline:history-query",
+        },
+        {
+          title: "贈送農產箱，獲得 $25",
+          path: "referrals",
+          icon: "ic:twotone-discount",
+        },
+      ],
       siderBarMenu: true,
       toggleSiderBar: null,
     };

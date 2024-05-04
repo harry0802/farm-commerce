@@ -43,6 +43,7 @@ provide('cartStore', cartStore)
 provide('profileInfoStore', profileInfoStore)
 provide('productData', productData)
 provide('vueRouter', { route, router })
+provide('useRootStore', useRootStore)
 
 onMounted(() => {
   (async () => productData.value = await getShopData())()

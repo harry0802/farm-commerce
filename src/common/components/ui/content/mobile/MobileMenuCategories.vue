@@ -1,33 +1,40 @@
 <template>
   <div class="mobile-menu__categories">
-    <MobileSubcategoryCard v-for="(product, i) in productData " :key="product.project">
-
+    <MobileSubcategoryCard v-if="accountStore.isaAuthenticated">
       <Transition name="fade">
-        <MobileMenuSubcategorys v-if="store.getSiderBarMenu" v-bind="product" @click="setCurrentIndex(i)" />
+        <MobileShopHomeNext v-if="useRootStore.getSiderBarMenu" @click="setCurrentIndex('foryou')" />
+        <MobileShopHomePrevious v-else v-model:currentIndex="currentIndex" />
+      </Transition>
+    </MobileSubcategoryCard>
+
+    <MobileSubcategoryCard v-for="( product, i ) in  productData  " :key="product.project">
+      <Transition name="fade">
+        <MobileMenuSubcategorys v-if="useRootStore.getSiderBarMenu" v-bind="product" @click="setCurrentIndex(i)" />
         <MobileMenuCategoriesDetails v-else v-model:currentIndex="currentIndex" :project="product" />
       </Transition>
-
     </MobileSubcategoryCard>
   </div>
 </template>
 
 
 <script setup>
-import MobileMenuSubcategorys from "../../navigations/MobileMenuSubcategorys.vue";
-import MobileMenuCategoriesDetails from "./MobileMenuCategoriesDetails.vue";
 import MobileSubcategoryCard from "@/common/components/ui/card/MobileSubcategoryCard.vue";
+import { MobileShopHomeNext, MobileMenuCategoriesDetails, MobileMenuSubcategorys, MobileShopHomePrevious } from "@/common/components/ui/content/mobile/index.js";
 import { onMounted, inject, ref } from "vue";
-import rootStore from "@/store/rootStore.js";
-const store = rootStore();
+const useRootStore = inject('useRootStore')
+const productData = inject('productData')
+const accountStore = inject('accountStore')
 const currentIndex = ref(null)
 const setCurrentIndex = (i) => currentIndex.value = i
-const productData = inject('productData')
-
-onMounted(() => store.siderBarMenuInit());
+onMounted(() => useRootStore.siderBarMenuInit());
 </script>
 
 
 <style scoped>
+* {
+  font-family: RiiT_F;
+}
+
 .fade-enter-active {
   transition: all .4s ease-in-out;
 }

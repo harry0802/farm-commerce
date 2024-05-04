@@ -6,24 +6,24 @@
                 <Icon class="   mr-2" :icon="navs.icon" />
                 {{ navs.title }}
             </RouterLink>
-            <DesktopLogOutDialog>
-                <DialogTrigger as-child>
+            <PopupLogingount>
+                <template #default>
                     <div class="nav-dropdown--link flex place-items-center">
                         <Icon class=" mr-2" icon="memory:logout" />
-                        <Button class="text-left w-full" variant="outline">
+                        <button class="text-left w-full" variant="outline">
                             安全登出
-                        </Button>
+                        </button>
                     </div>
-                </DialogTrigger>
-            </DesktopLogOutDialog>
+                </template>
+            </PopupLogingount>
         </div>
     </div>
 </template>
 
 <script setup>
 import { Icon } from "@iconify/vue";
-import DesktopLogOutDialog from "@/common/components/ui/popup/DesktopLogOutDialog.vue";
-import { DialogTrigger } from "@/common/composables/ui/dialog";
+import PopupLogingount from "@/common/components/ui/button/PopupLogingount.vue";
+
 const routerNavInfo = [
     { title: '會員訂閱', path: 'subscriptions', icon: 'entypo:cycle' },
     { title: '宅配時間表', path: 'delivery-schedule', icon: 'carbon:delivery' },

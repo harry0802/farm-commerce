@@ -36,6 +36,7 @@ import BaseNavigations from "../ui/navigations/BaseNavigations.vue";
 import { inject, } from "vue";
 import { Icon } from "@iconify/vue";
 import ProfiledMenu from "@/common/components/ui/menu/ProfiledMenu.vue";
+
 const accountStore = inject('accountStore')
 const cartStore = inject('cartStore')
 const profileInfoStore = inject('profileInfoStore')

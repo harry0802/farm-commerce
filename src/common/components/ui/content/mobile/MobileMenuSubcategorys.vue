@@ -1,7 +1,9 @@
 <template>
   <button @click="store.siderBarMenuNext"
-    class="subcategorys__item flex w-full items-center justify-between border-b border-color-grey-light">
-    {{ project }}
+    class="subcategorys__item flex w-full items-center justify-between border-b border-color-grey-light text-color-primary">
+    <slot name='title'>
+      {{ project }}
+    </slot>
     <Icon class="" icon="pixelarticons:chevron-right" />
   </button>
 </template>
@@ -12,8 +14,8 @@ import rootStore from "@/store/rootStore.js";
 defineProps({
   project: {
     type: String,
-    default: "設定中...",
   },
+  title: String
 });
 const store = rootStore();
 </script>
@@ -34,7 +36,6 @@ const store = rootStore();
 .iconify {
   color: #00bd26;
   stroke-width: 0.5px;
-  /* 设置描边的粗细为 8 像素 */
   stroke: currentColor;
 }
 

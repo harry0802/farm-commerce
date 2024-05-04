@@ -4,36 +4,33 @@
     <div
         class="nav-dropdown-wrap group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity duration-300">
         <div class="nav-dropdown text-color-primary-light public__item-link">
-            <RouterLink v-for="(navs, i ) in routerNavInfo" :key="i" :to="{ name: navs.path }"
+            <RouterLink v-for="(navs, i ) in useRootStore.mobileSildeBarCategoryNav" :key="i" :to="{ name: navs.path }"
                 class="  flex place-items-center cursor-pointer" :exact-active-class="'isSelector'">
                 <Icon class="   mr-2" :icon="navs.icon" />
                 {{ navs.title }}
             </RouterLink>
-            <DesktopLogOutDialog>
-                <DialogTrigger as-child>
+            <PopupLogingount>
+                <template #default>
                     <div class="nav-dropdown--link flex">
                         <Icon class=" text-2xl  mr-2" icon="memory:logout" />
-                        <Button class="text-left w-full" variant="outline">
+                        <button class="text-left w-full">
                             安全登出
-                        </Button>
+                        </button>
                     </div>
-                </DialogTrigger>
-            </DesktopLogOutDialog>
+                </template>
+            </PopupLogingount>
         </div>
     </div>
 </template>
 
 <script setup>
 import { Icon } from "@iconify/vue";
-import DesktopLogOutDialog from "@/common/components/ui/popup/DesktopLogOutDialog.vue";
-import { DialogTrigger } from "@/common/composables/ui/dialog";
-const routerNavInfo = [
-    { title: '會員訂閱', path: 'subscriptions', icon: 'entypo:cycle' },
-    { title: '宅配時間表', path: 'delivery-schedule', icon: 'carbon:delivery' },
-    { title: '用戶檔案', path: 'profile', icon: "ph:user-list-fill" },
-    { title: '訂單紀錄', path: 'order-history', icon: 'icon-park-outline:history-query' },
-    { title: '贈送農產箱，獲得 $25', path: 'referrals', icon: 'ic:twotone-discount' },
-];
+import { inject } from "vue";
+import PopupLogingount from "@/common/components/ui/button/PopupLogingount.vue";
+const useRootStore = inject('useRootStore')
+
+
+
 
 </script>
 
