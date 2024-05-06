@@ -18,7 +18,6 @@ import { initData } from '@/Plugins/Initialization.js'
 import { tryOnMounted } from "@vueuse/core";
 import { ref, watch, provide, } from "vue";
 import { storeToRefs } from "pinia";
-
 import { getShopData } from "@/Plugins/SupabasePruductsData.js";
 
 

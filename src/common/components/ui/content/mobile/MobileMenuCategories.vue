@@ -21,10 +21,12 @@
 import MobileSubcategoryCard from "@/common/components/ui/card/MobileSubcategoryCard.vue";
 import { MobileShopHomeNext, MobileMenuCategoriesDetails, MobileMenuSubcategorys, MobileShopHomePrevious } from "@/common/components/ui/content/mobile/index.js";
 import { onMounted, inject, ref } from "vue";
+const currentIndex = ref(null)
+
 const useRootStore = inject('useRootStore')
 const productData = inject('productData')
 const accountStore = inject('accountStore')
-const currentIndex = ref(null)
+
 const setCurrentIndex = (i) => currentIndex.value = i
 onMounted(() => useRootStore.siderBarMenuInit());
 </script>

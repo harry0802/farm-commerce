@@ -2,9 +2,12 @@
 
     <div class="flex items-baseline">
         <h2 class=" u-text-giant ">週一</h2>
-        <AccountSubscribeDialog title="更改交貨日期" button-text="更換日期" description="請選擇您希望將訂閱轉移到的日期。">
+        <AccountSubscribeDialog title="更改交貨日期" description="請選擇您希望將訂閱轉移到的日期。">
             <template #customContent>
                 <SubscribeChangDeliveryDay />
+            </template>
+            <template #button>
+                <button class="ml-2 text-color-primary-light underline font-semibold tracking-wider">更換日期</button>
             </template>
         </AccountSubscribeDialog>
     </div>

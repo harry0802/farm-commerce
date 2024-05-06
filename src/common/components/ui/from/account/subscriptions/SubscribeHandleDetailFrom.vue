@@ -1,6 +1,5 @@
 <template>
     <form class="flex h-full flex-col justify-between space-y-6 " @submit="onSubmit">
-
         <FormField v-for=" item, i in test" :key="i" v-slot="{ componentField }" :name="item.label">
             <FormItem :class="{ quantity: item.price }" class=" max-w-[343px] sm:max-w-[272px]">
                 <div>
@@ -11,9 +10,10 @@
                                 <SelectValue placeholder="選擇你想要更改的日期" />
                             </SelectTrigger>
                         </FormControl>
+
                         <SelectContent>
                             <div v-if="item.price">
-                                <SelectItem v-for="vl, i in 10" :key="i" :value="vl">
+                                <SelectItem v-for="vl, i in 10" :key="i" :value="`${vl}`">
                                     {{ vl }}
                                 </SelectItem>
                             </div>
@@ -34,10 +34,12 @@
         </FormField>
         <div>
             <AccountSubscribeDialog button-text="取消訂閱" title="取消訂閱？" description="您確定要取消訂閱嗎？">
-                <template #customContent>
-                    <div class=" self-end justify-self-end  ">
-                        <Button class="subscribe--btn--link" variant="link" type="button">我再想想</Button>
-                        <Button class="subscribe--btn--link" variant="link" type="button">確定要取消</Button>
+                <template v-slot:customContent="{ handleClose }">
+                    <div class="  account-subscribe__content">
+                        <Button @click="handleClose" class="subscribe--btn--link u-account-subscribe__btn--mobile"
+                            variant="link" type="button">我再想想</Button>
+                        <Button class="subscribe--btn--link u-account-subscribe__btn--mobile" variant="link"
+                            type="button">確定要取消</Button>
                     </div>
                 </template>
             </AccountSubscribeDialog>

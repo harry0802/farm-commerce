@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import { cn } from "@/lib/utils";
 import { createReusableTemplate, useMediaQuery } from '@vueuse/core'
 import { Button } from '@/common/composables/ui/button'
 import {
@@ -29,11 +30,12 @@ const isOpen = ref(false)
 const handleClose = () => isOpen.value = false
 
 
-defineProps({
+const props = defineProps({
     buttonText: String,
     title: String,
     description: String,
-    closeButton: { type: Boolean, default: false }
+    closeButton: { type: Boolean, default: false },
+    class: String
 })
 </script>
 
@@ -52,7 +54,7 @@ defineProps({
                 </Button>
             </slot>
         </DialogTrigger>
-        <DialogContent class="sm:h-[323px] sm:max-w-[584px]">
+        <DialogContent :class="cn('sm:h-[323px] sm:max-w-[584px]', props.class)">
             <DialogHeader>
                 <DialogTitle class="sm:mb-4 sm:pr-12 sm:u-text-large">
                     {{ title }}

@@ -17,7 +17,6 @@
 import { provide, onMounted } from "vue";
 import { toast } from 'vue-sonner'
 import { useProfileInfoStore } from "@/store/modules/profile/profileStore.js";
-
 import { updateAccount, multipleTablesChannel } from "@/common/composables/profileData.js";
 import {
     ProfileInfomation,
@@ -38,13 +37,8 @@ const store = useProfileInfoStore();
 
 provide('store', { updateAccount, store })
 provide('toast', toast)
-
-
-
-
 onMounted(() => {
     multipleTablesChannel()
-
 })
 </script>
 

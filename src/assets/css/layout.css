@@ -27,6 +27,10 @@
     gap: 0px;
   }
 
+  .account-subscribe__content {
+    @apply max-sm:fixed max-sm:flex max-sm:flex-col max-sm:w-full max-sm:bottom-0 max-sm:left-0   text-color-primary-light font-[cjkfonts]  max-sm:mt-auto  sm:self-center sm:justify-self-end;
+  }
+
   @media only screen and (min-width: 350px) {
     .category__product {
       display: grid;
@@ -178,6 +182,10 @@
   .u-subscribe-btn[type="button"].confirm:hover,
   .u-subscribe-btn[type="submit"].confirm:hover {
     background: #ffc33e;
+  }
+
+  .u-account-subscribe__btn--mobile {
+    @apply max-sm:py-4 max-sm:border-t max-sm:bg-white;
   }
 
   /*  */
