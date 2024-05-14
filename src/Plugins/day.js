@@ -30,8 +30,7 @@ const currentMonth = currentDate.startOf("month");
 // 創建日期數量函數
 const creatCartList = function () {
   const dateArr = [];
-  const limit = currentMonth.daysInMonth();
-  for (let i = 0; i < limit; i++) {
+  for (let i = 0; i <= 27; i++) {
     const formattedDate = currentDate.add(0, "y").add(i + 1, "day");
     const output = {
       date: formattedDate.format("YYYY/M/D"),

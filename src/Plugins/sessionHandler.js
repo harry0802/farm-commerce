@@ -11,11 +11,7 @@ const throttledLoginHandler = useThrottleFn(async (event, session) => {
   const accountStore = useAccountStore(pinia);
   const cart = cartStore(pinia);
   const { initializeOrderStore, resetOrder } = useOrderStore();
-
   cart.workDay = await creatOrderList().filteredDates();
-
-  if (event === "INITIAL_SESSION") {
-  }
 
   if (event === "SIGNED_IN") {
     accountStore.setAuthenticated(session.user);
@@ -26,7 +22,7 @@ const throttledLoginHandler = useThrottleFn(async (event, session) => {
   if (event === "SIGNED_OUT") {
     console.log("User signed out");
     accountStore.$reset();
-    cart.$reset();
+    // cart.$reset();
     resetOrder();
   }
 }, 1000);

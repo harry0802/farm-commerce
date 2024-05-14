@@ -14,12 +14,10 @@ import DateCreatOderItem from "../../../ui/content/cartSideBar/DateCreatOderItem
 import { ref, toRefs, onMounted } from "vue";
 import { inject } from "vue";
 const store = inject('store')
-const { myorder, workDayLists } = inject('orderStore')
+const { myorder, } = inject('orderStore')
 const selectedDateIndex = ref(-1);
 const clickedItemTitle = ref("");
 const { workDay } = toRefs(store)
-
-
 
 const filterOrderSchedule = function () {
   if (myorder.value.length === 0) return
@@ -32,8 +30,10 @@ const filterOrderSchedule = function () {
 
 const selectDate = (index, dates) => {
   const { date, dayOfWeek } = dates
+  const { workDayList } = workDay.value
   const monthDay = date.slice(5);
-  const indexD = workDayLists.value.findIndex((d) => d.date === date)
+
+  const indexD = workDayList.findIndex((d) => d.date === date)
   clickedItemTitle.value = `${monthDay}/${dayOfWeek}`;
   selectedDateIndex.value = index;
   store.setCurrentDay(date, indexD, clickedItemTitle)

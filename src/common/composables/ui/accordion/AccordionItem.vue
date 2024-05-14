@@ -1,9 +1,11 @@
 <script setup>
 import { computed } from "vue";
-import { RangeCalendarHeadCell, useForwardProps } from "radix-vue";
+import { AccordionItem, useForwardProps } from "radix-vue";
 import { cn } from "@/lib/utils";
 
 const props = defineProps({
+  disabled: { type: Boolean, required: false },
+  value: { type: String, required: true },
   asChild: { type: Boolean, required: false },
   as: { type: null, required: false },
   class: { type: null, required: false },
@@ -19,11 +21,7 @@ const forwardedProps = useForwardProps(delegatedProps);
 </script>
 
 <template>
-  <RangeCalendarHeadCell :class="cn(
-                'w-8 rounded-md text-[0.8rem] font-normal text-muted-foreground',
-                props.class
-              )
-                " v-bind="forwardedProps">
+  <AccordionItem v-bind="forwardedProps" :class="cn('border-t', props.class)">
     <slot />
-  </RangeCalendarHeadCell>
+  </AccordionItem>
 </template>

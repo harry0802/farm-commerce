@@ -1,10 +1,9 @@
+import useCartStore from "@/store/modules/cart/cartStore.js";
 import { defineStore } from "pinia";
 import { ref, toRefs, computed } from "vue";
 import { getClientOrder, upDateOrder } from "@/Plugins/supabaseOrder.js";
 import { useDebounceFn } from "@vueuse/core";
 import { creatOrderList } from "@/Plugins/day.js";
-import dayjs from "dayjs";
-import useCartStore from "@/store/modules/cart/cartStore.js";
 import {
   removeExpiredOrders,
   createOrderManipulate,
@@ -13,6 +12,7 @@ import {
   processOrder,
   frequencyFindAndCreate,
   orderDataSorter,
+  setDefaultFirstOrder,
 } from "@/store/modules/order/orderContext.js";
 
 // .uuid({ message: "Invalid UUID" })
@@ -95,23 +95,30 @@ export const useOrderStore = defineStore(
       recentlyViewed.value = reponse.recently_viewed;
       workDayLists.value = workDayList;
       removeExpiredOrders(workDayList, reponse.order, myorder);
-      // setDefaultFirstOrder(myorder, workDayList);
+      setDefaultFirstOrder(myorder, workDayList);
     };
 
     // userhandle
-    const addMyfavorite = async function (item) {
-      console.log(item);
-      console.log(myfavorite.value);
+    // const addMyfavorite = async function (item) {
+    //   const index = checkContent(
+    //     myfavorite.value,
+    //     (arr) => arr.product_id === item.product_id
+    //   );
 
+    //   ~index ? myfavorite.value.splice(index, 1) : myfavorite.value.push(item);
+    //   const reponse = await debonseUpDateOrder();
+    //   myfavorite.value = reponse;
+    // };
+
+    const addMyfavorite = useDebounceFn(async (item) => {
       const index = checkContent(
         myfavorite.value,
         (arr) => arr.product_id === item.product_id
       );
-
       ~index ? myfavorite.value.splice(index, 1) : myfavorite.value.push(item);
       const reponse = await debonseUpDateOrder();
       myfavorite.value = reponse;
-    };
+    }, 500);
 
     const addrecentlyVie = async function (item) {
       const index = checkContent(
@@ -159,9 +166,8 @@ export const useOrderStore = defineStore(
     };
 
     const handleOrderAdd = async function (item) {
-      const { calcUserSelectDay, workDayList } = await createOrderManipulate(
-        myorder
-      );
+      const { calcUserSelectDay, specificWeekDay } =
+        await createOrderManipulate();
 
       // 添加訂單
       const product = {
@@ -175,30 +181,29 @@ export const useOrderStore = defineStore(
         Subscribe: item.supplier_name,
       };
 
-      // 確認選擇日期與配送週期是否有衝突
-      const isSameOrBeforeDate = (target) => {
-        const date1 = dayjs(calcUserSelectDay.date);
-        const date2 = dayjs(target);
-        return date1.isSameOrBefore(date2);
-      };
-
       // 訂閱商品
       if (item && item.frequency) {
-        const loopFq = frequencyFindAndCreate(item.frequency);
-        const indexDate = workDayList.findIndex(
+        const range = specificWeekDay(calcUserSelectDay.dayOfWeek);
+        const indexDate = range.findIndex(
           (d) => d.date === calcUserSelectDay.date
         );
-        for (let i = 0; i < loopFq; i++) {
-          let filterDay;
-          if (~indexDate) {
-            filterDay = workDayList[indexDate + 5 * i];
-          } else {
-            filterDay = workDayList[5 * i];
+        const loopFq = frequencyFindAndCreate(item.frequency, range, indexDate);
+
+        // 如果訂單日期在 就移除重新設定
+        myorder.value = myorder.value.map((d, i) => {
+          if (d.order_date.date === range[i].date) {
+            d.products = d.products.filter(
+              (pd) => pd.product_id !== item.product_id
+            );
           }
-          isSameOrBeforeDate(filterDay.date)
-            ? processOrder(myorder.value, filterDay, product)
-            : "";
-        }
+          return d;
+        });
+
+        loopFq.forEach((d) => {
+          processOrder(myorder.value, d, product);
+        });
+
+        return;
       } else {
         // 使用的是普通商品
         processOrder(myorder.value, calcUserSelectDay, product);
@@ -217,13 +222,13 @@ export const useOrderStore = defineStore(
     };
 
     const handleSelectionDay = (day) => {
+      const { showProductItem, setSelection } = toRefs(useCartStore());
       const indx = workDayLists.value.findIndex(
         (d) => d.date === day.order_date.date
       );
-      const { showProductItem, setSelection } = toRefs(useCartStore());
       const { date, dayOfWeek } = day.order_date;
       setSelection.value(date, indx, `${date.slice(5)}/${dayOfWeek}`);
-      showProductItem.value = !showProductItem.value;
+      showProductItem.value = true;
     };
 
     // 移除商品
@@ -276,6 +281,7 @@ export const useOrderStore = defineStore(
       setProductCart,
       handleSelectionDay,
       resetOrder,
+      setDefaultFirstOrder,
       //
     };
   },

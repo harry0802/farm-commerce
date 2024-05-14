@@ -15,7 +15,7 @@
                 <RouterView />
             </template>
         </AccountPageCard>
-        <slot name="sidebar"></slot>
+        <slot name="sidebar" />
     </main>
 </template>
 <script setup>

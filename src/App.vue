@@ -13,7 +13,7 @@
 </template>
 
 <script setup>
-import { onMounted, provide, ref } from "vue";
+import { onMounted, } from "vue";
 import { RouterView } from "vue-router";
 import FarmFooter from "./layout/FarmFooter.vue";
 import farmHeader from "./layout/FarmHeader.vue";

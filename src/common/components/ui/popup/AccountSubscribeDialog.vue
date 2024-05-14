@@ -79,7 +79,7 @@ const props = defineProps({
                 </Button>
             </slot>
         </DrawerTrigger>
-        <DrawerContent class="rounded-t-3xl h-[70%] px-4 ">
+        <DrawerContent :class="cn('rounded-t-3xl h-[70%] px-4', props.class)">
             <DrawerHeader class="text-left pl-0">
                 <DrawerTitle class="mb-4 pr-12 max-sm:u-text-large">
                     {{ title }}

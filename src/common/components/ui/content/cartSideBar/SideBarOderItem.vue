@@ -2,8 +2,8 @@
   <!-- 商品內容，與數量 -->
   <div class="oder__item ">
     <ul class="item__list p-4" v-for="products  in productCart" :key="products.product_id">
-      <li class="item__list--photo">
-        <img class="max-w-[90px] h-[90px] bg-cover rounded-md" :src="products.image_url" alt="" />
+      <li class="item__list--photo w-full max-w-[90px] h-[90px] rounded-md overflow-hidden ">
+        <img class="w-full  h-full object-cover" :src="products.image_url" alt="" />
       </li>
       <li class="item__list--info">
         <div class="info__detail">

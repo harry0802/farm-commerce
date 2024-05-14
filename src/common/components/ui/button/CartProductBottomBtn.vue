@@ -35,7 +35,7 @@
 <script setup>
 import DynamicBottomBar from "../content/cartSideBar/DynamicBottomBar.vue";
 import useAccountStore from "@/store/modules/account/accountStore.js";
-import { ref, inject, computed } from "vue";
+import { inject, computed } from "vue";
 import { Icon } from '@iconify/vue';
 import dayjs from "dayjs";
 
@@ -44,15 +44,12 @@ const { product } = inject('findOrderDate')
 const store = inject('store')
 
 const lastEditTrans = computed(() => {
-  let [y, m, d] = store.selectionDay.orderDate.split('/')
-  return dayjs(`${y}-${m}-${d - 1}`).format("dd, M月D")
+  if (store.selectionDay.orderDate) {
+    let [y, m, d] = store.selectionDay.orderDate.split('/')
+    return dayjs(`${y}-${m}-${d - 1}`).format("dd, M月D")
+  }
 })
 
-
-
-
-
-const hasProduct = ref(true);
 </script>
 
 <style scoped>
