@@ -22,26 +22,25 @@
 </template>
 
 <script setup>
-import { defineProps, inject } from "vue";
+import { inject } from "vue";
 import { FormField } from "@/common/composables/ui/form";
 import CostomSelect from "@/common/components/ui/from/CostomSelect.vue";
 import { useForm, useField } from "vee-validate";
-// const props = defineProps({
-//     orderData: Object
-// })
+
 const loopData = 10
 const fq = ['每周一次', '隔週一次', '每月一次']
 
 const getOrderSubscription = inject('getOrderSubscription')
+const { isSubscribe } = inject('tdOrderInfo')
+
 
 const { handleSubmit } = useForm(
     {
         initialValues: {
-            quantity: getOrderSubscription.value ? getOrderSubscription.value.Quantity : 1,
-            frequency: getOrderSubscription.value ? getOrderSubscription.value.Frequency : fq[0]
+            quantity: isSubscribe.value ? getOrderSubscription.value.Quantity : 1,
+            frequency: isSubscribe.value ? getOrderSubscription.value.Frequency : fq[0]
         }
     })
-
 
 
 
@@ -50,18 +49,6 @@ const { value: frequencyVl, } = useField('frequency')
 
 const sendHandleSubmit = defineModel('handleSubmit')
 sendHandleSubmit.value = handleSubmit
-
-
-
-/*
-1. 數量 ok  
-2. 配送週期 ， 
-
-default 
-每周一次 ? 1. 星期幾    2. 下一筆訂單的日期   tips:對應到該星期的日期   3. 添加到訂單， 到月底前的每週一筆 （1）
-隔週一次 ? 1. 星期幾    2. 下一筆訂單的日期   tips:對應到該星期的日期   3. 添加到訂單， 到月底前的每隔週一筆 (7)
-每月一次 ?  1. 星期幾    2. 下一筆訂單的日期   tips:對應到該星期的日期   3. 添加到訂單， 到月底前的每隔週一筆 (14)
-*/
 
 
 

@@ -1,15 +1,16 @@
 <template>
     <div class="info__control flex  flex-col  ">
-        <div v-if="!theSubscribe" class="control__button pt-6  min-[950px]:flex ">
+        <div v-if="!theSubscribe" class="control__button pt-6 flex  flex-col mr:flex-row  mr:items-end
+         ">
             <ShopBtnCard />
-            <ShopSubscribe @click="showSubscribe" class="mt-4" />
+            <ShopSubscribe @click="showSubscribe" class="mt-4 " />
         </div>
         <div v-else class="control__subscribe">
-            <ProdictFormCard>
+            <ProdictFormCard :onSubmit="onsubmit">
                 <template #selection>
-                    <ProductSelection />
-                    <ProductSelection />
+                    <ProductSelection v-model:handleSubmit="handleSubmit" />
                 </template>
+
                 <template #buttomBar>
                     <div class="button-controll  flex sm:flex-col min-[950px]:flex-row ">
                         <button class="u-pirmary-button confirm">確認</button>
@@ -26,9 +27,13 @@ import ShopBtnCard from '../../../ui/card/ShopBtnCard.vue'
 import ShopSubscribe from '../../../ui/button/ShopSubscribe.vue'
 import ProdictFormCard from '../../../ui/card/ProdictFormCard.vue'
 import ProductSelection from '../../../ui/product/ProductSelection.vue'
-import { ref } from "vue";
+import { inject, ref } from "vue";
+
+const addSubscribe = inject('handleOrderAdd')
+const productInfo = inject('productInfo')
 
 const theSubscribe = ref(false)
+const handleSubmit = ref(null)
 
 const showSubscribe = function () {
     theSubscribe.value = true
@@ -36,6 +41,15 @@ const showSubscribe = function () {
 const closeSubscribe = function () {
     theSubscribe.value = false
 }
+
+
+
+const onsubmit = async () => {
+    await (handleSubmit.value(({ quantity, frequency }) => { addSubscribe({ quantity, frequency, ...productInfo }) }))()
+    closeSubscribe()
+}
+
+
 </script>
 
 <style scoped>

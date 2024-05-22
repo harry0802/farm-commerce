@@ -1,4 +1,5 @@
 <template>
+
     <main id="main" class="category__content py-6 place-content-center">
         <h1 class="  u-text-giant  ml-4 mb-2 mr:hidden  "> for you</h1>
         <section v-for="( pageitem, i) in renderPage  " :key="i">
@@ -13,10 +14,10 @@
                 </h2>
             </div>
 
-            <div v-if="pageitem.renderPage.length > 0" class="category__product  overflow-hidden">
+            <div v-if="pageitem.renderPage?.length > 0" class="category__product  overflow-hidden">
                 <shop-main-produt-item-card v-for=" item in pageitem.renderPage" :key="item.product_id" :data="item" />
             </div>
-            <div class="category__product overflow-hidden max-sm:grid-cols-1" v-else>
+            <div v-else class=" category__product overflow-hidden max-sm:grid-cols-1">
                 <div class=" w-full h-full max-w-[350px] rounded-lg">
                     <div
                         class="flex flex-col  place-content-evenly h-full m-2 p-[50px] bg-b-color-browm text-center  rounded-lg">
@@ -26,7 +27,7 @@
                         <p>{{ pageitem.emptyPage.text }}</p>
                     </div>
                 </div>
-                <img v-if="pageitem.emptyPage.guidePic && !pageitem.renderPage.length > 0"
+                <img v-if="pageitem.emptyPage.guidePic && !pageitem.renderPage?.length > 0"
                     class="guidePic max-sm:hidden " v-for="pic in pageitem.emptyPage.guidePic" :src="pic" alt="">
 
             </div>
@@ -48,7 +49,6 @@ import { tryOnMounted, useIntersectionObserver } from '@vueuse/core'
 
 const { renderPage, setBbserverCurrentID } = inject('ProductPageSection')
 const isLargeScreen = useMediaQuery('(min-width: 950px)')
-
 
 const target = ref(null)
 tryOnMounted(() => {

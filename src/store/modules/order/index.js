@@ -1,32 +1,33 @@
 import useCartStore from "@/store/modules/cart/cartStore.js";
 import { defineStore } from "pinia";
-import { ref, toRefs, computed } from "vue";
+import { toRefs, computed } from "vue";
 import { getClientOrder, upDateOrder } from "@/Plugins/supabaseOrder.js";
 import { useDebounceFn } from "@vueuse/core";
 import { creatOrderList } from "@/Plugins/day.js";
+import { findIndexByProductID } from "@/store/modules/order/helpers.js";
 import {
+  generatedOrderState,
+  createSubscribeConstruction,
+  clearEmptyAndSortOrder,
+  createGeneralOrderConstruction,
+  removeOrder,
   removeExpiredOrders,
-  createOrderManipulate,
-  removeProductAndEmptyOrders,
-  removeProductAndEmptyOrdersByDate,
-  processOrder,
-  frequencyFindAndCreate,
-  orderDataSorter,
   setDefaultFirstOrder,
-} from "@/store/modules/order/orderContext.js";
-
-// .uuid({ message: "Invalid UUID" })
+  getOrderConstruction,
+} from "@/store/modules/order/model/index.js";
 export const useOrderStore = defineStore(
   "order",
   () => {
-    const myfavorite = ref([]);
-    const myorder = ref([]);
-    const subscription = ref([]);
-    const recentlyViewed = ref([]);
-    const reorder = ref([]);
-    const recommendedSubscriptions = ref([]);
-    const workDayLists = ref(null);
-    const productCart = ref(null);
+    const {
+      myfavorite,
+      myorder,
+      subscription,
+      recentlyViewed,
+      reorder,
+      recommendedSubscriptions,
+      workDayLists,
+      productCart,
+    } = generatedOrderState();
 
     const personalStyle = {
       project: "For You",
@@ -75,14 +76,7 @@ export const useOrderStore = defineStore(
     };
 
     // getter
-
     const calcOrderState = computed(() => myorder.value.length !== 0);
-
-    //  helper FN
-    const debonseUpDateOrder = useDebounceFn(() => {
-      return upDateOrder({ favorite: myfavorite.value });
-    }, 500);
-    const checkContent = (item, condition) => item.findIndex(condition);
 
     //  init
     const initializeOrderStore = async function () {
@@ -94,133 +88,55 @@ export const useOrderStore = defineStore(
       subscription.value = reponse.subscription;
       recentlyViewed.value = reponse.recently_viewed;
       workDayLists.value = workDayList;
+
       removeExpiredOrders(workDayList, reponse.order, myorder);
       setDefaultFirstOrder(myorder, workDayList);
     };
 
-    // userhandle
-    // const addMyfavorite = async function (item) {
-    //   const index = checkContent(
-    //     myfavorite.value,
-    //     (arr) => arr.product_id === item.product_id
-    //   );
-
-    //   ~index ? myfavorite.value.splice(index, 1) : myfavorite.value.push(item);
-    //   const reponse = await debonseUpDateOrder();
-    //   myfavorite.value = reponse;
-    // };
-
+    // 添加我的最愛
     const addMyfavorite = useDebounceFn(async (item) => {
-      const index = checkContent(
-        myfavorite.value,
-        (arr) => arr.product_id === item.product_id
-      );
+      const index = findIndexByProductID(myfavorite.value, item.product_id);
       ~index ? myfavorite.value.splice(index, 1) : myfavorite.value.push(item);
-      const reponse = await debonseUpDateOrder();
-      myfavorite.value = reponse;
+      await upDateOrder({ favorite: myfavorite.value });
     }, 500);
 
+    // 添加最近瀏覽
     const addrecentlyVie = async function (item) {
-      const index = checkContent(
-        recentlyViewed.value,
-        (arr) => arr.product_id === item.product_id
-      );
+      const index = findIndexByProductID(recentlyViewed.value, item.product_id);
+      ~index
+        ? recentlyViewed.value.splice(index, 1)
+        : recentlyViewed.value.unshift(item);
 
-      if (~index) recentlyViewed.value.splice(index, 1);
-      recentlyViewed.value.unshift(item);
-
-      const response = await upDateOrder({
+      await upDateOrder({
         recently_viewed: recentlyViewed.value,
       });
-      recentlyViewed.value = response;
     };
-
+    // 添加訂閱商品
     const addSubscribe = async function (item) {
-      const { getToday } = await creatOrderList().filteredDates();
-
-      const sendData = {
-        product_id: item.product_id,
-        Quantity: item.quantity,
-        Frequency: item.frequency,
-        DeliveryDay: getToday.dayOfWeek,
-        NextDelivery_Date: getToday.date,
-      };
-
-      const index = checkContent(
-        subscription.value,
-        (arr) => arr.product_id === sendData.product_id
-      );
-
+      const { generatedSubscribeData } = createSubscribeConstruction();
+      const { sendData } = await generatedSubscribeData(item, myorder);
+      const id = item.product_id || item.id;
+      const index = findIndexByProductID(subscription.value, id);
       ~index
         ? (subscription.value[index] = sendData)
         : subscription.value.push(sendData);
-
-      const [subscriptionSp] = await Promise.all([
-        upDateOrder({
-          subscription: subscription.value,
-        }),
-        handleOrderAdd(item),
-      ]);
-
-      subscription.value = subscriptionSp;
-    };
-
-    const handleOrderAdd = async function (item) {
-      const { calcUserSelectDay, specificWeekDay } =
-        await createOrderManipulate();
-
-      // 添加訂單
-      const product = {
-        product_id: item.product_id,
-        product_name: item.product_name,
-        price: item.price,
-        image_url: item.image_url,
-        quantity: item.quantity || "1",
-        weight: item.weight,
-        supplier_name: item.supplier_name,
-        Subscribe: item.supplier_name,
-      };
-
-      // 訂閱商品
-      if (item && item.frequency) {
-        const range = specificWeekDay(calcUserSelectDay.dayOfWeek);
-        const indexDate = range.findIndex(
-          (d) => d.date === calcUserSelectDay.date
-        );
-        const loopFq = frequencyFindAndCreate(item.frequency, range, indexDate);
-
-        // 如果訂單日期在 就移除重新設定
-        myorder.value = myorder.value.map((d, i) => {
-          if (d.order_date.date === range[i].date) {
-            d.products = d.products.filter(
-              (pd) => pd.product_id !== item.product_id
-            );
-          }
-          return d;
-        });
-
-        loopFq.forEach((d) => {
-          processOrder(myorder.value, d, product);
-        });
-
-        return;
-      } else {
-        // 使用的是普通商品
-        processOrder(myorder.value, calcUserSelectDay, product);
-      }
-      // 最後把日期重新整理
-      myorder.value.sort(orderDataSorter);
-
-      myorder.value = await upDateOrder({
-        order: myorder.value,
+      await upDateOrder({
+        subscription: subscription.value,
+        order: clearEmptyAndSortOrder(myorder).value,
       });
     };
-
-    //
+    // 普通商品添加
+    const handleOrderAdd = async function (item) {
+      await createGeneralOrderConstruction(item, myorder);
+      await upDateOrder({
+        order: clearEmptyAndSortOrder(myorder).value,
+      });
+    };
+    // 設定購物車的訂單
     const setProductCart = function (item) {
       productCart.value = item;
     };
-
+    //
     const handleSelectionDay = (day) => {
       const { showProductItem, setSelection } = toRefs(useCartStore());
       const indx = workDayLists.value.findIndex(
@@ -231,25 +147,25 @@ export const useOrderStore = defineStore(
       showProductItem.value = true;
     };
 
-    // 移除商品
-    const handleOrderRemoveSubScribe = async function (item) {
-      const orders = myorder.value;
-      removeProductAndEmptyOrders(myorder.value, item.id);
-      console.log(orders);
-    };
-
-    const handleOrderRemoveItem = async function (item) {
-      const orders = myorder.value;
-      // orders, date, productId
-      removeProductAndEmptyOrdersByDate(
-        myorder.value,
-        "1991113",
-        item.productId
+    // 刪除單一商品
+    const handleOrderRemoveItem = async function (item, orderdate) {
+      const { removeProductAndEmptyOrdersByDate } = removeOrder();
+      const result = removeProductAndEmptyOrdersByDate(
+        myorder,
+        orderdate.date,
+        item
       );
-
-      console.log(test);
+      setProductCart(result);
+      await upDateOrder({
+        order: clearEmptyAndSortOrder(myorder).value,
+      });
     };
-
+    // 刪除整個訂閱商品
+    const handleOrderRemoveSubScribe = async function (item) {
+      const { removeProductAndEmptyOrders } = removeOrder();
+      removeProductAndEmptyOrders(myorder.value, item.id);
+    };
+    // 登出設定
     const resetOrder = function () {
       myfavorite.value = [];
       myorder.value = [];
@@ -271,7 +187,6 @@ export const useOrderStore = defineStore(
       calcOrderState,
       // fn
       initializeOrderStore,
-      createOrderManipulate,
       addMyfavorite,
       addrecentlyVie,
       addSubscribe,
@@ -281,8 +196,7 @@ export const useOrderStore = defineStore(
       setProductCart,
       handleSelectionDay,
       resetOrder,
-      setDefaultFirstOrder,
-      //
+      getOrderConstruction,
     };
   },
   {

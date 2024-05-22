@@ -1,7 +1,7 @@
 <template>
   <dynamic-wrapper>
     <template #list>
-      <dynamic-photo v-if="!product">
+      <dynamic-photo v-if="!isProduct">
         <figcaption class="u-text-medium text-color-eva-dark-yellow mb-4">
           請添加商品
         </figcaption>
@@ -21,12 +21,14 @@ import DynamicWrapper from "../../ui/content/cartSideBar/DynamicWrapper.vue";
 import DynamicPhoto from "../../ui/content/cartSideBar/DynamicPhoto.vue";
 import CartProductOder from "../cartProdut/CartProductOder.vue";
 import CartProductBottomBtn from "../../ui/button/CartProductBottomBtn.vue";
+import { inject, onMounted, computed } from "vue";
+const { productCart } = inject('orderStore')
+const { findOrderDate } = inject('findOrderDate')
+const isProduct = computed(() => productCart.value?.length > 0 ?? false)
 
-import { inject, onMounted } from "vue";
-const { findOrderDate, product } = inject('findOrderDate')
 onMounted(() => {
-  findOrderDate()
-})
+  findOrderDate();
+});
 
 </script>
 

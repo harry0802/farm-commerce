@@ -17,6 +17,10 @@
 
 <script setup>
 import { computed } from "vue";
+const props = defineProps({
+  maxValue: Number,
+  progressLength: Number,
+});
 const colorArr = [
   "#cc0100",
   "#cf3200",
@@ -29,10 +33,7 @@ const colorArr = [
   "#fffdca",
   "#fff",
 ];
-const props = defineProps({
-  maxValue: Number,
-  progressLength: Number,
-});
+
 const hiddenProgress = computed(() => deliveryCharge.value === 100);
 
 const enterPrice = computed(() =>
@@ -50,8 +51,6 @@ const deliveryCharge = computed(() => {
 
 const feeTarget = computed(() => {
   const calcfloor = Math.floor(props.maxValue - enterPrice.value);
-  console.log(calcfloor);
-
   return calcfloor === 0
     ? "免除運費！"
     : calcfloor >= 0

@@ -18,6 +18,20 @@ const createOrderManipulate = async () => {
   const calcUserSelectDay = workDayList[index];
   return { calcUserSelectDay, workDayList, specificWeekDay };
 };
+// create order product template
+const createProductData = (item) => {
+  return {
+    product_id: item.product_id,
+    product_name: item.product_name,
+    price: item.price,
+    image_url: item.image_url,
+    quantity: item.quantity || "1",
+    weight: item.weight,
+    supplier_name: item.supplier_name,
+    Subscribe: item.supplier_name,
+    product_code: item.product_code,
+  };
+};
 
 // set UserSelection default firstOrder
 const setDefaultFirstOrder = function (order, workDayLists) {
@@ -60,38 +74,7 @@ const createOrder = function (date) {
 };
 
 //////////////////////////////////////////////////////////// helper FN ////////////////////////////////////////////////////////////
-// 確認選擇日期與配送週期是否有衝突
-// const isSameOrBeforeDate = (td) => {
-//   const date1 = dayjs(td);
-//   return (target) => {
-//     if (target.length > 1) {
-//       const orderDate = [];
-//       target.forEach((d) =>
-//         date1.isSameOrBefore(dayjs(d.date)) ? orderDate.push(d) : d
-//       );
-//       return orderDate;
-//     } else {
-//       return target;
-//     }
-//   };
-// };
-// //frequency fns
-// const everyWeek = (range, filterFn) => filterFn(range);
-// const oherWeek = (range, td, od, filterFn) =>
-//   filterFn(range[td + od] ? [range[td], range[td + od]] : range[td]);
-// const moonOnce = (range, td, filterFn) => filterFn(range[td]);
 
-// const frequencyFindAndCreate = (sendData, range, td) => {
-//   const frequency = ["每周一次", "隔週一次", "每月一次"];
-//   const filterFn = isSameOrBeforeDate(range[td].date);
-//   const index = frequency.findIndex((fq) => fq === sendData);
-
-//   return [
-//     () => everyWeek(range, filterFn),
-//     () => oherWeek(range, td, index, filterFn),
-//     () => moonOnce(range, td, filterFn),
-//   ][index]();
-// };
 const isSameOrBeforeDate = (td) => {
   const date1 = dayjs(td);
   return (targets) =>
@@ -134,6 +117,7 @@ const findOrCreateOrder = (orders, date) => {
 };
 const updateOrCreateProduct = (products, product) => {
   const index = products.findIndex((p) => p.product_id === product.product_id);
+
   if (index !== -1) {
     products[index] = product;
   } else {
@@ -153,6 +137,7 @@ const processOrder = async (orders, date, product) => {
   const { products } = findOrCreateOrder(orders, date);
   updateOrCreateProduct(products, product);
 };
+
 const removeProductAndEmptyOrders = (orders, productId) => {
   // 移除产品
   orders.forEach((order) => {
@@ -168,9 +153,9 @@ const removeProductAndEmptyOrders = (orders, productId) => {
   const filteredOrders = orders.filter((order) => order.products.length !== 0);
   return filteredOrders;
 };
-const removeProductAndEmptyOrdersByDate = (orders, date, productId) => {
-  const order = orders.find((order) => order.order_date === date);
 
+const removeProductAndEmptyOrdersByDate = (orders, date, productId) => {
+  const order = orders.find((order) => order.order_date.date === date);
   // 如果找到了订单
   if (order) {
     // 移除订单中指定产品
@@ -189,11 +174,11 @@ const removeProductAndEmptyOrdersByDate = (orders, date, productId) => {
       }
     }
   }
-
-  return orders;
+  return order.products;
 };
 
 export {
+  createProductData,
   createOrderManipulate,
   removeExpiredOrders,
   removeProductAndEmptyOrders,

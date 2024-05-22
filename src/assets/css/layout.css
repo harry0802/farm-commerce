@@ -153,8 +153,9 @@
     letter-spacing: 0.142857em;
     cursor: pointer;
     transition: all 0.4s;
-    border: 0.8px solid;
-    @apply text-color-primary-light border-color-grey-dark gap-2 transition-colors duration-300  hover:bg-b-color-green-light;
+    border: 2px solid;
+
+    @apply text-color-primary-light border-color-grey-light gap-2 transition-colors duration-300  hover:bg-b-color-green-light hover:border-b-color-green-light;
   }
 
   .u-subscribe-btn:active {

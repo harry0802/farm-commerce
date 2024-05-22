@@ -1,9 +1,9 @@
 <template>
     <SupplierCard>
         <div class="supplier__content  grid gap-8 ">
-            <div class="supplier__photo">
+            <div class="supplier__photo overflow-hidden rounded-md">
                 <div class="photo__content ">
-                    <img class="rounded-md" :src="productSupplier.supplierimg" alt="">
+                    <img class="w-full object-cover" loading="lazy" :src="productSupplier.supplierimg" alt="">
                 </div>
             </div>
             <SupplierText />

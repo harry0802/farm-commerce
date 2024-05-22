@@ -7,7 +7,7 @@
             </template>
 
             <template #selectorContent>
-                <component :is="tabs[currentComponents]"></component>
+                <component :is="tabs[currentComponents]" />
             </template>
 
         </ProdcutSupplierCard>

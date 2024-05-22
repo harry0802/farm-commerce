@@ -1,27 +1,33 @@
 <template>
   <!-- 商品內容，與數量 -->
-  <div class="oder__item ">
-    <ul class="item__list p-4" v-for="products  in productCart" :key="products.product_id">
-      <li class="item__list--photo w-full max-w-[90px] h-[90px] rounded-md overflow-hidden ">
-        <img class="w-full  h-full object-cover" :src="products.image_url" alt="" />
+  <div class="order__item">
+    <ul class="item__list p-4" v-if="productCart && productCart.length > 0" v-for="product in productCart">
+
+      <li class="item__list--photo w-[90px] h-[90px] rounded-md overflow-hidden">
+        <img class="w-full h-full object-cover" :src="product.image_url" alt="" />
       </li>
       <li class="item__list--info">
         <div class="info__detail">
-          <a class="u-text-omit-2" href="#">{{ products.product_name }}</a>
-          <a class="u-text-omit-1" href="#">{{ products.supplier_name }}</a>
-          <span class="mt-2">{{ products.weight }}</span>
+          <router-link class="btn__info--link line-clamp-2"
+            :to="`/product/${product.product_name}-${product.product_code}`">
+            {{ product.product_name }}
+          </router-link>
+          <router-link class="btn__info--link text-color-eva-dark-yellow" :to="`/producers/${product.supplier_name}`">
+            {{ product.supplier_name }}
+          </router-link>
+          <span class="mt-2">{{ product.weight }}</span>
         </div>
       </li>
-      <product-edit-control v-bind="products" />
+      <product-edit-control v-bind="product" />
     </ul>
   </div>
 </template>
 
+
 <script setup>
 import ProductEditControl from "../../../cartsidebar/cartProdut/productItem/ProductEditControl.vue";
-import { inject } from "vue";
+import { inject, } from "vue";
 const { productCart } = inject('orderStore')
-
 
 
 
@@ -56,5 +62,10 @@ img {
 .info__detail {
   display: flex;
   flex-direction: column;
+}
+
+.btn__info--link {
+  text-decoration: transparent;
+  @apply text-sm leading-6 underline underline-offset-4 hover:decoration-white transition-colors duration-300
 }
 </style>

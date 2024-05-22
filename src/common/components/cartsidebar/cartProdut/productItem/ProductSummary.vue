@@ -76,6 +76,7 @@ const removePromoCode = function () {
   display: flex;
   justify-content: space-between;
 }
+
 .codes__detail {
   display: flex;
   flex-direction: column;

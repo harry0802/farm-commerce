@@ -8,8 +8,9 @@
     </component>
   </router-view>
   <farm-footer />
-  <Toaster position="bottom-left" richColors :expand="true" />
+  <Toaster closeButton position="bottom-left" richColors :expand="true" />
   <chatbotPage />
+
 </template>
 
 <script setup>
@@ -21,6 +22,8 @@ import HeaderSidebar from "@/common/components/cartsidebar/HeaderSidebar.vue";
 import chatbotPage from "@/common/components/chatbot/chatbotPage.vue";
 import { Toaster } from "@/common/composables/ui/sonner";
 import { startAuthStateListener } from "@/Plugins/sessionHandler.js";
+
+
 
 onMounted(() => {
   startAuthStateListener()

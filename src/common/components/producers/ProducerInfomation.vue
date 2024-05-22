@@ -35,23 +35,27 @@ import ProducerCard from '../ui/card/ProducerCard.vue'
 import ProducerInfo from "../ui/content/producer/ProducerInfo.vue";
 import ProducerPhoto from '../ui/content/producer/ProducerPhoto.vue'
 import ShopMainProdutItemCard from "../ui/card/ShopMainProdutItemCard.vue";
+import { promise } from "zod";
 
 const router = useRouter();
 const id = useRouteParams('id')
 const isloading = ref(true)
 const currentProducer = ref([])
 const currentProduct = ref([])
+
+
 provide('producerInfo', currentProducer)
-isloading
-console.log(isloading.value);
+
+
 
 
 
 
 onMounted(async () => {
-
-    const [data] = await requestProducer(id.value)
-    const product = await renderingPageData('supplier_name', id.value)
+    const [[data], product] = await Promise.all([
+        requestProducer(id.value),
+        renderingPageData('supplier_name', id.value)
+    ])
     currentProduct.value = product
     currentProducer.value = data
 

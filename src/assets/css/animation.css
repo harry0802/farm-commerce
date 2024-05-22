@@ -8,6 +8,10 @@
   @apply hover:scale-110 active:scale-100 transition-transform duration-200;
 }
 
+.btn__linkUnderline--animate {
+  @apply underline underline-offset-4 decoration-[transparent] hover:decoration-[inherit] transition-colors duration-300;
+}
+
 /* 邊框特效 */
 .card-Img-Border {
   opacity: 0;

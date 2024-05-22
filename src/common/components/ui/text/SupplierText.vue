@@ -1,6 +1,8 @@
 <template>
     <article>
-        <a class="text-color-primary u-text-medium" href="#">{{ productSupplier.supplierName }}</a>
+        <RouterLink :to="`/producers/${productSupplier.supplierName}`"
+            class="btn__linkUnderline--animate text-color-primary u-text-medium">{{
+            productSupplier.supplierName }}</RouterLink>
         <p class="article__location text-color-grey-dark">{{ productSupplier.supplierLocation }}</p>
         <div class="supplier__paragraph mt-4">
             <p class="text-color-primary">{{ productSupplier.supplierIntroduce }}</p>
@@ -19,4 +21,3 @@ const { productSupplier } = inject('ProdictSupplier')
     font-family: RiiT_F;
 }
 </style>
-

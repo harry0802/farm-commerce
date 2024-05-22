@@ -26,7 +26,7 @@ export default {
       const supplierData = await requestProducer(pageData.supplier_name);
 
       if (!pageData && supplierData.length === 0) {
-        throw new Error("💥 Supplier not founding");
+        throw new Error("💥 HANDLE_SUPBASE_ERR0R : Supplier not founding");
       }
       const { productInfo, productInfoPageData } = this;
 
@@ -49,12 +49,21 @@ export default {
     for (const key in producer) {
       if (Object.hasOwnProperty.call(producer, key)) {
         const currentProducer = producer[key];
-        productSupplier.id = currentProducer.id;
-        productSupplier.supplierimg = currentProducer.producer__imge;
-        productSupplier.supplierName = currentProducer.producer__name;
-        productSupplier.supplierLocation = currentProducer.producer__location;
-        productSupplier.supplierIntroduce =
-          currentProducer.producer__description;
+        const {
+          id,
+          producer__imge,
+          producer__name,
+          producer__location,
+          producer__description,
+        } = currentProducer;
+
+        Object.assign(productSupplier, {
+          id,
+          supplierimg: producer__imge,
+          supplierName: producer__name,
+          supplierLocation: producer__location,
+          supplierIntroduce: producer__description,
+        });
       }
     }
   },
@@ -67,6 +76,8 @@ export default {
       image_url,
       product_id,
       price,
+      Subscribe,
+      product_code,
     } = data;
 
     Object.assign(page, {
@@ -77,6 +88,8 @@ export default {
       photoPath: image_url,
       id: product_id,
       price,
+      Subscribe,
+      code: product_code,
     });
   },
   initProducPageData() {
@@ -88,6 +101,8 @@ export default {
         supplierName: "",
         supplierLocation: "",
         supplierIntroduce: "",
+        Subscribe: "",
+        code: null,
       },
     };
     this.productInfo = {
@@ -101,6 +116,7 @@ export default {
     };
     this.productPageBreadcrumbs = [{ label: "首頁", link: "/home" }];
   },
+
   initproductPageNavBtnBar(storage, ingredients) {
     const PageNavBtnBar = this.productPageNavBtnBar;
     const productStorageLength = storage ? storage.length : 0;

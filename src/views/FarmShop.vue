@@ -1,5 +1,5 @@
 <template>
-  <div class="category__page w-full px-4">
+  <div class="category__page w-full  max-[399px]:py-0  min-[400px]:py-4">
     <div class="category__container m-auto">
       <shop-nav-side v-if="navigator" :data="navigator" />
       <shop-main-page v-if="renderPage" :overview="overview" />

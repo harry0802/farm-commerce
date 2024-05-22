@@ -3,19 +3,20 @@
     <div class="relative  product-item__container p-1.5 flex flex-col h-full   ">
       <!-- 產品圖片 -->
       <div class="relative product-item__photo">
-        <MarkFavoriteBtn :data="data" class="right-2 top-2 z-[0]" />
+        <MarkFavoriteBtn :data="data" class="right-2 top-2 z-[1]" />
+
         <RouterLink @click="addrecentlyVie(data)" class="photo__links"
-          :to="`/product/${data.product_name + '-' + data.product_code}`">
+          :to="`/product/${data.product_name}-${data.product_code}`">
           <div>
-            <img class="object-cover rounded-lg" :src=data.image_url alt="" />
+            <img loading="lazy" class="object-cover rounded-lg" :src=data.image_url alt="" />
             <p v-if="getOderFrequency"
               class="absolute flex flex-col  w-full h-full inset-0 place-content-center place-items-center  rounded-lg bg-[#07261e73] text-white ">
-              <span class="u-text-large font-[Yagoinini]">{{ getOderFrequency }}</span>
+              <span class="u-text-large font-[Yagoinini]">{{ getOderFrequency.quantity }}</span>
               <span class="font-[Yagoinini]  tracking-widest u-text-small">加入訂單</span>
-
             </p>
           </div>
         </RouterLink>
+
         <MarkTextIcon v-if=!!data.SALE v-bind='data' class="left-2  top-2" />
       </div>
 
@@ -27,18 +28,17 @@
         class=" h-full	overflow-hidden p-2 rounded-lg border-[2px] border-color-primary-light    flex flex-col justify-between absolute  top-[-2px] left-[-2px]  right-[-2px]">
         <template #selection>
           <div class="px-4 selection__wrap   w-full  bg-color-primary ">
-            <ProductSelection v-model:handleSubmit="handleSubmit" :order-data="getOrderSubscription" />
+            <ProductSelection v-model:handleSubmit="handleSubmit" />
           </div>
         </template>
         <template #buttomBar>
           <div class="  mt-auto h-[44px]  button-controll   flex gap-2    flex-row justify-end">
             <button type="button" class="max-w-[140px] u-subscribe-btn cancel text-color-primary"
               @click="closeSubscribe">取消</button>
-            <button type="submit" class="max-w-[140px] u-subscribe-btn confirm text-color-primary">確認</button>
+            <button type="submit" class="max-w-[140px] u-subscribe-btn confirm  text-color-primary">確認</button>
           </div>
         </template>
       </ProdictFormCard>
-
     </div>
   </div>
 
@@ -51,17 +51,13 @@ import ProductSelection from "@/common/components/ui/product/ProductSelection.vu
 import MarkFavoriteBtn from "@/common/components/ui/button/MarkFavoriteBtn.vue";
 import MarkTextIcon from "@/common/components/ui/icon/MarkTextIcon.vue";
 import useCartStore from "@/store/modules/cart/cartStore.js";
-import { provide, ref, computed, watchEffect, toRefs, onMounted, } from "vue";
+import { provide, ref, computed, watchEffect, toRefs, watch } from "vue";
 import { useWindowSize } from '@vueuse/core'
 import { useOrderStore } from "@/store/modules/order/index.js";
 
-
-
-
-const { addSubscribe, addrecentlyVie, handleOrderAdd } = useOrderStore()
-const { subscription, myorder, workDayLists } = toRefs(useOrderStore())
+const { addSubscribe, addrecentlyVie, handleOrderAdd, getOrderConstruction, } = useOrderStore()
+const { myorder } = toRefs(useOrderStore())
 const { selectionDay } = toRefs(useCartStore());
-
 const { width: watchWindowWidth } = useWindowSize()
 
 
@@ -69,64 +65,49 @@ const props = defineProps({
   data: Object
 });
 
+const {
+  findingSubscription,
+  checkingIsSubscribe,
+  findingTdOder,
+} = getOrderConstruction(props.data)
+
+
 const handleSubmit = ref(null)
 const theSubscribe = ref(false)
-
-
 
 const showSubscribe = () => theSubscribe.value = true
 const closeSubscribe = () => theSubscribe.value = false
 const clacWindowSize = computed(() => watchWindowWidth.value > 600)
 
-// filter Data
 
-const getOrderSubscription = computed(() =>
-  subscription.value.find(
-    (item) => item.product_id === props.data.product_id
-  ))
+const getOrderSubscription = ref(null)
+const getOderFrequency = ref(null)
+const isSubscribe = ref(null)
 
+watch([myorder, selectionDay], ([_, newsDay]) => {
+  if (newsDay.orderDate == null) return
+  const tdOrder = newsDay.orderDate
+  getOrderSubscription.value = findingSubscription(tdOrder)
+  getOderFrequency.value = findingTdOder(tdOrder)
+  isSubscribe.value = checkingIsSubscribe(tdOrder)
+}, { deep: true, immediate: true })
 
-// console.log(selectionDay.value.selectionIndex);
-const getOderFrequency = computed(() => {
-  if (!workDayLists.value) return
-  const selectIndex = selectionDay.value.selectionIndex;
-  const calcUserSelectDay = workDayLists.value[selectIndex];
-  const findDate = myorder.value.find((d) => d.order_date.date === calcUserSelectDay.date)
-  if (!findDate) return
-  const { products } = findDate
-  const [order] = products.filter((p) => p.product_id === props.data.product_id);
-  return order?.quantity
-}
-)
-
-
-provide('productItem', props.data)
-provide('subscribe', { theSubscribe, showSubscribe })
-provide('watchWindowSize', watchWindowWidth)
-provide('getOrderSubscription', getOrderSubscription)
-provide('sendSubScript', { addSubscribe, handleSubmit })
-provide('handleOrderAdd', handleOrderAdd)
-
-watchEffect(() => {
-  clacWindowSize.value ? closeSubscribe() : clacWindowSize.value
-})
-
-
-
-
-
-
-
-
-const onsubmit = async (vl) => {
-  await (handleSubmit.value(({ quantity,
-    frequency }) => {
-    addSubscribe({ quantity, frequency, ...props.data })
-  }))(vl)
+const onsubmit = async () => {
+  await (handleSubmit.value(({ quantity, frequency }) => { addSubscribe({ quantity, frequency, ...props.data }) }))()
   closeSubscribe()
 }
 
 
+
+
+watchEffect(() => clacWindowSize.value ? closeSubscribe() : clacWindowSize.value)
+provide('productItem', props.data)
+provide('subscribe', { theSubscribe, showSubscribe })
+provide('watchWindowSize', watchWindowWidth)
+provide('sendSubScript', { addSubscribe, handleSubmit })
+provide('handleOrderAdd', handleOrderAdd)
+provide('getOrderSubscription', getOrderSubscription,)
+provide('tdOrderInfo', { isSubscribe, getOderFrequency })
 </script>
 
 <style scoped>
@@ -138,6 +119,10 @@ const onsubmit = async (vl) => {
 
 button.u-subscribe-btn {
   @apply text-color-primary
+}
+
+button.u-subscribe-btn.confirm {
+  border-color: transparent;
 }
 
 @media screen and (max-width: 350px) {

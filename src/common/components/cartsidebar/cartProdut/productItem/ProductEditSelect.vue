@@ -1,5 +1,8 @@
 <template>
-  <select class="select__detail text-color-eva-dark-green focus:border-color-eva-dark-green" v-model="selectedQuantity">
+
+  <select
+    class="select__detail text-color-eva-dark-green focus:border-color-eva-dark-yellow transition-colors duration-300"
+    v-model="selectedQuantity">
     <option disabled>請選擇數量</option>
     <oder-edit-slect-option v-model="selectedQuantity" v-for="option in options" :key="option" :optionValue="option" />
   </select>
@@ -18,10 +21,10 @@ const selectedQuantity = ref(1);
 select {
   width: 54px;
   height: 24px;
-  padding: 5px;
+  padding: 0 8px;
   border-radius: 2px;
   /* background: #ccc; */
-  border: 1px solid transparent;
+  border: 2px solid transparent;
   outline: none;
   transition: all 0.3s;
 }

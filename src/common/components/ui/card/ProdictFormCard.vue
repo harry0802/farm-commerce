@@ -13,10 +13,7 @@
 
 <script setup>
 import { Form } from "@/common/composables/ui/form";
-const props = defineProps({ onSubmit: Function })
-
-
-
+defineProps({ onSubmit: Function })
 </script>
 
 <style scoped></style>

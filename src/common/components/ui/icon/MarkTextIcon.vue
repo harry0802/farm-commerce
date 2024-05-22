@@ -13,10 +13,6 @@ const props = defineProps({
 })
 const saleText = computed(() => props.SALE.sale === 'onsale' ? '特惠 !' : props.SALE.sale)
 const saleStyle = computed(() => props.SALE.sale === 'onsale' ? 'onsale' : 'promotion')
-
-
-
-
 </script>
 
 <style scoped>

@@ -25,7 +25,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, onBeforeUnmount, provide, toRefs, nextTick } from "vue";
+import { ref, onMounted, watch, onBeforeUnmount, provide, toRefs } from "vue";
 import HeaderSideBarSelectorBtn from "../ui/button/HeaderSideBarSelectorBtn.vue";
 import { onClickOutside, useWindowSize } from "@vueuse/core";
 import CartProdut from "../cartsidebar/cartProdut/CartProdut.vue";
@@ -33,26 +33,27 @@ import cartDate from "../../components/cartsidebar/cartDate/CartDate.vue";
 import cartStore from "@/store/modules/cart/cartStore.js";
 import { useOrderStore } from "@/store/modules/order/index.js";
 
-const { setDefaultFirstOrder, workDayLists, myorder, calcOrderState, setProductCart, productCart, handleSelectionDay, } = toRefs(useOrderStore());
+const { handleOrderRemoveItem, workDayLists, myorder, calcOrderState, setProductCart, productCart, handleSelectionDay, } = toRefs(useOrderStore());
 const store = cartStore();
 
 const marginTop = ref(40);
 const product = ref(null)
+
+
 const { width } = useWindowSize()
 
 const handleScroll = () => {
   const scrollTop = window.scrollY;
   marginTop.value = scrollTop <= 40 ? 40 - scrollTop : 0;
 }
-
 const findOrderDate = function () {
-  const select = store.selectionDay.orderDate || store.workDay.getToday.date
+  const select = store.selectionDay?.orderDate || store.workDay?.getToday?.date
   product.value = myorder.value.find((i) => i.order_date.date === select)
-  if (product.value) setProductCart.value(product.value.products)
+  product.value ? setProductCart.value(product.value.products) : setProductCart.value([])
 }
 
 provide('store', store)
-provide('orderStore', { myorder, calcOrderState, workDayLists, productCart, handleSelectionDay, setProductCart, })
+provide('orderStore', { myorder, calcOrderState, workDayLists, productCart, handleSelectionDay, setProductCart, handleOrderRemoveItem, })
 provide('findOrderDate', { findOrderDate, product })
 
 
@@ -65,8 +66,8 @@ watch(() => store.showCart, (newVal) => {
 
 
 
+
 onMounted(() => {
-  // setDefaultFirstOrder.value(myorder, workDayLists)
   const header = document.getElementById('header')
   onClickOutside(header, () => {
     store.closeCart()
