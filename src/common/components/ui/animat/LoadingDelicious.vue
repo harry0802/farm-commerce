@@ -1,12 +1,12 @@
 <template>
-    <div class="relative bg-[#000000cc]  overflow-hidden w-full h-[30cqw]    z-[4]">
+    <div class="bg-color-grey-light relative bg-overlay overflow-hidden w-full h-[60vmin] mr:h-screen z-[1]">
         <img loading="lazy"
-            class=" absolute object-cover top-0 left-0 w-[50%] aspect-video  rounded-xl  mr:top-1/4 mr:-translate-y-1/4 mr:left-1/2  mr:-translate-x-1/2"
-            src="@/assets/gif/DeliciousinDungeon.gif" alt="">
+            class="absolute top-1/4 w-[200px] aspect-video rounded-md shadow-background object-cover mr:w-[45%] mr:top-[20vh] mr:-translate-y-[0vh] left-1/2 -translate-x-1/2"
+            src="@/assets/gif/DeliciousinDungeon.gif" alt="Delicious in Dungeon" />
     </div>
-
 </template>
 
-<script setup></script>
+<script setup>
 
-<style scoped></style>
+
+</script>

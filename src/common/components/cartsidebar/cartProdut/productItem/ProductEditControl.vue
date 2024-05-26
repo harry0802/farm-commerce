@@ -4,9 +4,9 @@
     <!-- 數量與移除 -->
     <div class="edit__control">
       <div class="edit__contro--select">
-        <ProductEditSelect />
-        <button @click="handleOrderRemoveItem(props.product_id, product.order_date)"
-          class="edit__contro--remove btn__link--animate mt-2 text-right">移除商品</button>
+        <ProductEditSelect :product="sendData" />
+        <button @click="handleOrderRemoveItem(product_id, product.order_date)"
+          class="p-1 btn__linkUnderline--animate  edit__contro--remove btn__link--animate mt-2 text-right">移除商品</button>
       </div>
     </div>
   </li>
@@ -15,14 +15,14 @@
 <script setup>
 
 import ProductEditSelect from "@/common/components/cartsidebar/cartProdut/productItem/ProductEditSelect.vue";
-// import ShopCartSelectForm from "@/common/components/ui/from/shopcart/ShopCartSelectForm.vue";
 import { inject } from "vue";
 const { handleOrderRemoveItem } = inject('orderStore')
 const { product } = inject('findOrderDate')
-const props = defineProps({
+defineProps({
   product_id: String,
   price: String,
   quantity: String,
+  sendData: Object
 })
 </script>
 

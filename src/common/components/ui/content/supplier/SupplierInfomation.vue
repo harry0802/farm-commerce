@@ -3,7 +3,8 @@
         <div class="supplier__content  grid gap-8 ">
             <div class="supplier__photo overflow-hidden rounded-md">
                 <div class="photo__content ">
-                    <img class="w-full object-cover" loading="lazy" :src="productSupplier.supplierimg" alt="">
+                    <img class="w-full object-cover" loading="lazy" :src="productSupplier.productSupplier.supplierimg"
+                        alt="">
                 </div>
             </div>
             <SupplierText />
@@ -16,7 +17,7 @@ import SupplierCard from '../../../ui/card/SupplierCard.vue'
 import SupplierText from '../../../ui/text/SupplierText.vue'
 
 import { inject } from "vue";
-const { productSupplier } = inject('ProdictSupplier')
+const productSupplier = inject('ProdictSupplier')
 
 
 

@@ -4,11 +4,11 @@
         class="relative u-pirmary-button  w-auto min-w-[104px]  max-h-11 px-0   text-color-primary product-button  bg-white border-[3px]    border-color-grey-light group active:translate-x-0 hover:bg-[unset]">
 
         <div v-if="!loading" class="flex w-full h-full  justify-between  items-center">
-            <Icon @click="sendAmount(reduceProduct)" class="btn__arrow " icon="pixelarticons:arrow-down" />
+            <Icon @click="reduceProduct" class="btn__arrow " icon="pixelarticons:arrow-down" />
             <input @focus="handleFocus" @blur="handleBlur" @keyup.enter="handleEnter" v-model.number="theAmount"
                 class="max-w-6 text-center outline-none underline underline-offset-2	decoration-color-eva-dark-green	 font-[GalmuriMono9]"
                 type="text">
-            <Icon @click="sendAmount(addProduct)" class="btn__arrow " icon="pixelarticons:arrow-up" />
+            <Icon @click="addProduct" class="btn__arrow " icon="pixelarticons:arrow-up" />
 
         </div>
 
@@ -22,70 +22,34 @@
 <script setup>
 import LoadingCat2 from "@/common/components/ui/animat/LoadingCat2.vue";
 import { Icon, } from '@iconify/vue';
-import { inject, ref, watch } from "vue";
-import { toast } from 'vue-sonner'
-import { useDebounceFn } from '@vueuse/core'
-import { z } from "zod";
+import { inject, watch, toRefs } from "vue";
+import { userHandleProductItem } from "@/Plugins/zodValidators.js";
 
-
-const handleOrderAdd = inject('handleOrderAdd')
 const productItem = inject('productItem')
 const productInfo = inject('productInfo')
 const { getOderFrequency } = inject('tdOrderInfo')
-const theAmount = ref(getOderFrequency.value?.quantity)
-const disableBlur = ref(false);
-const loading = ref(false)
-const amountSchema = z.number({ required_error: '只接受數字', invalid_type_error: '只接受數字' }).positive({ message: '不可以小於0' }).lte(99, { message: '已超過最大限制值' });
 
+const {
+    theAmount,
+    loading,
+    preventBlurEvent,
+    productOperate } =
+    toRefs(userHandleProductItem({ ...productItem || productInfo.value }, getOderFrequency.value?.quantity))
 
-const addProduct = () => sendAmount(() => theAmount.value++)
-const reduceProduct = () => sendAmount(() => theAmount.value--)
+const {
+    handleFocus,
+    handleEnter,
+    handleBlur,
+} = preventBlurEvent.value()
 
+const {
+    addProduct,
+    reduceProduct,
+} = productOperate.value()
 
-
-const handleFocus = () => {
-    disableBlur.value = false;
-};
-const handleEnter = (event) => {
-    disableBlur.value = true;
-    loading.value = true
-    sendAmount();
-    event.target.blur();
-};
-
-const handleBlur = async () => {
-    if (disableBlur.value) return disableBlur.value = false;
-    sendAmount()
-};
-
-const sendAmount = (operate) => {
-    if (operate) operate()
-    if (theAmount.value === getOderFrequency.value.quantity) return
-    loading.value = true
-    amountDebounce(operate);
-}
-
-const amountDebounce = useDebounceFn(() => {
-
-
-    const { success, error } = amountSchema.safeParse(+theAmount.value)
-    if (!success) {
-        const [{ message }] = error.issues
-        toast.error(message)
-        loading.value = false
-        return theAmount.value = getOderFrequency.value.quantity
-    }
-    const data = { ...productItem || productInfo }
-    handleOrderAdd({ quantity: theAmount.value, ...data })
-    toast.success('商品更新成功')
-    loading.value = false
-}, 1000)
-
-
-watch(() => getOderFrequency.value?.quantity, (newVal) => theAmount.value = newVal
-)
-
-
+watch(() => getOderFrequency.value?.quantity, (newVal) => {
+    theAmount.value = newVal
+})
 </script>
 <style scoped>
 .iconify--entypo {

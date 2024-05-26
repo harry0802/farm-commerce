@@ -29,7 +29,7 @@ import ProdictFormCard from '../../../ui/card/ProdictFormCard.vue'
 import ProductSelection from '../../../ui/product/ProductSelection.vue'
 import { inject, ref } from "vue";
 
-const addSubscribe = inject('handleOrderAdd')
+const { addSubscribe } = inject('sendSubScript')
 const productInfo = inject('productInfo')
 
 const theSubscribe = ref(false)
@@ -44,8 +44,9 @@ const closeSubscribe = function () {
 
 
 
+
 const onsubmit = async () => {
-    await (handleSubmit.value(({ quantity, frequency }) => { addSubscribe({ quantity, frequency, ...productInfo }) }))()
+    await (handleSubmit.value(({ quantity, frequency }) => { addSubscribe({ quantity, frequency, ...productInfo.value }) }))()
     closeSubscribe()
 }
 

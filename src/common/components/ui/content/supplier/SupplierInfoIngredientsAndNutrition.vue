@@ -14,9 +14,8 @@
 <script setup>
 import SupplierCard from '../../../ui/card/SupplierCard.vue'
 import { inject } from "vue";
-const { productIngredients } = inject('ProdictSupplier')
-
-const [producer] = productIngredients;
+const productIngredients = inject('ProdictSupplier')
+const [producer] = productIngredients.value.productIngredients;
 
 
 </script>

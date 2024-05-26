@@ -3,7 +3,7 @@
     <teleport to="body">
       <transition name="fade">
         <div v-if="store.showCart">
-          <div class="overlay fixed  w-full inset-0  h-full  z-[1]" :class="{ open: store.showCart }"></div>
+          <div class="overlay fixed  w-full inset-0  h-full  z-[9]" :class="{ open: store.showCart }"></div>
         </div>
       </transition>
     </teleport>
@@ -18,8 +18,6 @@
         </div>
       </transition>
     </teleport>
-
-
   </div>
 
 </template>
@@ -33,13 +31,10 @@ import cartDate from "../../components/cartsidebar/cartDate/CartDate.vue";
 import cartStore from "@/store/modules/cart/cartStore.js";
 import { useOrderStore } from "@/store/modules/order/index.js";
 
-const { handleOrderRemoveItem, workDayLists, myorder, calcOrderState, setProductCart, productCart, handleSelectionDay, } = toRefs(useOrderStore());
+const { handleOrderRemoveItem, workDayLists, myorder, calcOrderState, setProductCart, productCart, handleSelectionDay, calcSubtotal } = toRefs(useOrderStore());
 const store = cartStore();
-
 const marginTop = ref(40);
 const product = ref(null)
-
-
 const { width } = useWindowSize()
 
 const handleScroll = () => {
@@ -52,10 +47,6 @@ const findOrderDate = function () {
   product.value ? setProductCart.value(product.value.products) : setProductCart.value([])
 }
 
-provide('store', store)
-provide('orderStore', { myorder, calcOrderState, workDayLists, productCart, handleSelectionDay, setProductCart, handleOrderRemoveItem, })
-provide('findOrderDate', { findOrderDate, product })
-
 
 
 watch(() => store.showCart, (newVal) => {
@@ -63,8 +54,6 @@ watch(() => store.showCart, (newVal) => {
     document.body.style.overflow = 'hidden' :
     document.body.style.overflow = 'auto'
 })
-
-
 
 
 onMounted(() => {
@@ -78,6 +67,11 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.removeEventListener("scroll", handleScroll);
 })
+
+provide('store', store)
+provide('orderStore', { myorder, calcOrderState, workDayLists, productCart, handleSelectionDay, setProductCart, handleOrderRemoveItem, calcSubtotal })
+provide('findOrderDate', { findOrderDate, product })
+
 
 
 </script>

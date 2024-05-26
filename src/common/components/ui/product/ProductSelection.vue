@@ -27,13 +27,13 @@ import { FormField } from "@/common/composables/ui/form";
 import CostomSelect from "@/common/components/ui/from/CostomSelect.vue";
 import { useForm, useField } from "vee-validate";
 
+
 const loopData = 10
 const fq = ['每周一次', '隔週一次', '每月一次']
 
+
 const getOrderSubscription = inject('getOrderSubscription')
 const { isSubscribe } = inject('tdOrderInfo')
-
-
 const { handleSubmit } = useForm(
     {
         initialValues: {

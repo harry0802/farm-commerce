@@ -1,6 +1,6 @@
 <template>
   <div class="oder__progress px-4 pt-2 pb-4">
-    <p class="mb-2">${{ feeTarget }}!</p>
+    <p class="mb-2">${{ feeTarget }}</p>
     <transition>
       <div v-show="!hiddenProgress">
         <span class="progress__text">{{ deliveryCharge }}%</span>

@@ -11,6 +11,12 @@
 .btn__linkUnderline--animate {
   @apply underline underline-offset-4 decoration-[transparent] hover:decoration-[inherit] transition-colors duration-300;
 }
+.img__load {
+  @apply opacity-0   transition-opacity duration-500 ease-in;
+}
+.img__loaded--animate {
+  @apply opacity-100;
+}
 
 /* 邊框特效 */
 .card-Img-Border {

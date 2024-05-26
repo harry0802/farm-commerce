@@ -1,4 +1,4 @@
-import { toRefs, provide } from "vue";
+import { toRefs, ref, watchEffect, provide } from "vue";
 import { creatOrderList } from "@/Plugins/day.js";
 import { isSameOrBeforeDate } from "@/store/modules/order/helpers.js";
 import useCartStore from "@/store/modules/cart/cartStore.js";
@@ -40,18 +40,17 @@ const createOrderConstruction = function () {
 
   // 創建 商品的資料
   const createProductData = (item) => {
-    const qty = item.quantity || 1;
-    const calcProductPrice = () => item.price * qty;
     return {
       product_id: item.product_id || item.id,
       product_name: item.product_name || item.name,
-      price: calcProductPrice(),
+      price: item.price,
       image_url: item.image_url || item.photoPath,
-      quantity: qty,
+      quantity: item.quantity || 1,
       weight: item.weight,
       supplier_name: item.supplier_name || item.producer,
       Subscribe: item.Subscribe || null,
       product_code: item.product_code || item.code,
+      SALE: item.SALE || null,
     };
   };
 
@@ -280,10 +279,15 @@ const setDefaultFirstOrder = function (order, workDayLists) {
 const getOrderConstruction = function (data) {
   const { getIndexState } = createOrderConstruction();
   const { myorder, subscription } = getIndexState();
-  const productId = data.product_id || data.id;
-  // 查詢對應到 id 的訂單
+  const { selectionDay } = toRefs(useCartStore());
+  const tdOrder = ref(null);
+  const getOrderSubscription = ref(null);
+  const getOderFrequency = ref(null);
+  const isSubscribe = ref(null);
+  const productId = ref(data.product_id || data.id);
+
   const findingSubscription = () =>
-    subscription.value.find((item) => item.product_id === productId);
+    subscription.value.find((item) => item.product_id === productId.value);
 
   // 檢查是否訂閱
   const checkingIsSubscribe = function (td) {
@@ -298,16 +302,51 @@ const getOrderConstruction = function (data) {
     const findDate = myorder.value.find((d) => d.order_date.date === td);
     if (!findDate) return;
     const [result] = findDate.products.filter(
-      (p) => p.product_id === productId
+      (p) => p.product_id === productId.value
     );
     return result;
   };
 
-  return {
-    findingSubscription,
-    checkingIsSubscribe,
-    findingTdOder,
+  // 手動更改參數
+  const handleParams = (pd) => (productId.value = pd.product_id || pd.id);
+  // 123
+  const sendProvide = () => {
+    provide("getOrderSubscription", getOrderSubscription);
+    provide("tdOrderInfo", { isSubscribe, getOderFrequency });
   };
+
+  watchEffect(() => {
+    tdOrder.value = selectionDay.value.orderDate;
+    getOrderSubscription.value = findingSubscription(tdOrder.value);
+    getOderFrequency.value = findingTdOder(tdOrder.value);
+    isSubscribe.value = checkingIsSubscribe(tdOrder.value);
+  });
+
+  return {
+    tdOrder,
+    getOrderSubscription,
+    isSubscribe,
+    getOderFrequency,
+    handleParams,
+    sendProvide,
+  };
+};
+
+// 計算金額
+const calcSubtotal = function (pd) {
+  return pd.reduce((acc, pd) => {
+    let pdSubtotal = Math.trunc(pd.price * pd.quantity);
+    if (pd.SALE?.sale && pd.SALE?.discount_price) {
+      const normalAmount = pd.price * (pd.quantity % pd.SALE.discount_amount);
+      const discountAmount =
+        pd.SALE.discount_price *
+        Math.trunc(pd.quantity / pd.SALE.discount_amount);
+      pdSubtotal = normalAmount + discountAmount;
+    }
+
+    acc += +pdSubtotal;
+    return acc;
+  }, 0);
 };
 
 export {
@@ -321,4 +360,5 @@ export {
   createGeneralOrderConstruction,
   setDefaultFirstOrder,
   getOrderConstruction,
+  calcSubtotal,
 };

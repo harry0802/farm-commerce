@@ -26,6 +26,9 @@ import { ref, inject } from 'vue'
 const currentComponents = ref('SupplierInfomation')
 const productPageNavBtnBar = inject('productPageNavBtnBar')
 
+
+
+
 const tabs = {
     SupplierInfoIngredientsAndNutrition,
     SupplierInfomation,

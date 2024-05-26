@@ -2,7 +2,8 @@
   <section class="hero-section overflow-hidden relative w-full  max-h-[600px]">
     <div class="hero__image ">
       <figure class="">
-        <img class="absolute w-full h-full object-cover" src="@/assets/imgs/farm-hero-390.png" alt="hero background" />
+        <img loading="lazy" class="absolute w-full h-full object-cover" src="@/assets/imgs/farm-hero-390.png"
+          alt="hero background" />
       </figure>
       <video class="hero__film " playsinline autoplay="autoplay" loop="loop" muted="muted">
         <source src="@/assets/video/farmtodinner.mp4" />

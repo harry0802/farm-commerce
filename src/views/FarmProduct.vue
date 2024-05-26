@@ -1,16 +1,20 @@
 <template>
-    <main id="main">
-        <div v-if="loading">
+    <BaseMainPage :loading="loading">
+
+        <template #page>
             <ProductInfo />
             <ProductSupplier />
-        </div>
-        <LoadingDelicious v-else />
-        <slot name="sidebar" />
-    </main>
+        </template>
+
+        <template #sidebar>
+            <slot name="sidebar" />
+        </template>
+    </BaseMainPage>
+
 </template>
 
 <script setup>
-import { provide, onMounted, ref, watch, computed } from "vue";
+import { provide, onMounted, ref, watch, computed, watchEffect } from "vue";
 import { useRoute } from 'vue-router'
 import ProductInfo from '@/common/components/product/ProductInfo.vue'
 import ProductSupplier from '@/common/components/product/ProductSupplier.vue'
@@ -18,87 +22,98 @@ import useCartStore from "@/store/modules/cart/cartStore.js";
 import { useProduct } from "@/store/modules/product/useProduct.js";
 import { storeToRefs } from 'pinia'
 import { useOrderStore } from "@/store/modules/order/index.js";
+import BaseMainPage from "@/common/components/ui/card/BaseMainPage.vue";
 
-import LoadingDelicious from "@/common/components/ui/animat/LoadingDelicious.vue";
 const poduct = useProduct()
 const {
     productInfo,
     productPageBreadcrumbs,
     productInfoPageData,
     productPageNavBtnBar,
-} = storeToRefs(poduct);
+} = storeToRefs(useProduct());
 
 const {
     addSubscribe,
     handleOrderAdd,
     getOrderConstruction
 } = useOrderStore()
-const { myorder } = storeToRefs(useOrderStore())
 
-const { selectionDay } = storeToRefs(useCartStore());
+const {
+    handleParams,
+    sendProvide
+} = getOrderConstruction(productInfo.value)
+
+
 const route = useRoute()
 const loading = ref(true)
-const product = computed(() => productInfo.value)
 const getProductOnlyNumber = (id) => id.slice(-4)
 
 
 
 
-watch(route.params.id, (newid) => {
-    if (route.params.id !== newid) {
-        const code = getProductOnlyNumber(newid)
-        console.log(code);
-        poduct.setProducPageData(code)
-        loading.value = false
-    }
 
+
+const watchingProductInfo = ref(productInfo)
+const watchingProductPageBreadcrumbs = ref(productPageBreadcrumbs)
+const watchingProductInfoPageData = ref(productInfoPageData)
+const watchingProductPageNavBtnBar = ref(productPageNavBtnBar)
+
+
+watchEffect(() => {
+    watchingProductInfo.value = productInfo.value
+    watchingProductPageBreadcrumbs.value = productPageBreadcrumbs.value
+    watchingProductInfoPageData.value = productInfoPageData.value
+    watchingProductPageNavBtnBar.value = productPageNavBtnBar.value
+    handleParams(productInfo.value)
 })
 
-const getOrderSubscription = ref(null)
-const getOderFrequency = ref(null)
-const isSubscribe = ref(null)
 
-watch([product, selectionDay, myorder], ([newpd, newsDay]) => {
-    if (newpd.id === '' || newsDay.orderDate == null) return
-    const tdOrder = newsDay.orderDate
-    const {
-        findingSubscription,
-        checkingIsSubscribe,
-        findingTdOder,
-    } = getOrderConstruction(newpd)
-    getOrderSubscription.value = findingSubscription(tdOrder)
-    getOderFrequency.value = findingTdOder(tdOrder)
-    isSubscribe.value = checkingIsSubscribe(tdOrder)
-}, { deep: true })
+provide('productInfo', watchingProductInfo)
+provide('productPageBreadcrumbs', watchingProductPageBreadcrumbs.value)
+provide('ProdictSupplier', watchingProductInfoPageData)
+provide('productPageNavBtnBar', watchingProductPageNavBtnBar.value)
 
+provide('sendSubScript', { addSubscribe })
+provide('handleOrderAdd', handleOrderAdd)
 
-
-
-const provideDataGroup = function () {
-    provide('productInfo', productInfo.value)
-    provide('productPageBreadcrumbs', productPageBreadcrumbs.value)
-    provide('ProdictSupplier', productInfoPageData.value)
-    provide('productPageNavBtnBar', productPageNavBtnBar.value)
-    provide('getOrderSubscription', getOrderSubscription,)
-    provide('tdOrderInfo', { isSubscribe, getOderFrequency })
-    provide('sendSubScript', { addSubscribe })
-    provide('handleOrderAdd', handleOrderAdd)
-}
-
+sendProvide()
+watch(route, (newid,) => {
+    loading.value = true
+    const code = getProductOnlyNumber(newid.params.id)
+    poduct.setProducPageData(code)
+    if (newid.params.id) {
+        setTimeout(() => {
+            loading.value = false
+        }, 1000)
+    }
+})
 
 onMounted(() => {
     const code = getProductOnlyNumber(route.params.id)
     poduct.setProducPageData(code)
-
-    provideDataGroup()
     setTimeout(() => {
         loading.value = false
-    }, 1000)
-
-
+    }, 500)
 })
+
+
 
 
 </script>
 
-<style scoped></style>
+<style scoped>
+.fade-enter-active {
+    transition: opacity 0.3s ease-in-out;
+    transition-delay: .3s;
+
+}
+
+.fade-leave-active {
+    transition: opacity 0.4s ease-in-out;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
+</style>

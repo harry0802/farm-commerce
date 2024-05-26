@@ -16,7 +16,7 @@ import { inject, } from "vue";
 const { getOderFrequency } = inject('tdOrderInfo')
 const productInfo = inject('productInfo')
 const handleOrderAdd = inject('handleOrderAdd')
-const handleorder = () => handleOrderAdd(productInfo)
+const handleorder = () => handleOrderAdd(productInfo.value)
 </script>
 
 <style scoped>

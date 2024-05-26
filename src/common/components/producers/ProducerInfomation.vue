@@ -51,6 +51,7 @@ provide('producerInfo', currentProducer)
 
 
 
+
 onMounted(async () => {
     const [[data], product] = await Promise.all([
         requestProducer(id.value),

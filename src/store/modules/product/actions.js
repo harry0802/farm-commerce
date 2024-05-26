@@ -24,7 +24,6 @@ export default {
       this.initProducPageData();
       const [pageData] = await renderingPageData("product_code", code);
       const supplierData = await requestProducer(pageData.supplier_name);
-
       if (!pageData && supplierData.length === 0) {
         throw new Error("💥 HANDLE_SUPBASE_ERR0R : Supplier not founding");
       }

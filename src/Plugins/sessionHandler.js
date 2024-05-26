@@ -9,18 +9,16 @@ import cartStore from "@/store/modules/cart/cartStore.js";
 
 const throttledLoginHandler = useThrottleFn(async (event, session) => {
   const accountStore = useAccountStore(pinia);
-  const cart = cartStore(pinia);
-  const { initializeOrderStore, resetOrder } = useOrderStore();
-  cart.workDay = await creatOrderList().filteredDates();
 
-  if (event === "SIGNED_IN") {
+  if (event === "SIGNED_IN" && accountStore.userState.aud !== "authenticated") {
+    const { initializeOrderStore } = useOrderStore();
     accountStore.setAuthenticated(session.user);
     getAccountInfo();
     initializeOrderStore();
   }
   // 处理登录状态的变化
   if (event === "SIGNED_OUT") {
-    console.log("User signed out");
+    const { resetOrder } = useOrderStore();
     accountStore.$reset();
     // cart.$reset();
     resetOrder();
@@ -30,6 +28,16 @@ const throttledLoginHandler = useThrottleFn(async (event, session) => {
 function startAuthStateListener() {
   supabase.auth.onAuthStateChange((event, session) => {
     throttledLoginHandler(event, session);
+  });
+
+  window.addEventListener("load", async () => {
+    const accountStore = useAccountStore(pinia);
+    const cart = cartStore(pinia);
+    const { initializeOrderStore } = useOrderStore();
+    cart.workDay = await creatOrderList().filteredDates();
+    if (accountStore.userState.aud === "authenticated") {
+      initializeOrderStore();
+    }
   });
 }
 

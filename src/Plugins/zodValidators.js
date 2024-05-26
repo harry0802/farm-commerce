@@ -1,8 +1,11 @@
 import * as z from "zod";
 import { initializeTWzipcode, defineHandleFn } from "@/Plugins/zipCode.js";
+import { useOrderStore } from "@/store/modules/order/index.js";
 import { toTypedSchema } from "@vee-validate/zod";
 import { useForm, useField } from "vee-validate";
 import { ref, computed } from "vue";
+import { useDebounceFn } from "@vueuse/core";
+import { toast } from "vue-sonner";
 
 // 全局變數
 const loading = ref(false);
@@ -271,9 +274,90 @@ const profileUserEmail = (initialValues) => {
   return { handleSubmit };
 };
 
-// order
+// 訂單操作
 
-const personalSubscribe = function () {};
+const userHandleProductItem = function (pd, qty) {
+  const { handleOrderAdd } = useOrderStore();
+
+  // qty 訂單頻率
+  // product 訂單資料
+  const product = ref(pd);
+  const loading = ref(false);
+  const theAmount = ref(qty);
+  const disableBlur = ref(false);
+  const amountSchema = z
+    .number({ required_error: "只接受數字", invalid_type_error: "只接受數字" })
+    .positive({ message: "不可以小於0" })
+    .lte(99, { message: "已超過最大限制值" });
+
+  const sendAmount = (operate) => {
+    if (operate) operate();
+    if (theAmount.value === qty) return;
+    loading.value = true;
+    amountDebounce(operate);
+  };
+
+  const amountDebounce = useDebounceFn(async () => {
+    const { success, error } = amountSchema.safeParse(+theAmount.value);
+    if (!success) {
+      const [{ message }] = error.issues;
+      toast.error(message);
+      loading.value = false;
+      return (theAmount.value = qty);
+    }
+    const data = { ...product.value, quantity: theAmount.value };
+    await handleOrderAdd(data);
+    toast.success("商品更新成功");
+    loading.value = false;
+  }, 1000);
+
+  // 訂單的數量操作
+  const productOperate = () => {
+    const addProduct = () => sendAmount(() => theAmount.value++);
+    const reduceProduct = () => sendAmount(() => theAmount.value--);
+    return {
+      addProduct,
+      reduceProduct,
+    };
+  };
+
+  // 可選:處理事件監聽邏輯
+  const preventBlurEvent = () => {
+    // 初始化 Blur 事件狀態
+    const handleFocus = () => {
+      disableBlur.value = false;
+    };
+    // 使用 Enter 事件時阻止 Blur
+    const handleEnter = (event) => {
+      disableBlur.value = true;
+      loading.value = true;
+      sendAmount();
+      event.target.blur();
+    };
+    // 操作 Blur 事件
+    const handleBlur = () => {
+      if (disableBlur.value) return (disableBlur.value = false);
+      sendAmount();
+    };
+
+    return {
+      handleFocus,
+      handleEnter,
+      handleBlur,
+    };
+  };
+  // 設定新的產品狀態
+  const setProduct = (newPd) => (product.value = newPd);
+
+  return {
+    theAmount,
+    loading,
+    setProduct,
+    preventBlurEvent,
+    productOperate,
+    sendAmount,
+  };
+};
 
 export {
   useField,
@@ -291,4 +375,6 @@ export {
   profileUserAddress,
   profileUserDriverInstructions,
   profileUserEmail,
+  // order
+  userHandleProductItem,
 };

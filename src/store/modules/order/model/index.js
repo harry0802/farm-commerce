@@ -34,4 +34,5 @@ export {
   createGeneralOrderConstruction,
   setDefaultFirstOrder,
   getOrderConstruction,
+  calcSubtotal,
 } from "./orderModel.js";

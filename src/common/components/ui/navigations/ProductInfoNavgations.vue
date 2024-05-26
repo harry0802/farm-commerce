@@ -16,6 +16,7 @@ import { inject } from "vue";
 import { RouterLink } from 'vue-router';
 const productPageBreadcrumbs = inject('productPageBreadcrumbs')
 
+
 </script>
 
 <style scoped>

@@ -19,24 +19,23 @@ import { Icon } from "@iconify/vue";
 import { computed, ref } from "vue";
 
 const selectPromo = ref("button");
+const inputValue = ref("");
 
 const isButton = computed(() => selectPromo.value === "button");
-
-const openForm = function () {
-  selectPromo.value = "form";
-};
-const closeForm = function () {
-  selectPromo.value = "button";
-};
-
-const inputValue = ref("");
 const calcInputValue = computed(() => inputValue.value.length);
+
+
+const openForm = () => selectPromo.value = "form";
+const closeForm = () => selectPromo.value = "button";
 
 const sendPromo = function () {
   // console.log(inputValue.value);
   // 發送到後台檢查
   inputValue.value = "";
 };
+
+
+
 </script>
 
 <style scoped>
@@ -46,6 +45,7 @@ const sendPromo = function () {
   font-size: 14px;
   letter-spacing: 2px;
 }
+
 .promo-codes__openform {
   display: flex;
   align-items: center;
@@ -63,6 +63,7 @@ input {
   color: #fff;
   padding: 5px;
 }
+
 input::placeholder {
   color: #fff;
 }

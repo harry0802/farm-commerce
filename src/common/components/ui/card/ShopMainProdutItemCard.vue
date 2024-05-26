@@ -8,7 +8,8 @@
         <RouterLink @click="addrecentlyVie(data)" class="photo__links"
           :to="`/product/${data.product_name}-${data.product_code}`">
           <div>
-            <img loading="lazy" class="object-cover rounded-lg" :src=data.image_url alt="" />
+            <img @load="imgLoading = true" loading="lazy" class="object-cover rounded-lg img__load "
+              :class="{ 'opacity-100': imgLoading }" :src=data.image_url alt="" />
             <p v-if="getOderFrequency"
               class="absolute flex flex-col  w-full h-full inset-0 place-content-center place-items-center  rounded-lg bg-[#07261e73] text-white ">
               <span class="u-text-large font-[Yagoinini]">{{ getOderFrequency.quantity }}</span>
@@ -50,15 +51,13 @@ import ProdictFormCard from '@/common/components/ui/card/ProdictFormCard.vue'
 import ProductSelection from "@/common/components/ui/product/ProductSelection.vue";
 import MarkFavoriteBtn from "@/common/components/ui/button/MarkFavoriteBtn.vue";
 import MarkTextIcon from "@/common/components/ui/icon/MarkTextIcon.vue";
-import useCartStore from "@/store/modules/cart/cartStore.js";
-import { provide, ref, computed, watchEffect, toRefs, watch } from "vue";
+import { provide, ref, computed, watchEffect, } from "vue";
 import { useWindowSize } from '@vueuse/core'
 import { useOrderStore } from "@/store/modules/order/index.js";
 
 const { addSubscribe, addrecentlyVie, handleOrderAdd, getOrderConstruction, } = useOrderStore()
-const { myorder } = toRefs(useOrderStore())
-const { selectionDay } = toRefs(useCartStore());
 const { width: watchWindowWidth } = useWindowSize()
+const imgLoading = ref(false)
 
 
 const props = defineProps({
@@ -66,9 +65,8 @@ const props = defineProps({
 });
 
 const {
-  findingSubscription,
-  checkingIsSubscribe,
-  findingTdOder,
+  getOderFrequency,
+  sendProvide
 } = getOrderConstruction(props.data)
 
 
@@ -80,34 +78,25 @@ const closeSubscribe = () => theSubscribe.value = false
 const clacWindowSize = computed(() => watchWindowWidth.value > 600)
 
 
-const getOrderSubscription = ref(null)
-const getOderFrequency = ref(null)
-const isSubscribe = ref(null)
-
-watch([myorder, selectionDay], ([_, newsDay]) => {
-  if (newsDay.orderDate == null) return
-  const tdOrder = newsDay.orderDate
-  getOrderSubscription.value = findingSubscription(tdOrder)
-  getOderFrequency.value = findingTdOder(tdOrder)
-  isSubscribe.value = checkingIsSubscribe(tdOrder)
-}, { deep: true, immediate: true })
-
 const onsubmit = async () => {
   await (handleSubmit.value(({ quantity, frequency }) => { addSubscribe({ quantity, frequency, ...props.data }) }))()
   closeSubscribe()
 }
 
+watchEffect(() => {
+  clacWindowSize.value ? closeSubscribe() : clacWindowSize.value
+})
 
 
 
-watchEffect(() => clacWindowSize.value ? closeSubscribe() : clacWindowSize.value)
 provide('productItem', props.data)
 provide('subscribe', { theSubscribe, showSubscribe })
 provide('watchWindowSize', watchWindowWidth)
 provide('sendSubScript', { addSubscribe, handleSubmit })
 provide('handleOrderAdd', handleOrderAdd)
-provide('getOrderSubscription', getOrderSubscription,)
-provide('tdOrderInfo', { isSubscribe, getOderFrequency })
+
+
+sendProvide()
 </script>
 
 <style scoped>

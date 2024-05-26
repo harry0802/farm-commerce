@@ -1,37 +1,30 @@
 <template>
-    <main id="main">
-        <AccountPageCard>
-            <template #hero>
-                <AccountHero />
-            </template>
-            <template #tab>
-                <EmblaDraggableNavgition>
-                    <template #selectorItem>
-                        <AccountNavigationBtns />
-                    </template>
-                </EmblaDraggableNavgition>
-            </template>
-            <template #subscriptions>
-                <RouterView />
-            </template>
-        </AccountPageCard>
-        <slot name="sidebar" />
-    </main>
+    <BaseMainPage :loading="loading">
+        <template #page>
+            <AccountMainSection />
+        </template>
+        <template #sidebar>
+            <slot name="sidebar" />
+        </template>
+    </BaseMainPage>
 </template>
 <script setup>
-import AccountPageCard from '@/common/components/ui/card/AccountPageCard.vue';
-import AccountHero from "@/common/components/ui/section/AccountHero.vue";
-import EmblaDraggableNavgition from "@/common/components/ui/navigations/EmblaDraggableNavgition.vue";
-import AccountNavigationBtns from "@/common/components/ui/button/AccountNavigationBtns.vue";
-import { provide, toRefs } from "vue";
+import BaseMainPage from "@/common/components/ui/card/BaseMainPage.vue";
+import AccountMainSection from "@/common/components/ui/section/AccountMainSection.vue";
 import useAccountStore from "@/store/modules/account/accountStore.js";
+import { provide, toRefs, ref, onMounted } from "vue";
 import { useOrderStore } from "@/store/modules/order/index.js";
-
 const { subscription } = toRefs(useOrderStore())
 const accountStore = useAccountStore
+const loading = ref(true)
 provide('accountStore', accountStore)
 provide('orderStore', { subscription })
 
 
+onMounted(() => {
+    setTimeout(() => {
+        loading.value = false
+    }, 500)
 
+})
 </script>

@@ -14,6 +14,7 @@ import {
   removeExpiredOrders,
   setDefaultFirstOrder,
   getOrderConstruction,
+  calcSubtotal,
 } from "@/store/modules/order/model/index.js";
 export const useOrderStore = defineStore(
   "order",
@@ -88,7 +89,6 @@ export const useOrderStore = defineStore(
       subscription.value = reponse.subscription;
       recentlyViewed.value = reponse.recently_viewed;
       workDayLists.value = workDayList;
-
       removeExpiredOrders(workDayList, reponse.order, myorder);
       setDefaultFirstOrder(myorder, workDayList);
     };
@@ -197,6 +197,7 @@ export const useOrderStore = defineStore(
       handleSelectionDay,
       resetOrder,
       getOrderConstruction,
+      calcSubtotal,
     };
   },
   {
