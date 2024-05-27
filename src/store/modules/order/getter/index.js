@@ -1,6 +1,6 @@
 import { useOrderStore } from "@/store/modules/order/index.js";
 import { calcSubtotal } from "@/store/modules/order/model/orderModel.js";
-import { computed, toRefs, ref, watch } from "vue";
+import { computed, toRefs, ref } from "vue";
 
 const diliverFree = ref(1200);
 const diliverCharge = ref(120);
@@ -46,4 +46,13 @@ const orderGetter = function () {
   return { getSubtotal, getTotal, getFree };
 };
 
-export { orderGetter, diliverCharge, diliverFree };
+const orderAmount = function (pd, discount) {
+  const subtotal = calcSubtotal(pd);
+  const deliveryFee = calcOverDiliverFree(subtotal) ? 0 : diliverCharge.value;
+  const total = discount
+    ? calcTotalFn(subtotal) - discount
+    : calcTotalFn(subtotal);
+  return { subtotal, deliveryFee, total };
+};
+
+export { orderGetter, diliverCharge, diliverFree, orderAmount };

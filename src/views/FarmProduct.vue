@@ -77,6 +77,8 @@ provide('sendSubScript', { addSubscribe })
 provide('handleOrderAdd', handleOrderAdd)
 
 sendProvide()
+
+
 watch(route, (newid,) => {
     loading.value = true
     const code = getProductOnlyNumber(newid.params.id)

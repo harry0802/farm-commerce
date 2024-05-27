@@ -4,8 +4,8 @@
     <!-- 低消提示 -->
     <!-- <procut-lowes-minimum></procut-lowes-minimum> -->
     <side-bar-oder-item />
-    <product-progress :maxValue="diliverFree" :progressLength="getSubtotal" />
-    <product-summary :subtotal="getSubtotal" :deliveryFee="getFree" :total="getTotal" />
+    <product-progress :maxValue="diliverFree" :progressLength="currentOrder.order_amount.total" />
+    <product-summary v-bind:="currentOrder.order_amount" :promoCode="currentOrder.promoCode" />
   </div>
 
 
@@ -16,12 +16,9 @@
 import SideBarOderItem from "../../ui/content/cartSideBar/SideBarOderItem.vue";
 import ProductProgress from "./productItem/ProductSummaryProgress.vue";
 import ProductSummary from "../../cartsidebar/cartProdut/productItem/ProductSummary.vue";
-import { orderGetter, diliverFree, } from "@/store/modules/order/getter/index.js";
-import { toRefs } from "vue";
-
-
-const { getSubtotal, getFree, getTotal } = toRefs(orderGetter())
-
+import { diliverFree, } from "@/store/modules/order/getter/index.js"
+import { inject } from "vue";
+const { currentOrder } = inject('orderStore')
 
 
 </script>

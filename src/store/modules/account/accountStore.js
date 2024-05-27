@@ -26,7 +26,6 @@ const useAccountStore = defineStore("accountStore", {
         user_Password: "",
       },
       userAddress: {},
-      test: null,
     };
   },
 
@@ -98,10 +97,6 @@ const useAccountStore = defineStore("accountStore", {
       } catch (err) {
         throw err;
       }
-    },
-    settest() {
-      this.test = 123 + "ABc";
-      return this.test;
     },
   },
   persist: {

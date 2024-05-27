@@ -15,6 +15,7 @@ import {
   setDefaultFirstOrder,
   getOrderConstruction,
   calcSubtotal,
+  promoCodeConstruction,
 } from "@/store/modules/order/model/index.js";
 export const useOrderStore = defineStore(
   "order",
@@ -103,10 +104,12 @@ export const useOrderStore = defineStore(
     // 添加最近瀏覽
     const addrecentlyVie = async function (item) {
       const index = findIndexByProductID(recentlyViewed.value, item.product_id);
-      ~index
-        ? recentlyViewed.value.splice(index, 1)
-        : recentlyViewed.value.unshift(item);
-
+      if (~index) {
+        recentlyViewed.value.splice(index, 1);
+        recentlyViewed.value.unshift(item);
+      } else {
+        recentlyViewed.value.unshift(item);
+      }
       await upDateOrder({
         recently_viewed: recentlyViewed.value,
       });
@@ -155,6 +158,7 @@ export const useOrderStore = defineStore(
         orderdate.date,
         item
       );
+
       setProductCart(result);
       await upDateOrder({
         order: clearEmptyAndSortOrder(myorder).value,
@@ -165,6 +169,7 @@ export const useOrderStore = defineStore(
       const { removeProductAndEmptyOrders } = removeOrder();
       removeProductAndEmptyOrders(myorder.value, item.id);
     };
+
     // 登出設定
     const resetOrder = function () {
       myfavorite.value = [];
@@ -198,6 +203,7 @@ export const useOrderStore = defineStore(
       resetOrder,
       getOrderConstruction,
       calcSubtotal,
+      promoCodeConstruction,
     };
   },
   {

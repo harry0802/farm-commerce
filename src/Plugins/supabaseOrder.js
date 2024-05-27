@@ -1,22 +1,24 @@
 import { supabase } from "@/config/FarmPruductsItemManage.js";
+import useAccountStore from "@/store/modules/account/accountStore.js";
+import { toRefs } from "vue";
+import { date } from "zod";
+const getUserID = () => {
+  const { userState } = toRefs(useAccountStore());
+  return userState.value.id;
+};
 
 const getClientOrder = async function () {
   try {
     let {
       data: [order],
       error,
-    } = await supabase
-      .from("order")
-      .select("*")
-      .eq("clients_id", "c32a1e24-58bf-4714-b0a4-5e8e7e3421c9");
+    } = await supabase.from("order").select("*").eq("clients_id", getUserID());
     if (error) throw error;
     if (order) return order;
   } catch (error) {
     console.error(`Handle_SupabaseAPI_GETDATA_ERROR 💣:${error.message}`);
   }
 };
-
-getClientOrder();
 
 const upDateOrder = async function (column) {
   try {
@@ -27,7 +29,7 @@ const upDateOrder = async function (column) {
     } = await supabase
       .from("order")
       .update(column)
-      .eq("clients_id", "c32a1e24-58bf-4714-b0a4-5e8e7e3421c9")
+      .eq("clients_id", getUserID())
       .select(select);
     if (error) throw error;
     if (order) return order[select];
@@ -36,4 +38,16 @@ const upDateOrder = async function (column) {
   }
 };
 
-export { getClientOrder, upDateOrder };
+const requiresPromocode = async function (code) {
+  let {
+    data: [orderPromoCode],
+    error,
+  } = await supabase
+    .from("orderPromoCode")
+    .select(`promo_code,amount`)
+    .eq("promo_code", code);
+  if (error) throw error;
+  if (orderPromoCode) return orderPromoCode;
+};
+
+export { getClientOrder, upDateOrder, requiresPromocode };

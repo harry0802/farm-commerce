@@ -26,7 +26,6 @@ const scalcTextRight = computed(() =>
 
 
 
-
 const selectButtom = function () {
   store.showProductItem = !store.showProductItem;
 };

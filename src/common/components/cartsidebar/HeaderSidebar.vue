@@ -11,9 +11,9 @@
       <transition>
         <div class="cart__container" :style="{ marginTop: width > 950 ? marginTop + 'px' : '' }" v-if="store.showCart">
           <aside class="cart__content" :style="{ height: width > 950 ? `calc(100vh - ${80 + marginTop}px)` : '' }">
-            <header-side-bar-selector-btn />
-            <cart-date v-if="!store.showProductItem" />
-            <cart-produt v-else />
+            <HeaderSideBarSelectorBtn />
+            <cartDate v-if="!store.showProductItem" />
+            <CartProdut v-else />
           </aside>
         </div>
       </transition>
@@ -31,23 +31,25 @@ import cartDate from "../../components/cartsidebar/cartDate/CartDate.vue";
 import cartStore from "@/store/modules/cart/cartStore.js";
 import { useOrderStore } from "@/store/modules/order/index.js";
 
-const { handleOrderRemoveItem, workDayLists, myorder, calcOrderState, setProductCart, productCart, handleSelectionDay, calcSubtotal } = toRefs(useOrderStore());
+const { handleOrderRemoveItem, workDayLists, myorder, calcOrderState, setProductCart, productCart, handleSelectionDay, calcSubtotal, promoCodeConstruction } = toRefs(useOrderStore());
 const store = cartStore();
 const marginTop = ref(40);
-const product = ref(null)
+const product = ref(null);
+const currentOrder = ref(null)
 const { width } = useWindowSize()
+
+
+const findOrderDate = function () {
+  const select = store.selectionDay?.orderDate || store.getFirstDay()
+  currentOrder.value = product.value = myorder.value.find((i) => i.order_date.date === select)
+  product.value ? setProductCart.value(product.value.products) : setProductCart.value([])
+}
+
 
 const handleScroll = () => {
   const scrollTop = window.scrollY;
   marginTop.value = scrollTop <= 40 ? 40 - scrollTop : 0;
 }
-const findOrderDate = function () {
-  const select = store.selectionDay?.orderDate || store.workDay?.getToday?.date
-  product.value = myorder.value.find((i) => i.order_date.date === select)
-  product.value ? setProductCart.value(product.value.products) : setProductCart.value([])
-}
-
-
 
 watch(() => store.showCart, (newVal) => {
   newVal ?
@@ -69,7 +71,7 @@ onBeforeUnmount(() => {
 })
 
 provide('store', store)
-provide('orderStore', { myorder, calcOrderState, workDayLists, productCart, handleSelectionDay, setProductCart, handleOrderRemoveItem, calcSubtotal })
+provide('orderStore', { myorder, calcOrderState, workDayLists, productCart, handleSelectionDay, setProductCart, handleOrderRemoveItem, calcSubtotal, currentOrder, promoCodeConstruction })
 provide('findOrderDate', { findOrderDate, product })
 
 

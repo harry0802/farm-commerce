@@ -1,6 +1,7 @@
 import { toRefs, ref, watchEffect, provide } from "vue";
 import { creatOrderList } from "@/Plugins/day.js";
 import { isSameOrBeforeDate } from "@/store/modules/order/helpers.js";
+import { upDateOrder } from "@/Plugins/supabaseOrder.js";
 import useCartStore from "@/store/modules/cart/cartStore.js";
 import dayjs from "dayjs";
 import { v4 as uuidv4 } from "uuid";
@@ -9,7 +10,7 @@ import {
   findIndexByProductID,
   clearEmptyOrder,
 } from "@/store/modules/order/helpers.js";
-
+import { orderAmount } from "@/store/modules/order/getter/index.js";
 //////////// 創建訂單 //////////
 
 const createOrderConstruction = function () {
@@ -19,6 +20,8 @@ const createOrderConstruction = function () {
       order_id: uuidv4(),
       products: [],
       order_date: date,
+      promoCode: null,
+      order_amount: {},
     };
     return order;
   };
@@ -100,8 +103,6 @@ const createOrderConstruction = function () {
   };
 };
 
-// 訂單金額相關邏輯
-
 //////////操作訂單函數////////////
 
 // 訂單處理器
@@ -116,6 +117,7 @@ const processOrder = function (orders, date, product) {
     const createOrde = () => {
       const newOrder = createOrder(date);
       orders.push(newOrder);
+
       return newOrder;
     };
 
@@ -126,9 +128,12 @@ const processOrder = function (orders, date, product) {
     const index = findIndexByProductID(products, product.product_id);
     ~index ? (products[index] = product) : products.push(product);
   };
-
-  const { products } = findOrCreateOrder(orders, date);
-  updateOrCreateProduct(products, product);
+  // 最後計算金額 , 並檢查是否使用折扣碼
+  const { products, order_amount, promoCode } = toRefs(
+    findOrCreateOrder(orders, date)
+  );
+  updateOrCreateProduct(products.value, product);
+  order_amount.value = orderAmount(products.value, promoCode.value?.amount);
 };
 
 // 移除過期訂單//
@@ -270,21 +275,23 @@ const setDefaultFirstOrder = function (order, workDayLists) {
   const indx = workDayLists.findIndex(
     (d) => d.date === order.value[0].order_date.date
   );
-
   const { date, dayOfWeek } = order.value[0].order_date;
   setSelection(date, indx, `${date.slice(5)}/${dayOfWeek}`);
 };
+
+////// 訂單金額相關邏輯 //////
 
 // 取得訂單的資料的商業邏輯
 const getOrderConstruction = function (data) {
   const { getIndexState } = createOrderConstruction();
   const { myorder, subscription } = getIndexState();
-  const { selectionDay } = toRefs(useCartStore());
+  const { selectionDay, getFirstDay } = toRefs(useCartStore());
+  const productId = ref(data.product_id || data.id);
+
   const tdOrder = ref(null);
   const getOrderSubscription = ref(null);
   const getOderFrequency = ref(null);
   const isSubscribe = ref(null);
-  const productId = ref(data.product_id || data.id);
 
   const findingSubscription = () =>
     subscription.value.find((item) => item.product_id === productId.value);
@@ -309,14 +316,14 @@ const getOrderConstruction = function (data) {
 
   // 手動更改參數
   const handleParams = (pd) => (productId.value = pd.product_id || pd.id);
-  // 123
+
   const sendProvide = () => {
     provide("getOrderSubscription", getOrderSubscription);
     provide("tdOrderInfo", { isSubscribe, getOderFrequency });
   };
 
   watchEffect(() => {
-    tdOrder.value = selectionDay.value.orderDate;
+    tdOrder.value = selectionDay.value.orderDate || getFirstDay.value();
     getOrderSubscription.value = findingSubscription(tdOrder.value);
     getOderFrequency.value = findingTdOder(tdOrder.value);
     isSubscribe.value = checkingIsSubscribe(tdOrder.value);
@@ -334,7 +341,7 @@ const getOrderConstruction = function (data) {
 
 // 計算金額
 const calcSubtotal = function (pd) {
-  return pd.reduce((acc, pd) => {
+  const subtotal = pd.reduce((acc, pd) => {
     let pdSubtotal = Math.trunc(pd.price * pd.quantity);
     if (pd.SALE?.sale && pd.SALE?.discount_price) {
       const normalAmount = pd.price * (pd.quantity % pd.SALE.discount_amount);
@@ -343,10 +350,46 @@ const calcSubtotal = function (pd) {
         Math.trunc(pd.quantity / pd.SALE.discount_amount);
       pdSubtotal = normalAmount + discountAmount;
     }
-
     acc += +pdSubtotal;
     return acc;
   }, 0);
+
+  return subtotal;
+};
+
+// 處理折扣碼
+const promoCodeConstruction = function (data) {
+  const { getIndexState } = createOrderConstruction();
+  const { myorder } = getIndexState();
+  let { products, promoCode, order_amount, order_id } = toRefs(data.value);
+
+  // 更新訂單
+  const upSpDate = async () => {
+    const index = myorder.value.findIndex((i) => i.order_id === order_id);
+    myorder.value[index] = data.value;
+    await upDateOrder({
+      order: myorder.value,
+    });
+  };
+
+  // 添加折扣碼
+  const addDiscount = function (discount) {
+    promoCode.value = discount;
+    order_amount.value = orderAmount(products.value, discount.amount);
+    upSpDate();
+  };
+
+  // 刪除折扣碼
+  const removeDiscount = function () {
+    promoCode.value = null;
+    order_amount.value = orderAmount(products.value);
+    upSpDate();
+  };
+
+  return {
+    addDiscount,
+    removeDiscount,
+  };
 };
 
 export {
@@ -361,4 +404,5 @@ export {
   setDefaultFirstOrder,
   getOrderConstruction,
   calcSubtotal,
+  promoCodeConstruction,
 };

@@ -35,4 +35,5 @@ export {
   setDefaultFirstOrder,
   getOrderConstruction,
   calcSubtotal,
+  promoCodeConstruction,
 } from "./orderModel.js";

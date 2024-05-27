@@ -72,6 +72,12 @@ const store = defineStore("cartStore", {
         toast.warning("請選擇日期");
       }
     },
+
+    getFirstDay() {
+      if (!this.workDay.getToday) return;
+      const { date } = this.workDay.getToday;
+      return date;
+    },
   },
 });
 

@@ -35,13 +35,15 @@
 <script setup>
 import DynamicBottomBar from "../content/cartSideBar/DynamicBottomBar.vue";
 import useAccountStore from "@/store/modules/account/accountStore.js";
-import { inject, computed } from "vue";
+import { inject, computed, watch } from "vue";
 import { Icon } from '@iconify/vue';
 import dayjs from "dayjs";
 
 const accountStore = useAccountStore()
 const { product } = inject('findOrderDate')
 const store = inject('store')
+
+
 
 const lastEditTrans = computed(() => {
   if (store.selectionDay.orderDate) {

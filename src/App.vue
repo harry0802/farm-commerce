@@ -10,7 +10,6 @@
   <farm-footer />
   <Toaster closeButton position="bottom-left" richColors :expand="true" />
   <chatbotPage />
-
 </template>
 
 <script setup>
@@ -27,7 +26,6 @@ import { startAuthStateListener } from "@/Plugins/sessionHandler.js";
 
 onMounted(() => {
   startAuthStateListener()
-
 })
 
 

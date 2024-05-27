@@ -21,15 +21,15 @@ import DynamicWrapper from "../../ui/content/cartSideBar/DynamicWrapper.vue";
 import DynamicPhoto from "../../ui/content/cartSideBar/DynamicPhoto.vue";
 import CartProductOder from "../cartProdut/CartProductOder.vue";
 import CartProductBottomBtn from "../../ui/button/CartProductBottomBtn.vue";
-import { inject, onMounted, computed } from "vue";
+import { inject, computed, watchEffect } from "vue";
 const { productCart } = inject('orderStore')
 const { findOrderDate } = inject('findOrderDate')
 const isProduct = computed(() => productCart.value?.length > 0 ?? false)
 
-onMounted(() => {
-  findOrderDate();
-});
 
+watchEffect(() => {
+  findOrderDate();
+})
 </script>
 
 <style scoped>

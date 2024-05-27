@@ -85,6 +85,8 @@ const onsubmit = async () => {
 
 watchEffect(() => {
   clacWindowSize.value ? closeSubscribe() : clacWindowSize.value
+  sendProvide()
+
 })
 
 

@@ -14,6 +14,7 @@ const throttledLoginHandler = useThrottleFn(async (event, session) => {
     const { initializeOrderStore } = useOrderStore();
     accountStore.setAuthenticated(session.user);
     getAccountInfo();
+
     initializeOrderStore();
   }
   // 处理登录状态的变化
