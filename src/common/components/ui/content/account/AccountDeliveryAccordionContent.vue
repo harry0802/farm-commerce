@@ -13,8 +13,6 @@ const handleEditOrder = function (data) {
     openCart.value()
     handleSelectionDay.value(data)
 }
-
-
 </script>
 
 <template>
@@ -28,7 +26,9 @@ const handleEditOrder = function (data) {
                 <AccointDeliverlyItem v-bind="item" />
                 <div class="flex w-full mt-8 justify-between items-center">
                     <div class="self-end ">
-                        <p class="text-color-primary font-[GalmuriMono9] tracking-widest">總金額：</p>
+                        <p class="text-color-primary font-[GalmuriMono9] tracking-widest">總金額： <span
+                                class="font-[GalmuriMono9] font-black">{{
+            item.order_amount.total }}</span></p>
                     </div>
                     <div class="flex mr-1 gap-2">
                         <button

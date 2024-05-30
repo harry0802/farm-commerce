@@ -16,28 +16,33 @@
 <script setup>
 import OderEditSlectOption from "../../../ui/product/siderbar/OderEditSlectOption.vue";
 import { userHandleProductItem } from "@/Plugins/zodValidators.js";
-import { ref, toRefs, watch } from "vue";
+import { ref, toRefs, watch, onMounted } from "vue";
 import LoadingCat2 from "@/common/components/ui/animat/LoadingCat2.vue";
 
 const props = defineProps({ product: Object })
 const options = 99;
-const selectedQuantity = ref(props.product.quantity);
+const selectedQuantity = ref(0);
+
 
 const {
   setProduct,
-  theAmount,
   loading,
-  sendAmount } =
-  toRefs(userHandleProductItem(props.product, props.product.quantity))
+  sendAmount,
+  setNewQty } =
+  userHandleProductItem(props.product, props.product.quantity)
 
 const handleSendAmount = () => {
-  theAmount.value = selectedQuantity.value
-  sendAmount.value()
+  setNewQty(selectedQuantity.value)
+  sendAmount()
 }
 
 watch(() => props.product, (newVal) => {
-  setProduct.value(newVal)
+  setProduct(newVal)
   selectedQuantity.value = newVal.quantity
+})
+
+onMounted(() => {
+  selectedQuantity.value = props.product.quantity
 })
 
 </script>

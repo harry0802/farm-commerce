@@ -18,7 +18,6 @@ import { provide, onMounted, ref, watch, computed, watchEffect } from "vue";
 import { useRoute } from 'vue-router'
 import ProductInfo from '@/common/components/product/ProductInfo.vue'
 import ProductSupplier from '@/common/components/product/ProductSupplier.vue'
-import useCartStore from "@/store/modules/cart/cartStore.js";
 import { useProduct } from "@/store/modules/product/useProduct.js";
 import { storeToRefs } from 'pinia'
 import { useOrderStore } from "@/store/modules/order/index.js";

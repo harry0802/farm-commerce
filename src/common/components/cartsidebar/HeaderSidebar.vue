@@ -23,7 +23,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, onBeforeUnmount, provide, toRefs } from "vue";
+import { ref, onMounted, watch, onBeforeUnmount, provide, toRefs, watchEffect } from "vue";
 import HeaderSideBarSelectorBtn from "../ui/button/HeaderSideBarSelectorBtn.vue";
 import { onClickOutside, useWindowSize } from "@vueuse/core";
 import CartProdut from "../cartsidebar/cartProdut/CartProdut.vue";
@@ -57,6 +57,9 @@ watch(() => store.showCart, (newVal) => {
     document.body.style.overflow = 'auto'
 })
 
+watchEffect(() => {
+  handleScroll()
+})
 
 onMounted(() => {
   const header = document.getElementById('header')

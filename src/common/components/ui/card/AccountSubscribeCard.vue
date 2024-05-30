@@ -1,28 +1,32 @@
 <template>
     <div class="grid-line mt-6 ">
-        <div class="col-span-full mr:col-span-6   mr:col-start-auto">
+        <div v-for="item, i in data " :key="i" class="col-span-full     mr:col-span-6     mr:col-start-auto">
             <AccountSubscribeContent>
                 <template #image>
-                    <a href="">圖片</a>
+                    <a href="">
+                        <img class="w-full  aspect-square  object-cover  " :src="item.image_url"
+                            :alt="item.product_name">
+                    </a>
                 </template>
 
-                <template #button>
-                    <button v-if="!openForm" @click="openForm = true"
-                        class="text-sm font-semibold underline ">編輯</button>
+                <template #button="{ openFormFn, openForm }">
+                    <button v-if="!openForm" @click="openFormFn"
+                        class="min-w-[40px] text-sm  tracking-widest  font-semibold underline ">編輯</button>
                 </template>
 
                 <template #details>
-                    <a class="u-text-small txt-decoration  inline-block mb-4 underline    transition-colors duration-300"
-                        href="">title</a>
+                    <a class=" inline-flex u-text-small    txt-decoration  mb-4 underline  transition-colors duration-300"
+                        href="">{{ item.product_name }}</a>
                     <div>
                         <p>Next Delivery</p>
-                        <time datetime="2024/1/20">禮拜幾 , 1月12日 </time>
+                        <time :datetime="item.NextDelivery_Date"> {{ transformDormats(item.NextDelivery_Date
+        ) }} </time>
                     </div>
                 </template>
 
-                <template #form>
+                <template #form="{ openForm }">
                     <div class="col-span-full" v-if="openForm">
-                        <SubscribeHandleDetailFrom v-model:openForm="openForm" />
+                        <SubscribeHandleDetailFrom :data="item" />
                     </div>
                 </template>
             </AccountSubscribeContent>
@@ -34,8 +38,14 @@
 <script setup>
 import AccountSubscribeContent from "@/common/components/ui/content/account/AccountSubscribeContent.vue";
 import SubscribeHandleDetailFrom from "@/common/components/ui/from/account/subscriptions/SubscribeHandleDetailFrom.vue";
-import { ref } from "vue";
-const openForm = ref(false)
+import dayjs from "dayjs";
+
+const transformDormats = (d) => dayjs(d).format(`ddd/MMMD日`)
+
+defineProps({ data: Object })
+
+
+
 
 
 </script>

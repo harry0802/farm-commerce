@@ -78,6 +78,16 @@ const store = defineStore("cartStore", {
       const { date } = this.workDay.getToday;
       return date;
     },
+    getTheWeek() {
+      if (!this.workDay.getToday) return;
+      const { dayOfWeek } = this.workDay.getToday;
+      return dayOfWeek;
+    },
+    specificWeekDay(week) {
+      if (!this.workDay.getToday) return;
+      const { workDayList } = this.workDay;
+      return workDayList.filter((item) => item.dayOfWeek === week);
+    },
   },
 });
 

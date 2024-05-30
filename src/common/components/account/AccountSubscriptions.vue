@@ -11,10 +11,6 @@ import AccountEmptyCard from "@/common/components/ui/card/AccountEmptyCard.vue";
 import SubscribeSection from "@/common/components/ui/section/SubscribeSection.vue";
 const { subscription } = inject('orderStore')
 const dynamicComponent = computed(() => subscription.value.length > 0 ? SubscribeSection : AccountEmptyCard)
-
-
-
-
 </script>
 
 <style scoped></style>

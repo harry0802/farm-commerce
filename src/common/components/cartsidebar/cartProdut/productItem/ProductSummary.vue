@@ -9,9 +9,6 @@
       <span> {{ deliveryFee }}</span>
     </div>
 
-    <!-- 當輸入完成折扣碼出現 -->
-    <!-- 折扣碼強制大寫 -->
-
     <div v-if="isDiscount" class="promo__codes my-2 flex justify-between">
       <span class="visually-hispanen">折扣碼:</span>
       <span class="codes__detail">
@@ -22,16 +19,12 @@
         </button>
       </span>
     </div>
-    <!-- 當輸入完成折扣碼出現 End -->
-    <!-- 輸入折扣碼 -->
-    <!-- 二選一情況 為點選為添加，點選出現折扣碼表單 -->
+
     <product-promo v-model:isDiscount="isDiscount" v-else />
-    <!-- 當輸入折扣碼時才會出現的折扣金額 -->
     <div v-if="isDiscount" class="summary__item discount leading-10">
       <span>已折扣:</span>
       <span>{{ promoCode.amount }} </span>
     </div>
-    <!-- 總計 -->
     <div class="summary__item total">
       <span>總計:</span>
       <span class="">{{ total }}</span>
@@ -42,7 +35,6 @@
 <script setup>
 import { ref, } from "vue";
 import ProductPromo from "../../../cartsidebar/cartProdut/productItem/ProductPromo.vue";
-import { toast } from "vue-sonner";
 const props = defineProps({
   subtotal: Number,
   deliveryFee: Number,
@@ -63,7 +55,6 @@ const code = computed(() => props.promoCode?.promo_code.toUpperCase())
 const removePromoCode = function () {
   isDiscount.value = !isDiscount.value;
   removeDiscount()
-  toast.success('成功移除!')
 };
 
 

@@ -17,8 +17,6 @@
 <script setup>
 import { Icon } from "@iconify/vue";
 import { computed, ref, inject } from "vue";
-import { requiresPromocode } from "@/Plugins/supabaseOrder.js";
-import { toast } from "vue-sonner";
 const selectPromo = ref("button");
 const inputValue = ref("");
 const isDiscount = defineModel('isDiscount')
@@ -33,15 +31,9 @@ const calcInputValue = computed(() => inputValue.value === '');
 const openForm = () => selectPromo.value = "form";
 const closeForm = () => selectPromo.value = "button";
 const sendPromo = async function () {
-  const discount = await requiresPromocode(inputValue.value)
-  if (!discount) {
-    inputValue.value = ''
-    toast.error('查無該優惠碼 ')
-    return
-  }
-  await addDiscount(discount)
+  const reponse = await addDiscount(inputValue.value)
+  if (!reponse) return inputValue.value = ''
   isDiscount.value = true
-  toast.success(`已成功添加優惠碼 ${inputValue.value.toUpperCase()}!!`)
 };
 
 

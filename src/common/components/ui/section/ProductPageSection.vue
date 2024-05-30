@@ -3,7 +3,7 @@
         <div ref="target" class="category__id" :id="!!pageitem.title[1] ? pageitem.title[1] : pageitem.title[0]" />
         <ProductPageTitle :titles="pageitem.title" />
         <div class="category__product ">
-            <shop-main-produt-item-card v-for=" item in pageitem.dataCollection" :key="item.product_id" :data="item" />
+            <ShopMainProdutItemCard v-for=" item in pageitem.dataCollection" :key="item.product_id" :data="item" />
         </div>
     </section>
 </template>

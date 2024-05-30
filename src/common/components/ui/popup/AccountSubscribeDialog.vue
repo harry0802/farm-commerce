@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, provide } from 'vue'
 import { cn } from "@/lib/utils";
 import { createReusableTemplate, useMediaQuery } from '@vueuse/core'
 import { Button } from '@/common/composables/ui/button'
@@ -28,7 +28,7 @@ const isDesktop = useMediaQuery('(min-width: 600px)')
 const isOpen = ref(false)
 
 const handleClose = () => isOpen.value = false
-
+provide('closeDialog', handleClose)
 
 const props = defineProps({
     buttonText: String,

@@ -1,6 +1,6 @@
 <template>
   <li class="item__list--edit">
-    <p class="edit__price">{{ price }}</p>
+    <p class="edit__price">{{ calcPrice }}</p>
     <!-- 數量與移除 -->
     <div class="edit__control">
       <div class="edit__contro--select">
@@ -15,15 +15,20 @@
 <script setup>
 
 import ProductEditSelect from "@/common/components/cartsidebar/cartProdut/productItem/ProductEditSelect.vue";
-import { inject } from "vue";
+import { inject, computed } from "vue";
 const { handleOrderRemoveItem } = inject('orderStore')
 const { product } = inject('findOrderDate')
-defineProps({
+const props = defineProps({
   product_id: String,
-  price: String,
-  quantity: String,
+  price: Number,
+  quantity: Number,
+  SALE: Object,
   sendData: Object
 })
+
+const calcPrice = computed(() => !!props.SALE ? props.SALE.price === '' ? props.price : props.SALE.price : props.price)
+
+
 </script>
 
 <style scoped>

@@ -284,6 +284,7 @@ const userHandleProductItem = function (pd, qty) {
   const product = ref(pd);
   const loading = ref(false);
   const theAmount = ref(qty);
+
   const disableBlur = ref(false);
   const amountSchema = z
     .number({ required_error: "只接受數字", invalid_type_error: "只接受數字" })
@@ -292,7 +293,6 @@ const userHandleProductItem = function (pd, qty) {
 
   const sendAmount = (operate) => {
     if (operate) operate();
-    if (theAmount.value === qty) return;
     loading.value = true;
     amountDebounce(operate);
   };
@@ -348,6 +348,8 @@ const userHandleProductItem = function (pd, qty) {
   };
   // 設定新的產品狀態
   const setProduct = (newPd) => (product.value = newPd);
+  // 設定新的產品數量
+  const setNewQty = (qty) => (theAmount.value = qty);
 
   return {
     theAmount,
@@ -356,6 +358,33 @@ const userHandleProductItem = function (pd, qty) {
     preventBlurEvent,
     productOperate,
     sendAmount,
+    setNewQty,
+  };
+};
+
+// 訂閱商品
+
+const userChangeSubscriptionDeliveryday = function (initialValues) {
+  const fields = z.object({
+    deliveryday: emptyStr,
+  });
+  const handleSubmit = createHandleSubmit(fields, initialValues);
+  return {
+    handleSubmit,
+  };
+};
+
+const userHandleSubscription = function (initialValues) {
+  const fields = z.object({
+    quantity: emptyStr,
+    frequency: emptyStr,
+    deliveryday: emptyStr,
+    changeNextDate: emptyStr,
+  });
+
+  const handleSubmit = createHandleSubmit(fields, initialValues);
+  return {
+    handleSubmit,
   };
 };
 
@@ -377,4 +406,7 @@ export {
   profileUserEmail,
   // order
   userHandleProductItem,
+  // subscribe
+  userChangeSubscriptionDeliveryday,
+  userHandleSubscription,
 };

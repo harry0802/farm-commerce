@@ -21,33 +21,9 @@ import ShopSideCard from "../../../common/components/ui/card/ShopSideCard.vue";
 import ShopSideList from "../../components/ui/navigations/ShopSideList.vue";
 
 const currentId = inject('observerCurrentID')
-
-
-
-// requestSupabaseData
 defineProps({
   data: Object
 });
-
-
-
-
-
-
-
-// const prodcutData = computed(() =>
-//   localDataKey(props.data)
-// )
-
-
-// console.log(prodcutData.value);
-
-
-
-
-
-
-
 </script>
 
 <style scoped></style>

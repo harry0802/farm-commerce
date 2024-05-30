@@ -22,30 +22,31 @@
 <script setup>
 import LoadingCat2 from "@/common/components/ui/animat/LoadingCat2.vue";
 import { Icon, } from '@iconify/vue';
-import { inject, watch, toRefs } from "vue";
+import { inject, watch } from "vue";
 import { userHandleProductItem } from "@/Plugins/zodValidators.js";
 
 const productItem = inject('productItem')
 const productInfo = inject('productInfo')
 const { getOderFrequency } = inject('tdOrderInfo')
 
+
 const {
     theAmount,
     loading,
     preventBlurEvent,
     productOperate } =
-    toRefs(userHandleProductItem({ ...productItem || productInfo.value }, getOderFrequency.value?.quantity))
+    userHandleProductItem({ ...productItem || productInfo.value }, getOderFrequency.value?.quantity)
 
 const {
     handleFocus,
     handleEnter,
     handleBlur,
-} = preventBlurEvent.value()
+} = preventBlurEvent()
 
 const {
     addProduct,
     reduceProduct,
-} = productOperate.value()
+} = productOperate()
 
 watch(() => getOderFrequency.value?.quantity, (newVal) => {
     theAmount.value = newVal

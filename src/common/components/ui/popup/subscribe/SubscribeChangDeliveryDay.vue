@@ -1,8 +1,6 @@
 <script setup>
-import { useForm } from 'vee-validate'
-import { toTypedSchema } from '@vee-validate/zod'
-import * as z from 'zod'
-
+import { computed, ref, inject } from "vue";
+import { useField } from 'vee-validate'
 import { Button } from '@/common/composables/ui/button'
 import {
     FormControl,
@@ -19,36 +17,41 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/common/composables/ui/select'
-// import { toast } from '@/common/composables/ui/toast'
+import { userChangeSubscriptionDeliveryday } from "@/Plugins/zodValidators.js";
+import { useOrderStore } from "@/store/modules/order/index.js";
+import LoadingCatOverlayer from "@/common/components/ui/animat/LoadingCatOverlayer.vue";
 
-const formSchema = toTypedSchema(z.object({
-    email: z
-        .string({
-            required_error: 'Please select an email to display.',
-        })
-        .email(),
-}))
+const { createGeneralSubScribeConstruction } = useOrderStore()
+const { changDeliveryDayAll } = createGeneralSubScribeConstruction()
 
-const { handleSubmit } = useForm({
-    validationSchema: formSchema,
-    initialValues: {
-        email: 'm@example.com'
-    }
+const loading = ref(false)
+const props = defineProps({ week: String })
+const closeDialog = inject('closeDialog')
 
+
+const { handleSubmit } = userChangeSubscriptionDeliveryday({
+    deliveryday: props.week
 })
 
+const { value: deliverydayVal } = useField('deliveryday')
 
-const onSubmit = handleSubmit((values) => {
-    console.log(values);
+
+const onSubmit = handleSubmit(({ deliveryday }) => {
+    loading.value = true
+    changDeliveryDayAll({ oldWeek: props.week, newWeek: deliveryday })
+    setTimeout(() => { loading.value = false; closeDialog() }, 2000)
 })
 
-const test = ['m@example.com', 'm@google.com', 'm@support.com']
+const weekList = ["週一", "週二", "週三", "週四", "週五",]
+
+const isDisable = computed(() => props.week === deliverydayVal.value)
+
 
 </script>
 
 <template>
     <form class="flex h-full flex-col justify-between space-y-6 " @submit="onSubmit">
-        <FormField v-slot="{ componentField }" name="email">
+        <FormField v-slot="{ componentField }" name="deliveryday">
             <FormItem class=" max-w-[343px] sm:max-w-[376px]">
                 <Select v-bind="componentField">
                     <FormControl class="h-12">
@@ -58,25 +61,30 @@ const test = ['m@example.com', 'm@google.com', 'm@support.com']
                     </FormControl>
                     <SelectContent>
                         <SelectGroup>
-                            <SelectItem v-for="email, i in test" :key="i" :value="email">
+                            <SelectItem v-for="email, i in weekList" :key="i" :value="email">
                                 {{ email }}
                             </SelectItem>
                         </SelectGroup>
                     </SelectContent>
                 </Select>
                 <FormDescription>
-                    You can manage email addresses in your
+                    <p>此操作會將所有的訂單轉移，如果需要個別操作請使用 <br />編輯 -> 星期幾出貨</p>
                 </FormDescription>
                 <FormMessage />
             </FormItem>
         </FormField>
         <div
             class=" text-center max-sm:justify-self-end max-sm:p-3 max-sm:border-t max-sm:border-color-grey-light sm:text-right ">
-            <Button class="u-pirmary-button sendData" type="submit">
+            <Button :disabled="isDisable" class="u-pirmary-button sendData" type="submit">
                 儲存
             </Button>
         </div>
     </form>
+
+    <Teleport to="body">
+        <LoadingCatOverlayer v-if="loading" />
+    </Teleport>
+
 </template>
 <style scoped>
 button.sendData {

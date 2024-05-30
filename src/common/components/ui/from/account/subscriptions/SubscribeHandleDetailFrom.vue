@@ -1,6 +1,6 @@
 <template>
     <form class="flex h-full flex-col justify-between space-y-6 " @submit="onSubmit">
-        <FormField v-for=" item, i in test" :key="i" v-slot="{ componentField }" :name="item.label">
+        <FormField v-for=" item, i in selectList" :key="i" v-slot="{ componentField }" :name="item.id">
             <FormItem :class="{ quantity: item.price }" class=" max-w-[343px] sm:max-w-[272px]">
                 <div>
                     <Select v-bind="componentField">
@@ -13,7 +13,7 @@
 
                         <SelectContent>
                             <div v-if="item.price">
-                                <SelectItem v-for="vl, i in 10" :key="i" :value="`${vl}`">
+                                <SelectItem c v-for="vl, i in 99" :key="i" :value="vl + ''">
                                     {{ vl }}
                                 </SelectItem>
                             </div>
@@ -38,7 +38,8 @@
                     <div class="  account-subscribe__content">
                         <Button @click="handleClose" class="subscribe--btn--link u-account-subscribe__btn--mobile"
                             variant="link" type="button">我再想想</Button>
-                        <Button class="subscribe--btn--link u-account-subscribe__btn--mobile" variant="link"
+                        <Button @click="removeTheSubScribe(data)"
+                            class="subscribe--btn--link u-account-subscribe__btn--mobile" variant="link"
                             type="button">確定要取消</Button>
                     </div>
                 </template>
@@ -49,24 +50,31 @@
             <Button class="subscribe--btn u-pirmary-button" type="submit">
                 儲存
             </Button>
-            <Button @click="openForm = false" class="subscribe--btn u-subscribe-btn cancel h-[56px]" type="button">
+            <Button @click="closeFormFn" class="subscribe--btn u-subscribe-btn cancel h-[56px]" type="button">
                 取消
             </Button>
 
         </div>
     </form>
+    <LoadingCatOverlayer v-if="isLodaing" />
 </template>
 
 <script setup>
+import { inject, watchEffect, ref } from "vue";
 import AccountSubscribeDialog from "@/common/components/ui/popup/AccountSubscribeDialog.vue";
 import { Button } from '@/common/composables/ui/button'
+import { userHandleSubscription } from "@/Plugins/zodValidators.js";
+import { useOrderStore } from "@/store/modules/order/index.js";
+import cartStore from "@/store/modules/cart/cartStore.js";
+import dayjs from "dayjs";
+import { useField } from 'vee-validate';
+import LoadingCatOverlayer from "@/common/components/ui/animat/LoadingCatOverlayer.vue";
+
 import {
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
-    FormMessage,
 } from '@/common/composables/ui/form'
 import {
     Select,
@@ -75,18 +83,82 @@ import {
     SelectItem,
     SelectTrigger,
     SelectValue,
-    SelectLabel
 } from '@/common/composables/ui/select'
+const { specificWeekDay } = cartStore()
+const { handleOrderRemoveSubScribe } = useOrderStore()
 
 
+const props = defineProps({ data: Object })
+const closeFormFn = inject('closeFormFn')
 
-const test = [
-    { label: 'Quantity', value: 10, price: 1 },
-    { label: 'Frequency', value: ['每週一次', '隔週一次', '每月一次'] },
-    { label: 'Delivery Day', value: ["週一", "週二", "週三", "週四", "週五",] },
-    { label: 'Change Next Delivery Date', value: ['4/1', '4/2', '4/3', '4/4'] },
+const isLodaing = ref(false)
+
+const selectList = [
+    { id: 'quantity', label: '數量', value: 99, price: 1, placeholder: '' },
+    { id: 'frequency', label: '多久配送一次', value: ['每週一次', '隔週一次', '每月一次'] },
+    { id: 'deliveryday', label: '星期幾出貨', value: ["週一", "週二", "週三", "週四", "週五",] },
+    { id: 'changeNextDate', label: '下一筆出貨的時間', value: {} },
 ]
-const openForm = defineModel('openForm')
+const transformDormats = (d) => dayjs(d).format(`M/D`)
+const transformOederFormat = (md) => {
+    const yearNow = dayjs().get('year')
+    const currentDay = md
+    return dayjs(yearNow + currentDay).format(`YYYY/M/D`)
+}
+
+
+
+const { handleSubmit } = userHandleSubscription(
+    {
+        quantity: props.data.Quantity + '',
+        frequency: props.data.Frequency,
+        deliveryday: props.data.DeliveryDay,
+        changeNextDate: transformDormats(props.data.NextDelivery_Date)
+    }
+)
+
+
+
+const { value: deliverydayVal } = useField('deliveryday')
+const { value: nextDate, setValue: setNextDate } = useField('changeNextDate')
+
+
+
+const changeNextDateList = () => {
+    const list = specificWeekDay(deliverydayVal.value)
+    const result = list.map((d) => transformDormats(d.date))
+    const data = selectList.find((i) => i.id === 'changeNextDate')
+    data.value = result
+    if (!data.value.some((i => i === nextDate.value))) setNextDate('')
+}
+
+
+const onSubmit =
+    handleSubmit((value) => {
+        const { quantity,
+            frequency,
+            deliveryday,
+            changeNextDate, } = value
+        console.log(transformOederFormat(changeNextDate));
+
+    })
+const removeTheSubScribe = function (item) {
+    isLodaing.value = true
+    handleOrderRemoveSubScribe(item)
+    setTimeout(() => {
+        isLodaing.value = false;
+        closeFormFn()
+    }, 2000)
+
+}
+
+
+
+
+watchEffect(() => {
+    changeNextDateList()
+})
+
 
 </script>
 

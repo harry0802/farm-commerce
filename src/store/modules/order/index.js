@@ -16,6 +16,7 @@ import {
   getOrderConstruction,
   calcSubtotal,
   promoCodeConstruction,
+  createGeneralSubScribeConstruction,
 } from "@/store/modules/order/model/index.js";
 export const useOrderStore = defineStore(
   "order",
@@ -119,7 +120,12 @@ export const useOrderStore = defineStore(
       const { generatedSubscribeData } = createSubscribeConstruction();
       const { sendData } = await generatedSubscribeData(item, myorder);
       const id = item.product_id || item.id;
-      const index = findIndexByProductID(subscription.value, id);
+      const index = subscription.value.findIndex(
+        (i) => i.product_id === id && i.DeliveryDay === sendData.DeliveryDay
+      );
+
+      // 訂閱商品查詢條件
+      // 1. 先找 DeliveryDay 與 id 是不是一樣存在
       ~index
         ? (subscription.value[index] = sendData)
         : subscription.value.push(sendData);
@@ -167,7 +173,11 @@ export const useOrderStore = defineStore(
     // 刪除整個訂閱商品
     const handleOrderRemoveSubScribe = async function (item) {
       const { removeProductAndEmptyOrders } = removeOrder();
-      removeProductAndEmptyOrders(myorder.value, item.id);
+      removeProductAndEmptyOrders(myorder, subscription, item);
+      await upDateOrder({
+        subscription: subscription.value,
+        order: clearEmptyAndSortOrder(myorder).value,
+      });
     };
 
     // 登出設定
@@ -204,6 +214,7 @@ export const useOrderStore = defineStore(
       getOrderConstruction,
       calcSubtotal,
       promoCodeConstruction,
+      createGeneralSubScribeConstruction,
     };
   },
   {

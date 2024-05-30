@@ -20,7 +20,6 @@
 
         <template #deliverySchedule>
             <AccountDeliveryAccordionContent />
-
         </template>
     </AccountDeliveryCard>
 </template>

@@ -36,4 +36,5 @@ export {
   getOrderConstruction,
   calcSubtotal,
   promoCodeConstruction,
+  createGeneralSubScribeConstruction,
 } from "./orderModel.js";

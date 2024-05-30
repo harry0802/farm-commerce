@@ -29,7 +29,7 @@ import { useForm, useField } from "vee-validate";
 
 
 const loopData = 10
-const fq = ['每周一次', '隔週一次', '每月一次']
+const fq = ['每週一次', '隔週一次', '每月一次']
 
 
 const getOrderSubscription = inject('getOrderSubscription')

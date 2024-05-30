@@ -20,7 +20,7 @@ import { defineProps } from "vue";
 import emblaCarouselVue from 'embla-carousel-vue'
 const [emblaNode] = emblaCarouselVue({ loop: false, })
 defineProps({
-    imgpath: Array
+    imgpath: String
 })
 
 </script>

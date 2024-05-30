@@ -19,6 +19,4 @@ import ProductSummary from "../../cartsidebar/cartProdut/productItem/ProductSumm
 import { diliverFree, } from "@/store/modules/order/getter/index.js"
 import { inject } from "vue";
 const { currentOrder } = inject('orderStore')
-
-
 </script>
