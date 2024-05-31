@@ -38,6 +38,7 @@ const { value: deliverydayVal } = useField('deliveryday')
 
 const onSubmit = handleSubmit(({ deliveryday }) => {
     loading.value = true
+
     changDeliveryDayAll({ oldWeek: props.week, newWeek: deliveryday })
     setTimeout(() => { loading.value = false; closeDialog() }, 2000)
 })

@@ -1,6 +1,5 @@
 import { toRefs, ref, watchEffect, provide } from "vue";
 import { creatOrderList } from "@/Plugins/day.js";
-import { isSameOrBeforeDate } from "@/store/modules/order/helpers.js";
 import { upDateOrder } from "@/Plugins/supabaseOrder.js";
 import useCartStore from "@/store/modules/cart/cartStore.js";
 import dayjs from "dayjs";
@@ -9,6 +8,7 @@ import { useOrderStore } from "@/store/modules/order/index.js";
 import {
   findIndexByProductID,
   clearEmptyOrder,
+  isSameOrBeforeDate,
 } from "@/store/modules/order/helpers.js";
 import { orderAmount } from "@/store/modules/order/getter/index.js";
 import { requiresPromocode } from "@/Plugins/supabaseOrder.js";
@@ -277,6 +277,7 @@ const createSubscribeConstruction = function () {
 
   return {
     generatedSubscribeData,
+    generatedSubscriptionOrder,
   };
 };
 
@@ -293,16 +294,22 @@ const setDefaultFirstOrder = function (order, workDayLists) {
 
 // 處理訂閱商品
 const createGeneralSubScribeConstruction = function () {
-  const { getIndexState, createOrder } = createOrderConstruction();
+  const { getIndexState } = createOrderConstruction();
   const { subscription, myorder } = getIndexState();
   const { specificWeekDay } = useCartStore();
+  const { generatedSubscriptionOrder } = createSubscribeConstruction();
 
   // 替換日期 (全部訂單)
-
-  const changDeliveryDayAll = (data) => {
-    const { oldWeek, newWeek } = data;
-
+  const changDeliveryDayAll = ({ oldWeek, newWeek }) => {
+    const oldDeliveryList = specificWeekDay(oldWeek).map((d) => d.date);
     const newDeliveryList = specificWeekDay(newWeek).map((d) => d.date);
+    let selecDayIndex;
+
+    // 找到用戶的訂閱習慣
+    const picKupUserHabit = (date) => {
+      selecDayIndex = oldDeliveryList.findIndex((d) => d === date);
+      return newDeliveryList.at(selecDayIndex);
+    };
 
     // 過濾要比對的陣列
     const oldWeekProducts = subscription.value.filter(
@@ -311,36 +318,30 @@ const createGeneralSubScribeConstruction = function () {
     const newWeekProducts = subscription.value.filter(
       (d) => d.DeliveryDay === newWeek
     );
-
     // 更新指定產品的週期
-    const updatedOldWeekProducts = oldWeekProducts.map((product) => ({
-      ...product,
-      DeliveryDay: newWeek,
-      Delivery_List: newDeliveryList,
-    }));
-
+    const updatedOldWeekProducts = oldWeekProducts.map((product) => {
+      return {
+        ...product,
+        DeliveryDay: newWeek,
+        Delivery_List: specificWeekDay(newWeek),
+        NextDelivery_Date: picKupUserHabit(product.NextDelivery_Date),
+      };
+    });
     // 排除 所有操作日期訂單
     const finalSubscribe = subscription.value.filter(
       (d) => d.DeliveryDay !== oldWeek && d.DeliveryDay !== newWeek
     );
 
-    // 使用 map 設定唯一值 -> 取數量最大
+    // 使用 map 設定唯一值 -> 新的訂閱蓋過舊的訂閱
     const productMap = new Map();
-    const mergeProducts = (products) => {
-      products.forEach((product) => {
-        if (productMap.has(product.product_id)) {
-          const existingProduct = productMap.get(product.product_id);
-          if (product.Quantity > existingProduct.Quantity) {
-            productMap.set(product.product_id, product);
-          }
-        } else {
-          productMap.set(product.product_id, product);
-        }
-      });
-    };
-    // 合併
-
-    [newWeekProducts, updatedOldWeekProducts].forEach((item) =>
+    const mergeProducts = (products) =>
+      products.forEach((product) =>
+        !productMap.has(product.product_id)
+          ? productMap.set(product.product_id, product)
+          : product
+      );
+    // 合併以舊的訂單優先執行
+    [updatedOldWeekProducts, newWeekProducts].forEach((item) =>
       mergeProducts(item)
     );
     // 更新訂閱商品
@@ -349,63 +350,73 @@ const createGeneralSubScribeConstruction = function () {
     //------- 更新訂單 -----------
     // 取出舊的訂單日期
     const oldOrder = myorder.value.filter(
-      (od) => od.order_date.dayOfWeek === data.oldWeek
+      (od) => od.order_date.dayOfWeek === oldWeek
     );
 
     // 只對舊訂單原有訂單操作，如果舊的空白不添加任何，如果有就添加存在的
     if (oldOrder.length === 0) return;
+    // 取出要覆蓋的商品資訊
     const prepareAddTask = new Map();
-    // 清理訂單, 清理存在的
+    // 保留用戶的非訂閱訂單
     oldOrder.forEach((item) => {
+      // 紀錄普通商品的 task
       const filterPd = [];
       item.products.forEach((pd) => {
-        !productMap.has(pd.product_id)
-          ? filterPd.push(pd)
-          : prepareAddTask.set(pd.product_id, pd);
+        // 只遷移舊的訂單訂閱商品
+        const orderIndex = findIndexByProductID(oldWeekProducts, pd.product_id);
+        ~orderIndex ? prepareAddTask.set(pd.product_id, pd) : filterPd.push(pd);
       });
       item.products = filterPd;
     });
+
     // 被添加的訂單 ，存在就查找。不存在就創建
     const newOrder = myorder.value.filter(
-      (od) => od.order_date.dayOfWeek === data.newWeek
+      (od) => od.order_date.dayOfWeek === newWeek
     );
+
     // 創建新訂單
     if (newOrder.length === 0) {
       const dateList = specificWeekDay(newWeek);
-      const task = [];
-      dateList.forEach((date) => {
-        const order = createOrder(date);
-        order.products = [...prepareAddTask.values()];
-        // 從新計算金額
-        order.order_amount = orderAmount(order.products);
-        task.push(order);
-      });
 
-      myorder.value = [...myorder.value, ...task];
-    } else {
-      // 每一筆訂單都添加轉移的訂單
-      newOrder.forEach((item) => {
-        const filterPd = new Map();
-        item.products.forEach((pd) => {
-          const id = pd.product_id;
-          prepareAddTask.forEach((val) => {
-            const taskId = val.product_id;
-            if (val.product_id === id) {
-              pd.Quantity >= val.Quantity
-                ? filterPd.set(taskId, pd)
-                : filterPd.set(taskId, val);
-            } else {
-              filterPd.set(taskId, val);
-            }
-          });
+      oldWeekProducts.forEach((item) => {
+        const loopFq = generatedSubscriptionOrder(
+          item.Frequency,
+          dateList,
+          selecDayIndex
+        );
+        loopFq.forEach((d) => {
+          processOrder(myorder.value, d, prepareAddTask.get(item.product_id));
         });
-        item.products = [...filterPd.values()];
+      });
+    } else {
+      // 舊的訂單與新的訂單要合併
+      const mixProduct = new Map(prepareAddTask);
+      newOrder.forEach((item) =>
+        item.products.forEach((pd) =>
+          !mixProduct.has(pd.product_id)
+            ? mixProduct.set(pd.product_id, pd)
+            : pd
+        )
+      );
+      // 要覆蓋的產品週期
+      productMap.forEach((item) => {
+        // mixProduct
+        const loopFq = generatedSubscriptionOrder(
+          item.Frequency,
+          item.Delivery_List,
+          selecDayIndex
+        );
+
+        loopFq.forEach((d) =>
+          processOrder(myorder.value, d, mixProduct.get(item.product_id))
+        );
       });
     }
-    upDateOrder({
-      subscription: subscription.value,
-      order: clearEmptyAndSortOrder(myorder).value,
-    });
+    clearEmptyAndSortOrder(myorder).value;
+    // upDateOrder({
+    //   subscription: subscription.value,
+    //   order: clearEmptyAndSortOrder(myorder).value,
+    // });
   };
 
   // 替換日期 (個別操作)
@@ -437,6 +448,7 @@ const getOrderConstruction = function (data) {
   // 檢查是否訂閱
   const checkingIsSubscribe = function (td) {
     const getSubScribeList = findingSubscription();
+
     if (getSubScribeList) {
       return getSubScribeList.Delivery_List.some((d) => d.date === td);
     }

@@ -151,10 +151,6 @@ const removeTheSubScribe = function (item) {
     }, 2000)
 
 }
-
-
-
-
 watchEffect(() => {
     changeNextDateList()
 })
