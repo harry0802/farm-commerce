@@ -4,7 +4,7 @@
             <AccountHero />
         </template>
         <template #tab>
-            <EmblaDraggableNavgition>
+            <EmblaDraggableNavgition class="">
                 <template #selectorItem>
                     <AccountNavigationBtns />
                 </template>

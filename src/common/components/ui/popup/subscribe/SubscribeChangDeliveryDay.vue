@@ -18,15 +18,13 @@ import {
     SelectValue,
 } from '@/common/composables/ui/select'
 import { userChangeSubscriptionDeliveryday } from "@/Plugins/zodValidators.js";
-import { useOrderStore } from "@/store/modules/order/index.js";
 import LoadingCatOverlayer from "@/common/components/ui/animat/LoadingCatOverlayer.vue";
 
-const { createGeneralSubScribeConstruction } = useOrderStore()
-const { changDeliveryDayAll } = createGeneralSubScribeConstruction()
 
 const loading = ref(false)
 const props = defineProps({ week: String })
 const closeDialog = inject('closeDialog')
+const { changDeliveryDayAll } = inject('handelSubScribe')
 
 
 const { handleSubmit } = userChangeSubscriptionDeliveryday({

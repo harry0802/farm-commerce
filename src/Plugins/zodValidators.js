@@ -390,6 +390,7 @@ const userHandleSubscription = function (initialValues) {
 
 export {
   useField,
+  toast,
   // register page
   checkZipcode,
   userFields,

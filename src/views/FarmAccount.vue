@@ -14,12 +14,14 @@ import AccountMainSection from "@/common/components/ui/section/AccountMainSectio
 import useAccountStore from "@/store/modules/account/accountStore.js";
 import { provide, toRefs, ref, onMounted } from "vue";
 import { useOrderStore } from "@/store/modules/order/index.js";
-const { subscription } = toRefs(useOrderStore())
+const { subscription, myorder, createGeneralSubScribeConstruction, handleOrderRemoveSubScribe } = toRefs(useOrderStore())
 const accountStore = useAccountStore
 const loading = ref(true)
-provide('accountStore', accountStore)
-provide('orderStore', { subscription })
+const { changDeliveryDayAll, changDeliveryDay } = createGeneralSubScribeConstruction.value()
 
+provide('accountStore', accountStore)
+provide('orderStore', { subscription, myorder })
+provide('handelSubScribe', { changDeliveryDayAll, changDeliveryDay, handleOrderRemoveSubScribe })
 
 onMounted(() => {
     setTimeout(() => {

@@ -17,7 +17,7 @@ const handleEditOrder = function (data) {
 
 <template>
     <!-- :default-value="defaultValue" -->
-    <Accordion type="single" class="w-full" collapsible>
+    <Accordion type="single" class="w-full " collapsible>
         <AccordionItem v-for=" (item, i ) in myorder" :key="item.order_id" :value="item.order_id">
             <AccordionTrigger>
                 <AccointDeliverlyList :deliverlyIndex="i" :products="item" />

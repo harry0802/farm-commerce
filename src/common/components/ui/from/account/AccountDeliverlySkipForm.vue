@@ -10,8 +10,6 @@ import { RangeCalendar } from '@/common/composables/ui/range-calendar'
 import { FormField, } from '@/common/composables/ui/form'
 
 const placeholder = ref()
-const userSkipDate = ref([])
-
 const formSchema = toTypedSchema(z.object({ dob: z.string() }))
 const { handleSubmit, setValues, } = useForm({ validationSchema: formSchema })
 const localeDate = today(getLocalTimeZone()).add({ days: 1 })

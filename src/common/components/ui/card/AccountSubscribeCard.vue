@@ -43,8 +43,6 @@ import dayjs from "dayjs";
 const transformDormats = (d) => dayjs(d).format(`ddd/MMMD日`)
 
 const props = defineProps({ data: Object })
-console.log(props.data);
-
 
 
 

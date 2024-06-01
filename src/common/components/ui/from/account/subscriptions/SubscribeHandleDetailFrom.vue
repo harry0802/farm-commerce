@@ -60,15 +60,13 @@
 </template>
 
 <script setup>
-import { inject, watchEffect, ref } from "vue";
-import AccountSubscribeDialog from "@/common/components/ui/popup/AccountSubscribeDialog.vue";
-import { Button } from '@/common/composables/ui/button'
-import { userHandleSubscription } from "@/Plugins/zodValidators.js";
-import { useOrderStore } from "@/store/modules/order/index.js";
-import cartStore from "@/store/modules/cart/cartStore.js";
 import dayjs from "dayjs";
-import { useField } from 'vee-validate';
+import AccountSubscribeDialog from "@/common/components/ui/popup/AccountSubscribeDialog.vue";
 import LoadingCatOverlayer from "@/common/components/ui/animat/LoadingCatOverlayer.vue";
+import cartStore from "@/store/modules/cart/cartStore.js";
+import { Button } from '@/common/composables/ui/button'
+import { userHandleSubscription, toast, useField } from "@/Plugins/zodValidators.js";
+import { inject, watchEffect, ref } from "vue";
 
 import {
     FormControl,
@@ -84,14 +82,13 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/common/composables/ui/select'
-const { specificWeekDay } = cartStore()
-const { handleOrderRemoveSubScribe } = useOrderStore()
 
 
 const props = defineProps({ data: Object })
-const closeFormFn = inject('closeFormFn')
-
 const isLodaing = ref(false)
+const { specificWeekDay } = cartStore()
+const closeFormFn = inject('closeFormFn')
+const { changDeliveryDay, handleOrderRemoveSubScribe } = inject('handelSubScribe')
 
 const selectList = [
     { id: 'quantity', label: '數量', value: 99, price: 1, placeholder: '' },
@@ -106,8 +103,6 @@ const transformOederFormat = (md) => {
     return dayjs(yearNow + currentDay).format(`YYYY/M/D`)
 }
 
-
-
 const { handleSubmit } = userHandleSubscription(
     {
         quantity: props.data.Quantity + '',
@@ -116,7 +111,6 @@ const { handleSubmit } = userHandleSubscription(
         changeNextDate: transformDormats(props.data.NextDelivery_Date)
     }
 )
-
 
 
 const { value: deliverydayVal } = useField('deliveryday')
@@ -133,22 +127,44 @@ const changeNextDateList = () => {
 }
 
 
+
+
+
 const onSubmit =
     handleSubmit((value) => {
         const { quantity,
             frequency,
             deliveryday,
             changeNextDate, } = value
-        console.log(transformOederFormat(changeNextDate));
+        const weekNow = props.data.DeliveryDay
+        const nextDate = transformOederFormat(changeNextDate)
+        const pdId = props.data.product_id
 
+        if (quantity === props.data.Quantity + '' &&
+            frequency === props.data.Frequency &&
+            deliveryday === props.data.DeliveryDay &&
+            nextDate === props.data.NextDelivery_Date
+        ) {
+            toast.warning(`I'm still the same 都好像沒有變`)
+            closeFormFn()
+            return
+        }
+        isLodaing.value = true
+        setTimeout(() => {
+            changDeliveryDay({ oldWeek: weekNow, newWeek: deliveryday, quantity, frequency, changeNextDate: nextDate, changePdId: pdId })
+            isLodaing.value = false;
+            closeFormFn()
+            toast.success(`商品更改成功`)
+        }, 2000)
     })
 const removeTheSubScribe = function (item) {
     isLodaing.value = true
-    handleOrderRemoveSubScribe(item)
+    handleOrderRemoveSubScribe.value(item)
     setTimeout(() => {
         isLodaing.value = false;
         closeFormFn()
-    }, 2000)
+        toast.success(`已移除該訂閱商品`)
+    }, 1400)
 
 }
 watchEffect(() => {
