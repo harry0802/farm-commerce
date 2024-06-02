@@ -1,6 +1,6 @@
 <template>
-  <a class="inline-block" :href="path">
-    <img :src="imgPath" :alt="des" />
+  <a class="flex justify-center " :href="path">
+    <img loading="lazy" class="w-full aspect-square " :src="imgPath" :alt="des" />
   </a>
 </template>
 

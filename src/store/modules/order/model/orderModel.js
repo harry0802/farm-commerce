@@ -205,6 +205,11 @@ const clearEmptyAndSortOrder = function (order) {
   return order;
 };
 
+// 給沒有登錄的清理
+const unLoginClear = (od) => {
+  clearEmptyAndSortOrder(od);
+};
+
 // 普通商品的處理
 const createGeneralOrderConstruction = async function (data, order) {
   const { createOrderManipulate, createProductData } =
@@ -697,4 +702,5 @@ export {
   calcSubtotal,
   promoCodeConstruction,
   createGeneralSubScribeConstruction,
+  unLoginClear,
 };

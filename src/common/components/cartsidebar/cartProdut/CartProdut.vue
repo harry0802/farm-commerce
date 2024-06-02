@@ -7,11 +7,11 @@
         </figcaption>
         <img class=" inset-0" src="@/assets/imgs/cartImg/pixel-art-box.png" alt="" />
       </dynamic-photo>
-      <cart-product-oder v-else />
+      <CartProductOder v-else />
     </template>
 
     <template #bottom>
-      <cart-product-bottom-btn />
+      <CartProductBottomBtn />
     </template>
   </dynamic-wrapper>
 </template>

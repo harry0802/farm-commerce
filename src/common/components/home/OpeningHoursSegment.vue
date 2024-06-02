@@ -2,7 +2,7 @@
   <div class="bg-b-color-browm">
     <base-section>
       <base-content>
-        <base-phto-content />
+        <base-phto-content :img="'src/assets/imgs/homePage/eileen-pan-5d5DSRQ5dUc-unsplash.jpg'" />
         <base-text-content>
           <base-text :title="'迎接您的光臨'"
             :paragraph="'田園速遞餐廳 - 呈獻超凡美食之旅: 品味四季佳餚，每道菜肴都完美地融入農夫和製造商夥伴的用心栽培。從田野到餐桌，我們的料理是一場自然之美的盛宴。'" />

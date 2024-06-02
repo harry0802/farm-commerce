@@ -1,5 +1,5 @@
 <template>
-    <BaseMainPage :loading="loading">
+    <BaseMainPage>
         <template #page>
             <AccountMainSection />
         </template>
@@ -12,21 +12,14 @@
 import BaseMainPage from "@/common/components/ui/card/BaseMainPage.vue";
 import AccountMainSection from "@/common/components/ui/section/AccountMainSection.vue";
 import useAccountStore from "@/store/modules/account/accountStore.js";
-import { provide, toRefs, ref, onMounted } from "vue";
+import { provide, toRefs, } from "vue";
 import { useOrderStore } from "@/store/modules/order/index.js";
 const { subscription, myorder, createGeneralSubScribeConstruction, handleOrderRemoveSubScribe } = toRefs(useOrderStore())
 const accountStore = useAccountStore
-const loading = ref(true)
 const { changDeliveryDayAll, changDeliveryDay } = createGeneralSubScribeConstruction.value()
 
 provide('accountStore', accountStore)
 provide('orderStore', { subscription, myorder })
 provide('handelSubScribe', { changDeliveryDayAll, changDeliveryDay, handleOrderRemoveSubScribe })
 
-onMounted(() => {
-    setTimeout(() => {
-        loading.value = false
-    }, 500)
-
-})
 </script>

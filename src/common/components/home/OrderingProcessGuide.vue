@@ -1,7 +1,7 @@
 <template>
   <base-section class="bg-b-color-browm">
     <base-content />
-    <base-phto-center />
+    <base-phto-center :img="'src/assets/imgs/homePage/edoardo-busti-5ofKC-FQK3Q-unsplash.jpg'" />
     <base-text-content>
       <div class="ProcessGuide__Title response__content">
         <h2 class="u-text-large">我們的流程：</h2>

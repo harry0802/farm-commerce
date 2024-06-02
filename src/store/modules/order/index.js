@@ -17,6 +17,7 @@ import {
   calcSubtotal,
   promoCodeConstruction,
   createGeneralSubScribeConstruction,
+  unLoginClear,
 } from "@/store/modules/order/model/index.js";
 export const useOrderStore = defineStore(
   "order",
@@ -30,6 +31,7 @@ export const useOrderStore = defineStore(
       recommendedSubscriptions,
       workDayLists,
       productCart,
+      islogin,
     } = generatedOrderState();
 
     const personalStyle = {
@@ -87,6 +89,7 @@ export const useOrderStore = defineStore(
         await getClientOrder(),
         await creatOrderList().filteredDates(),
       ]);
+      islogin.value = true;
       myfavorite.value = reponse.favorite;
       subscription.value = reponse.subscription;
       recentlyViewed.value = reponse.recently_viewed;
@@ -99,6 +102,7 @@ export const useOrderStore = defineStore(
     const addMyfavorite = useDebounceFn(async (item) => {
       const index = findIndexByProductID(myfavorite.value, item.product_id);
       ~index ? myfavorite.value.splice(index, 1) : myfavorite.value.push(item);
+      if (!islogin.value) return;
       await upDateOrder({ favorite: myfavorite.value });
     }, 500);
 
@@ -111,6 +115,7 @@ export const useOrderStore = defineStore(
       } else {
         recentlyViewed.value.unshift(item);
       }
+      if (!islogin.value) return;
       await upDateOrder({
         recently_viewed: recentlyViewed.value,
       });
@@ -123,12 +128,12 @@ export const useOrderStore = defineStore(
       const index = subscription.value.findIndex(
         (i) => i.product_id === id && i.DeliveryDay === sendData.DeliveryDay
       );
-
-      // 訂閱商品查詢條件
-      // 1. 先找 DeliveryDay 與 id 是不是一樣存在
       ~index
         ? (subscription.value[index] = sendData)
         : subscription.value.push(sendData);
+
+      if (!islogin.value) return unLoginClear(myorder);
+
       await upDateOrder({
         subscription: subscription.value,
         order: clearEmptyAndSortOrder(myorder).value,
@@ -137,6 +142,9 @@ export const useOrderStore = defineStore(
     // 普通商品添加
     const handleOrderAdd = async function (item) {
       await createGeneralOrderConstruction(item, myorder);
+
+      if (!islogin.value) return unLoginClear(myorder);
+
       await upDateOrder({
         order: clearEmptyAndSortOrder(myorder).value,
       });
@@ -147,10 +155,10 @@ export const useOrderStore = defineStore(
     };
     //
     const handleSelectionDay = (day) => {
-      const { showProductItem, setSelection } = toRefs(useCartStore());
-      const indx = workDayLists.value.findIndex(
-        (d) => d.date === day.order_date.date
-      );
+      const { showProductItem, setSelection, workDay } = toRefs(useCartStore());
+      const { workDayList } = workDay.value;
+
+      const indx = workDayList.findIndex((d) => d.date === day.order_date.date);
       const { date, dayOfWeek } = day.order_date;
       setSelection.value(date, indx, `${date.slice(5)}/${dayOfWeek}`);
       showProductItem.value = true;
@@ -166,6 +174,7 @@ export const useOrderStore = defineStore(
       );
 
       setProductCart(result);
+      if (!islogin.value) return unLoginClear(myorder);
       await upDateOrder({
         order: clearEmptyAndSortOrder(myorder).value,
       });

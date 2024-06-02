@@ -45,8 +45,8 @@
                         </div>
 
                         <div class="  mt-auto h-[44px]  button-controll   flex gap-2    flex-row justify-end">
-                            <button type="submit" class="max-w-[140px] u-subscribe-btn confirm ">確認</button>
-                            <DrawerClose class="max-w-[140px] u-subscribe-btn cancel  ">取消
+                            <button type="submit" class=" u-subscribe-btn confirm ">確認</button>
+                            <DrawerClose class="u-subscribe-btn cancel  ">取消
                             </DrawerClose>
                         </div>
                     </div>
@@ -61,8 +61,9 @@ import ProductSelection from "@/common/components/ui/product/ProductSelection.vu
 import { DrawerContent, DrawerOverlay, DrawerPortal, DrawerRoot, DrawerTrigger, DrawerClose, DrawerTitle, DrawerDescription } from 'vaul-vue';
 import { VisuallyHidden } from 'radix-vue';
 import { Form } from "@/common/composables/ui/form";
-import { Icon, } from '@iconify/vue';
+import { Icon } from '@iconify/vue';
 import { inject, computed, ref } from "vue";
+
 
 const { addSubscribe, handleSubmit } = inject('sendSubScript')
 const watchWindowSize = inject('watchWindowSize')
@@ -86,12 +87,13 @@ const onsubmit = async () => {
 
 
 <style scoped>
-.u-subscribe-btn {
-    @apply px-0 text-color-primary max-[399px]:max-w-11 max-[399px]:max-h-11
+button.u-subscribe-btn {
+    @apply px-0 text-color-primary-light max-[399px]:max-w-11 max-[399px]:max-h-11 max-[399px]:p-0
 }
 
-.u-subscribe-btn.cancel, .u-subscribe-btn.confirm {
-    @apply text-color-primary
+button.u-subscribe-btn.cancel,
+button.u-subscribe-btn.confirm {
+    @apply text-color-primary max-w-[140px]
 }
 
 button.u-subscribe-btn.isSubscribe {

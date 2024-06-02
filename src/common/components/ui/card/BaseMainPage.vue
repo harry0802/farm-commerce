@@ -13,7 +13,20 @@
 <script setup>
 import LoadingDelicious from "@/common/components/ui/animat/LoadingDelicious.vue";
 const props = defineProps({ loading: Boolean })
-
+import { onMounted, ref, watch, watchEffect } from "vue";
+const loading = ref(true)
+onMounted(() => {
+    setTimeout(() => {
+        loading.value = false
+    }, 500)
+})
+watch(() => props.loading, (newVal) =>
+    loading.value = newVal
+);
+const setWindowScroll = (state) => document.body.style.overflow = state
+watchEffect(() => {
+    setWindowScroll(loading.value ? 'hidden' : '');
+});
 
 </script>
 

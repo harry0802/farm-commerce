@@ -1,6 +1,6 @@
 import { getSupabaseData, supabase } from "../config/FarmPruductsItemManage.js";
 
-const dataSort = ["Farm Boxes", "Produce", "Bakery", "Dairy&Eggs"];
+const dataSort = ["Farm Boxes", "Produce", "Bakery", "迷宮飯"];
 export const callbackStack = {};
 
 export const getShopData = async function () {

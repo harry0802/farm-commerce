@@ -1,12 +1,12 @@
 <template>
-  <figure :class="reverse ? 'img__recontainer' : 'img__container'">
-    <img class="response__img--col-1" src="https://picsum.photos/800" alt="" />
+  <figure class="rounded-lg overflow-hidden" :class="reverse ? 'img__recontainer' : 'img__container'">
+    <img class="response__img--col-1 object-cover " :src="img" alt="" />
   </figure>
 </template>
 
 <script>
 export default {
-  props: { reverse: { type: Boolean, default: false } },
+  props: { reverse: { type: Boolean, default: false }, img: { String, default: 'https://picsum.photos/800' } },
 };
 </script>
 

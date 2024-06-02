@@ -1,33 +1,19 @@
 <template>
-  <a class="u-grid-col-3" :href="href">
-    <figure>
-      <img
-        class="response__img--col-3"
-        src="https://picsum.photos/800"
-        alt="title"
-      />
+  <RouterLink class="u-grid-col-3  cursor-pointer" :to="`/product/${path}`">
+    <figure class="rounded overflow-hidden">
+      <img loading="lazy" class="response__img--col-3 w-full object-cover " :src="img" alt="title" />
       <figcaption class="mt-4 text-2xl">
-        <h3>來個土味派對，立即選購</h3>
+        <h3>{{ text }}</h3>
       </figcaption>
     </figure>
-    <div class="mt-4 text-color-primary-light">{{ title }}</div>
-  </a>
+    <div class="mt-4 btn__linkUnderline--animate underline-offset-8 text-color-primary-light font-[SentyGoldSand]">現在就買
+    </div>
+  </RouterLink>
 </template>
 
-<script>
-export default {
-  props: {
-    link: {
-      name: String,
-      require: true,
-    },
-    imgurl: {},
-    title: {
-      name: String,
-      require: true,
-    },
-  },
-};
+<script setup>
+const props = defineProps({ img: { String, }, text: { String }, path: { String } })
+
 </script>
 
 <style scoped></style>

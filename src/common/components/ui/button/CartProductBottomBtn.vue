@@ -1,15 +1,14 @@
 <template>
   <dynamic-bottom-bar>
     <div class="flex-1 flex flex-col items-center" v-if="!accountStore.isaAuthenticated">
-      <!-- 透過 router 首位 判斷是否登陸。 -->
-      <!-- 是進入結帳 ，否進入登錄頁面 -->
-      <a class="cta__buttom u-pirmary-button mb-2" href="#">提交表單</a>
+      <RouterLink :to="{ name: 'zip-check' }" class="cta__buttom u-pirmary-button mb-2" href="#">前往註冊</RouterLink>
       <!-- 當檢測沒有登陸時 -->
       <p class="text-center">
         請在
-        <strong> 9 月 30 日星期六上午 11:59</strong>
+        <strong class="text-color-validate-error">{{ lastEditTrans }}日星期六上午 11:59</strong>
         之前建立帳戶，<br />否則您購物車中的商品將被刪除。
-        <br />已經是會員 ？ <router-link :to="{ name: 'login' }"> 登入</router-link>
+        <br />已經是會員 ？ <router-link class="btn__linkUnderline--animate text-color-eva-dark-yellow "
+          :to="{ name: 'login' }"> 登入</router-link>
       </p>
     </div>
 
@@ -35,7 +34,7 @@
 <script setup>
 import DynamicBottomBar from "../content/cartSideBar/DynamicBottomBar.vue";
 import useAccountStore from "@/store/modules/account/accountStore.js";
-import { inject, computed, watch } from "vue";
+import { inject, computed, } from "vue";
 import { Icon } from '@iconify/vue';
 import dayjs from "dayjs";
 
@@ -50,7 +49,13 @@ const lastEditTrans = computed(() => {
     let [y, m, d] = store.selectionDay.orderDate.split('/')
     return dayjs(`${y}-${m}-${d - 1}`).format("dd, M月D")
   }
+
+  if (!accountStore.isaAuthenticated) {
+    return dayjs().date(1).format("dd, M月D")
+  }
 })
+
+
 
 </script>
 

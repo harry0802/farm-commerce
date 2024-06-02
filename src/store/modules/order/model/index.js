@@ -10,6 +10,7 @@ export function generatedOrderState() {
   const recommendedSubscriptions = ref([]);
   const workDayLists = ref(null);
   const productCart = ref(null);
+  const islogin = ref(false);
 
   return {
     myfavorite,
@@ -20,6 +21,7 @@ export function generatedOrderState() {
     recommendedSubscriptions,
     workDayLists,
     productCart,
+    islogin,
   };
 }
 
@@ -37,4 +39,5 @@ export {
   calcSubtotal,
   promoCodeConstruction,
   createGeneralSubScribeConstruction,
+  unLoginClear,
 } from "./orderModel.js";

@@ -1,6 +1,5 @@
 <template>
     <BaseMainPage :loading="loading">
-
         <template #page>
             <ProductInfo />
             <ProductSupplier />
@@ -14,7 +13,7 @@
 </template>
 
 <script setup>
-import { provide, onMounted, ref, watch, computed, watchEffect } from "vue";
+import { provide, onMounted, ref, watch, watchEffect } from "vue";
 import { useRoute } from 'vue-router'
 import ProductInfo from '@/common/components/product/ProductInfo.vue'
 import ProductSupplier from '@/common/components/product/ProductSupplier.vue'
@@ -92,9 +91,6 @@ watch(route, (newid,) => {
 onMounted(() => {
     const code = getProductOnlyNumber(route.params.id)
     poduct.setProducPageData(code)
-    setTimeout(() => {
-        loading.value = false
-    }, 500)
 })
 
 

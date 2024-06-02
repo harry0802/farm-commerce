@@ -41,6 +41,7 @@ const passwordSchema = z
 const emailSchema = z
   .string({
     required_error: "* 不可空白",
+    invalid_type_error: "只接收文字",
   })
   .regex(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/, {
     message: "* 請輸入有效的電子郵件地址",
@@ -56,7 +57,9 @@ const zipCodeLimitNumber = z
   })
   .max(999, { message: "* 限制3碼" });
 
-const emailStr = z.string().email({ message: "* 請輸入正確的格式" });
+const emailStr = z
+  .string({ required_error: "* 不可空白" })
+  .email({ message: "* 請輸入正確的格式" });
 
 // 通用 HandleSubmit 流程
 const createHandleSubmit = (fields, initialValue = null) => {
@@ -66,6 +69,17 @@ const createHandleSubmit = (fields, initialValue = null) => {
     initialValues: initialValue,
   });
   return handleSubmit;
+};
+
+// 註冊信箱
+const singinupEmail = () => {
+  const fields = z.object({
+    email: emailStr,
+  });
+  const handleSubmit = createHandleSubmit(fields);
+  return {
+    handleSubmit,
+  };
 };
 
 // Account 資料 （註冊頁面）
@@ -390,7 +404,10 @@ const userHandleSubscription = function (initialValues) {
 
 export {
   useField,
+  useForm,
   toast,
+  // homepage
+  singinupEmail,
   // register page
   checkZipcode,
   userFields,

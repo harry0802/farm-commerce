@@ -1,15 +1,21 @@
 <template>
-  <div class="category__page w-full  max-[399px]:py-0  min-[400px]:py-4">
-    <div class="category__container m-auto">
-      <shop-nav-side v-if="navigator" :data="navigator" />
-      <shop-main-page v-if="renderPage" :overview="overview" />
-    </div>
-  </div>
-  <slot name="sidebar" />
+  <BaseMainPage>
+    <template #page>
+      <div class="category__page w-full  max-[399px]:py-0  min-[400px]:py-4">
+        <div class="category__container m-auto">
+          <shop-nav-side v-if="navigator" :data="navigator" />
+          <shop-main-page v-if="renderPage" :overview="overview" />
+        </div>
+      </div>
+    </template>
+    <template #sidebar>
+      <slot name="sidebar" />
+    </template>
+  </BaseMainPage>
 </template>
 
 <script setup>
-
+import BaseMainPage from "@/common/components/ui/card/BaseMainPage.vue";
 import { useRoute } from "vue-router";
 import ShopNavSide from "../common/components/shop/ShopNavSide.vue";
 import ShopMainPage from "../common/components/shop/ShopMainPage.vue";

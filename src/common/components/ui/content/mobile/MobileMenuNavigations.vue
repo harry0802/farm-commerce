@@ -1,6 +1,6 @@
 <template>
   <mobile-subcategory-card>
-    <subcategories-navigations :isItem="true" />
+    <subcategories-navigations />
   </mobile-subcategory-card>
 </template>
 

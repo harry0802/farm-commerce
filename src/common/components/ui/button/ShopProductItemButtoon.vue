@@ -24,7 +24,7 @@
 
     <ShopProductSubscribeBtn v-else />
   </div>
-
+  <!-- 墊高用 -->
   <div v-else class="min-h-11" />
 
 </template>

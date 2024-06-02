@@ -1,10 +1,9 @@
 <template>
   <footer id="foorer">
-    <div class="foorer__pic">
-      <img src="@/assets/imgs/footer_bg.png" alt="" />
+    <div class="foorer__pic  overflow-hidden">
+      <img loading="lazy" class="object-cover  w-full " src="@/assets/imgs/footer_bg.png" alt="" />
     </div>
-
-    <footer-top></footer-top>
+    <footer-top />
   </footer>
 </template>
 
