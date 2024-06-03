@@ -3,15 +3,19 @@
         class=" lowerline relative pb-2 text-color-primary cursor-pointer" :exact-active-class="'isSelector'">
         {{ navs.title }}
     </RouterLink>
-    <div class="btn-wrap relative  pb-2 lowerline">
-        <DesktopLogOutDialog />
-    </div>
-
+    <PopupLogingount>
+        <template #default>
+            <div class="btn-wrap relative  pb-2 lowerline">
+                <button class=" text-left w-full text-color-primary">
+                    安全登出
+                </button>
+            </div>
+        </template>
+    </PopupLogingount>
 </template>
 
 <script setup>
-import DesktopLogOutDialog from "@/common/components/ui/popup/DesktopLogOutDialog.vue";
-
+import PopupLogingount from "@/common/components/ui/button/PopupLogingount.vue";
 const routerNavInfo = [
     { title: '會員訂閱', path: 'subscriptions' },
     { title: '宅配時間表', path: 'delivery-schedule' },

@@ -5,7 +5,7 @@
         <p class="item__title u-text-small">
           {{ props.date }}/{{ props.theweek }}
         </p>
-        <p class="item__text">配送時間：{{ props.deliverywindow }}</p>
+        <p class="item__text">配送時間：8:00 AM - 5:00 PM</p>
       </div>
       <!-- 當被點選才顯示 -->
       <Icon v-if="isSelected" icon="pixelarticons:check-double" />
@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-import { defineProps, defineEmits } from "vue";
+import { defineEmits } from "vue";
 import { Icon } from "@iconify/vue";
 const props = defineProps({
   date: String,
@@ -23,11 +23,12 @@ const props = defineProps({
   isSelected: Boolean,
 });
 
-const emit = defineEmits("select");
+
+const emit = defineEmits(["update:selectWorkDay"]);
 
 const handleDateSelect = () => {
   if (!props.isSelected) {
-    emit("select", props.date, props.theweek);
+    emit("update:selectWorkDay", props.date, props.theweek);
   }
 };
 </script>
@@ -62,7 +63,7 @@ p {
 }
 
 .oder__item--btn:hover {
-  background: hsl(274, 30%, 60%);
+  background: #9d7ab8;
 }
 
 .active.oder__item--btn {
@@ -86,4 +87,5 @@ p {
   border: 3px dashed #5f2a62;
   padding: 2px;
   color: #52d053;
-}</style>
+}
+</style>

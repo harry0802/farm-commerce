@@ -24,12 +24,13 @@ const {
     handleSubmit,
 } = verifyEmailOtp()
 const { loginEmailOTP, router } = inject('verifyEmailOtp')
-
+const { checkAllow } = inject('personall')
 const onSubmit = handleSubmit(async ({ pin }) => {
     try {
         loading.value = true
         const reponse = await loginEmailOTP.value(pin)
         if (reponse) {
+            checkAllow.value()
             router.push({ name: 'delivery-address' })
         }
     } catch (err) {

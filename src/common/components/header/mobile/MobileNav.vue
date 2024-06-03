@@ -6,7 +6,7 @@
     </div>
 
     <transition name="fade">
-      <div v-show="showMenu" class="mobile__logo">
+      <div v-if="showMenu" class="mobile__logo">
         <figure class="flex justify-between items-center">
           <RouterLink :to="{ name: 'home' }">
             <img src="@/assets/imgs/organicX70.svg" alt="Farm Village Logo" size="64px" class="h-16" />
@@ -15,7 +15,7 @@
       </div>
     </transition>
 
-    <div v-show="showMenu" class="mobile__car flex flex-1 justify-end">
+    <div v-if="showMenu" class="mobile__car flex flex-1 justify-end">
       <a v-if="store.existenceProduct" href="#" class="button__login">
         Login
       </a>
@@ -27,7 +27,6 @@
         <Icon icon="pixelarticons:close" @click="store.closeCart()" />
       </span>
     </div>
-
     <SidebarOverlay />
   </section>
 </template>

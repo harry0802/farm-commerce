@@ -41,8 +41,13 @@ watchEffect(() => {
   transition: opacity 0.5s, transform 0.5s;
 }
 
-.fade-slide-up-enter, .fade-slide-up-leave-to /* .fade-slide-up-leave-active 在 <2.1.8 中可用 */ {
+.fade-slide-up-enter,
+.fade-slide-up-leave-to
+
+/* .fade-slide-up-leave-active 在 <2.1.8 中可用 */
+  {
   opacity: 0;
-  transform: translateY(-20px); /* 向上滑动 */
+  transform: translateY(-20px);
+  /* 向上滑动 */
 }
 </style>

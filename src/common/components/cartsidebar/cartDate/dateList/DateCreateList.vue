@@ -1,30 +1,48 @@
 <template>
   <!-- <ul v-if="!haveOder" class="create__oder-list"> -->
-  <ul class="create__oder-list u-scroll-eva-ion text-color-eva-light-purple">
-    <date-creat-oder-item v-for="(data, index) in createDate" :key="data.date" :date="data.date" :theweek="data.dayOfWeek"
-      :isSelected="index === selectedDateIndex" @select="selectDate(index, data.date, data.dayOfWeek)" />
+  <ul class="create__oder-list u-scroll-eva-ion ">
+    <date-creat-oder-item v-for="(data, index) in workDay.workDayList" :key="data.date" :date="data.date"
+      :theweek="data.dayOfWeek" :isSelected="index === selectedDateIndex"
+      @update:selectWorkDay="selectDate(index, data)" />
   </ul>
 </template>
 
+
 <script setup>
+
 import DateCreatOderItem from "../../../ui/content/cartSideBar/DateCreatOderItem.vue";
-
-import { onMounted, ref } from "vue";
-import { createDate } from "@/Plugins/day.js";
-
+import { ref, toRefs, onMounted } from "vue";
+import { inject } from "vue";
+const store = inject('store')
+const { myorder, } = inject('orderStore')
 const selectedDateIndex = ref(-1);
 const clickedItemTitle = ref("");
-const selectDate = (index, date, theweek) => {
+const { workDay } = toRefs(store)
+
+const filterOrderSchedule = function () {
+  if (myorder.value.length === 0) return
+  const datesB = myorder.value.map(item => item.order_date.date);
+  workDay.value.workDayList = workDay.value.workDayList.filter(item => !datesB.includes(item.date));
+}
+
+
+
+
+const selectDate = (index, dates) => {
+  const { date, dayOfWeek } = dates
+  const { workDayList } = workDay.value
   const monthDay = date.slice(5);
 
-  clickedItemTitle.value = `${monthDay}/${theweek}`;
-
-  selectedDateIndex.value = index; // 当日期项被选中时更新 selectedDateIndex 的值
+  const indexD = workDayList.findIndex((d) => d.date === date)
+  clickedItemTitle.value = `${monthDay}/${dayOfWeek}`;
+  selectedDateIndex.value = index;
+  store.setCurrentDay(date, indexD, clickedItemTitle)
 };
 
+
 onMounted(() => {
-  createDate;
-});
+  filterOrderSchedule()
+})
 </script>
 
 <style scoped>

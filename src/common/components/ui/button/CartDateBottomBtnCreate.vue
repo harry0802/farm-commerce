@@ -1,16 +1,15 @@
 <template>
-  <button
-    type="button"
-    class="btn__creare u-pirmary-button"
-    @click="store.openList"
-  >
+  <button type="button" class="btn__creare u-pirmary-button"
+    @click="calcOrderState ? store.closeList() : store.openList()">
     添加新日期
   </button>
 </template>
 
 <script setup>
 import cartStore from "@/store/modules/cart/cartStore.js";
+import { inject } from "vue";
 const store = cartStore();
+const { calcOrderState } = inject('orderStore')
 </script>
 
 <style scoped>

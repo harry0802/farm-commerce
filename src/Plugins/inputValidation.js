@@ -1,8 +1,9 @@
 import { ref, reactive, computed } from "vue";
 import { initializeTWzipcode } from "@/Plugins/zipCode.js";
 import useAccountStore from "@/store/modules/account/accountStore.js";
+import { pinia } from "@/store/pinia.js";
 
-export const store = useAccountStore();
+export const store = useAccountStore(pinia);
 export const showMewMew = ref(false);
 
 // 輔助函數

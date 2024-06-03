@@ -1,45 +1,50 @@
 <template>
-  <div class="category__page w-full px-4">
-    <div class="category__container m-auto">
-      <shop-nav-side v-if="navigator" :data="navigator" />
-      <shop-main-page v-if="renderPage" :overview="overview" />
-      <slot name="sidebar"></slot>
-    </div>
-  </div>
+  <BaseMainPage>
+    <template #page>
+      <div class="category__page w-full  max-[399px]:py-0  min-[400px]:py-4">
+        <div class="category__container m-auto">
+          <shop-nav-side v-if="navigator" :data="navigator" />
+          <shop-main-page v-if="renderPage" :overview="overview" />
+        </div>
+      </div>
+    </template>
+    <template #sidebar>
+      <slot name="sidebar" />
+    </template>
+  </BaseMainPage>
 </template>
 
 <script setup>
-
+import BaseMainPage from "@/common/components/ui/card/BaseMainPage.vue";
 import { useRoute } from "vue-router";
 import ShopNavSide from "../common/components/shop/ShopNavSide.vue";
 import ShopMainPage from "../common/components/shop/ShopMainPage.vue";
 import { useProduct } from "@/store/modules/product/useProduct.js";
 import { initData } from '@/Plugins/Initialization.js'
 import { tryOnMounted } from "@vueuse/core";
-import { ref, watch, provide } from "vue";
+import { ref, watch, provide, } from "vue";
 import { storeToRefs } from "pinia";
+import { getShopData } from "@/Plugins/SupabasePruductsData.js";
 
 
 const route = useRoute()
 const store = useProduct()
-const { sideListData, setShopUrlId, setCheckpoint, setBbserverCurrentID } = store
-
+const { setShopUrlId, setCheckpoint, setBbserverCurrentID } = store
 const { observerCurrentID } = storeToRefs(store)
-
 const urlId = ref(route.params.id)
 const navigator = ref(null)
 const renderPage = ref(null)
 const overview = ref(false)
+const productData = ref(null)
 
 
 const init = async function (urlId) {
-  const init = await initData(sideListData, urlId)
+  const init = await initData(productData.value, urlId)
   navigator.value = init.currentData
   setCheckpoint(navigator.value.keywords)
   renderPage.value = init.pageData
   overview.value = navigator.value.project === urlId
 }
-
 provide('ProductPageSection', { renderPage, setBbserverCurrentID: setBbserverCurrentID })
 provide('observerCurrentID', observerCurrentID)
 
@@ -55,16 +60,17 @@ watch(() => route.params.id, async (newId, oldId) => {
 
 
 tryOnMounted(() => {
-  setShopUrlId(urlId.value)
-  init(urlId.value)
+  (async () => {
+    productData.value = await getShopData()
+    setShopUrlId(urlId.value)
+    init(urlId.value)
+  })()
 })
 
 
 </script>
 
 <style scoped>
-.category__page {}
-
 .category__container {
   min-height: 300px;
   max-width: 1350px;

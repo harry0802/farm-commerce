@@ -1,62 +1,73 @@
 <template>
   <dl class="oder__summary px-4 pt-2 pb-4">
-    <div class="summary__item">
+    <div class="summary__item leading-7	">
       <span>小計:</span>
       <span>{{ subtotal }}</span>
     </div>
-    <div class="summary__item">
+    <div class="summary__item leading-7	">
       <span>外送費:</span>
-      <span>{{ deliveryFee }} 123</span>
+      <span> {{ deliveryFee }}</span>
     </div>
 
-    <!-- 當輸入完成折扣碼出現 -->
-    <!-- 折扣碼強制大寫 -->
     <div v-if="isDiscount" class="promo__codes my-2 flex justify-between">
       <span class="visually-hispanen">折扣碼:</span>
       <span class="codes__detail">
-        <span class="text-color-eva-light-green"> BOOKSAREMAGIC</span>
+        <span class="text-color-eva-light-green"> {{ code }}</span>
         <!-- inline -->
         <button class="text-color-eva-light-red" @click="removePromoCode">
           刪除折扣碼
         </button>
       </span>
     </div>
-    <!-- 當輸入完成折扣碼出現 End -->
-    <!-- 輸入折扣碼 -->
-    <!-- 二選一情況 為點選為添加，點選出現折扣碼表單 -->
-    <product-promo v-else />
-    <!-- 當輸入折扣碼時才會出現的折扣金額 -->
-    <div v-if="isDiscount" class="summary__item discount">
+
+    <product-promo v-model:isDiscount="isDiscount" v-else />
+    <div v-if="isDiscount" class="summary__item discount leading-10">
       <span>已折扣:</span>
-      <span>{{ discount }} 測試</span>
+      <span>{{ promoCode.amount }} </span>
     </div>
-    <!-- 總計 -->
     <div class="summary__item total">
       <span>總計:</span>
-      <span>{{ total }}</span>
+      <span class="">{{ total }}</span>
     </div>
   </dl>
 </template>
 
 <script setup>
-import { defineProps, ref } from "vue";
-// import { Icon } from "@iconify/vue";
+import { ref, } from "vue";
 import ProductPromo from "../../../cartsidebar/cartProdut/productItem/ProductPromo.vue";
-
 const props = defineProps({
   subtotal: Number,
   deliveryFee: Number,
   discount: Number,
   total: Number,
-  promoCode: Number,
+  promoCode: Object
 });
-props;
+
+import { inject, watch, onMounted, computed } from "vue";
+const { currentOrder, promoCodeConstruction } = inject('orderStore')
+const { removeDiscount } = promoCodeConstruction.value(currentOrder)
 const isDiscount = ref(false);
+
+
+const code = computed(() => props.promoCode?.promo_code.toUpperCase())
+
 
 const removePromoCode = function () {
   isDiscount.value = !isDiscount.value;
-  //在後台移除則扣碼 並從新計算價錢
+  removeDiscount()
 };
+
+
+watch(() => props.promoCode, (newVal) => {
+  if (newVal) { isDiscount.value = true }
+},)
+
+onMounted(() => {
+  if (props.promoCode?.promo_code) isDiscount.value = true
+
+})
+
+
 </script>
 
 <style scoped>
@@ -76,9 +87,18 @@ const removePromoCode = function () {
   display: flex;
   justify-content: space-between;
 }
+
 .codes__detail {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+}
+
+.thePromoCode {
+  @apply ml-auto mr-2
+}
+
+.usePromoCode {
+  @apply line-through decoration-color-validate-error decoration-[3px]
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <figure class="dynamic__content--background py-28 px-10">
+  <figure class="dynamic__content--background  py-28 px-10">
     <slot></slot>
   </figure>
 </template>

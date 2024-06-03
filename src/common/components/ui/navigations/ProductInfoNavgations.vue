@@ -1,7 +1,6 @@
 <template>
     <nav v-if="productPageBreadcrumbs" class="breadcrumbs p-1 pb-2 mb-2 ">
         <ul class="flex">
-            <!-- his need a loop -->
             <li v-for=" (items, i) in productPageBreadcrumbs" :key="i" class="flex items-center justify-end ">
                 <RouterLink class="text-color-primary" :to="items.link">{{ items.label }}</RouterLink>
                 <Icon v-if="productPageBreadcrumbs.length - 1 > i" icon="pixelarticons:chevron-right"
@@ -16,6 +15,7 @@ import { Icon, } from '@iconify/vue';
 import { inject } from "vue";
 import { RouterLink } from 'vue-router';
 const productPageBreadcrumbs = inject('productPageBreadcrumbs')
+
 
 </script>
 

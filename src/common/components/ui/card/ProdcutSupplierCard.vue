@@ -2,11 +2,11 @@
     <div class="product-supplier ">
         <EmblaDraggableNavgition>
             <template #selectorItem>
-                <slot name="selectorBtn"></slot>
+                <slot name="selectorBtn" />
             </template>
         </EmblaDraggableNavgition>
         <div class="product-supplier__infomation py-10 px-4 sm:px-6 ">
-            <slot name="selectorContent"></slot>
+            <slot name="selectorContent" />
         </div>
     </div>
 </template>

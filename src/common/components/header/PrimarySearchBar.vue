@@ -1,30 +1,16 @@
 <template>
-  <div id="search-bar">
-    <div class="search-input__wrapper">
-      <div class="search-input__content">
-        <input
-          placeholder="請輸入內容"
-          patype="text"
-          class="search-input__text"
-          v-model="searchValue"
-          @focus="showDelete"
-          @blur="closeDelete"
-        />
+  <div id="search-bar" class="w-full">
+    <div class="search-input__wrapper w-[80%]">
+      <div class="search-input__content w-full">
+        <input placeholder="請輸入內容" patype="text" class="search-input__text w-full" v-model="searchValue"
+          @focus="showDelete" @blur="closeDelete" />
         <div class="submit__wrapper">
-          <button
-            aria-label="Delete Search Sentence"
-            class="button__delete"
-            :class="deleteOpasity"
-          >
-            <Icon
-              class="active:translate-x-px"
-              icon="pixelarticons:delete"
-              @click="reEnter"
-            />
+          <button aria-label="Delete Search Sentence" class="button__delete" :class="deleteOpasity">
+            <Icon class="active:translate-x-px" icon="pixelarticons:delete" @click="reEnter" />
           </button>
 
-          <span class="hide" :class="deleteOpasity"
-            ><Icon icon="bx:dots-vertical" />
+          <span class="hide" :class="deleteOpasity">
+            <Icon icon="bx:dots-vertical" />
           </span>
 
           <button aria-label="Submit Search" class="button__wrapper">
@@ -32,22 +18,23 @@
           </button>
         </div>
       </div>
+
     </div>
     <div class="button--close">
       <button aria-label="Close Search Bar" class="">
-        <Icon
-          class="hover:scale-105 active:translate-x-px"
-          icon="pixelarticons:close"
-          @click="closeSearch"
-        />
+        <Icon class="hover:scale-105 active:translate-x-px" icon="pixelarticons:close" @click="closeSearch" />
       </button>
     </div>
+
   </div>
+  <SearchArea />
+
 </template>
 
 <script setup>
 import { Icon } from "@iconify/vue";
 import { computed, ref, defineEmits } from "vue";
+import SearchArea from "@/common/components/search/SearchArea.vue";
 
 const emits = defineEmits(["closeSearch"]);
 const deleteBtn = ref(false);
@@ -78,12 +65,11 @@ svg {
   @apply text-color-primary-light;
   fill: #09251e;
 }
+
 #search-bar {
   display: flex;
   justify-content: center;
-  height: 80px;
-  position: absolute;
-  inset: 0;
+  height: 78px;
   z-index: 1;
   background: #fff;
 }
@@ -93,18 +79,20 @@ svg {
   align-items: center;
   justify-content: center;
   flex-grow: 2;
-  /* margin: auto; */
 }
+
 .search-input__content {
   display: flex;
   background: #f2f2f2;
   border-radius: 32px;
 }
+
 .search-input__text {
-  width: 600px;
+  /* width: 100%; */
   padding: 10px 24px;
   background: none;
 }
+
 .search-input__text:focus {
   border: none;
   outline: none;
@@ -125,19 +113,21 @@ svg {
   width: 24px;
   height: 24px;
 }
+
 .button--close {
-  flex-grow: 1;
   display: flex;
   justify-content: flex-end;
-  margin-right: 64px;
-  margin-left: auto;
+  flex-grow: 1;
+
 }
-.button--close > button > svg {
+
+.button--close>button>svg {
   padding: 5px;
   background: #f2f2f2;
   border-radius: 50%;
 }
-.button--close > button > svg {
+
+.button--close>button>svg {
   width: 40px;
   height: 40px;
 }

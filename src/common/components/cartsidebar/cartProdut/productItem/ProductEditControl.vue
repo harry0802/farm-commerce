@@ -1,18 +1,34 @@
 <template>
   <li class="item__list--edit">
-    <p class="edit__price">價格待定</p>
+    <p class="edit__price">{{ calcPrice }}</p>
     <!-- 數量與移除 -->
     <div class="edit__control">
       <div class="edit__contro--select">
-        <product-edit-select />
-        <button class="edit__contro--remove mt-2 text-right">移除商品</button>
+        <ProductEditSelect :product="sendData" />
+        <button @click="handleOrderRemoveItem(product_id, product.order_date)"
+          class="p-1 btn__linkUnderline--animate  edit__contro--remove btn__link--animate mt-2 text-right">移除商品</button>
       </div>
     </div>
   </li>
 </template>
 
 <script setup>
-import ProductEditSelect from "../../../cartsidebar/cartProdut/productItem/ProductEditSelect.vue";
+
+import ProductEditSelect from "@/common/components/cartsidebar/cartProdut/productItem/ProductEditSelect.vue";
+import { inject, computed } from "vue";
+const { handleOrderRemoveItem } = inject('orderStore')
+const { product } = inject('findOrderDate')
+const props = defineProps({
+  product_id: String,
+  price: Number,
+  quantity: Number,
+  SALE: Object,
+  sendData: Object
+})
+
+const calcPrice = computed(() => !!props.SALE ? props.SALE.price === '' ? props.price : props.SALE.price : props.price)
+
+
 </script>
 
 <style scoped>
@@ -22,6 +38,7 @@ import ProductEditSelect from "../../../cartsidebar/cartProdut/productItem/Produ
   font-size: 14px;
   letter-spacing: 2px;
 }
+
 .item__list--edit {
   height: 100%;
   display: flex;
@@ -30,6 +47,7 @@ import ProductEditSelect from "../../../cartsidebar/cartProdut/productItem/Produ
   text-align: right;
   align-items: flex-end;
 }
+
 .edit__contro--select {
   display: flex;
   flex-direction: column;

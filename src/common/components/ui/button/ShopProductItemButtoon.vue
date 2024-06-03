@@ -1,37 +1,55 @@
 <template>
   <div v-if="!theSubscribe && !clacWindowSize" class="  details__buttons flex w-full  place-content-end gap-5">
-    <button v-if="!clacWindowSize && !Subscribe" @click="showSubscribe" class="u-subscribe-btn w-auto max-h-11 group">
+    <button v-if="Subscribe" @click="showSubscribe"
+      :class="{ 'bg-b-color-green-light': isSubscribe, 'border-b-color-green-light': isSubscribe }"
+      class="u-subscribe-btn w-auto max-h-11 group">
       <p>定期配送</p>
-      <Icon class=" group-hover:-rotate-180" icon="entypo:cycle" />
+      <Icon :class="{ 'group-hover:-rotate-180': !isSubscribe, 'text-lg': isSubscribe, }"
+        :icon="isSubscribe ? 'pixelarticons:frame-check' : 'entypo:cycle'" />
     </button>
-    <button class="w-auto  max-h-11 product-button u-pirmary-button ">
-      <p v-if="!clacWindowSize">加到購物車</p>
+
+    <button v-if="!getOderFrequency" @click="handleorder" class="w-auto  max-h-11 product-button u-pirmary-button ">
+      <p>加到購物車</p>
     </button>
+    <ShopProductSubscribeBtn v-else />
   </div>
 
-  <div v-else-if="clacWindowSize" class="  details__buttons flex w-full  place-content-end gap-5">
-    <MobileShopItemSubscribe />
-    <button class="w-auto  max-h-11 product-button u-pirmary-button ">
+  <div v-else-if="clacWindowSize"
+    class="  details__buttons flex w-full justify-between   place-content-end gap-3  sm:gap-5">
+    <MobileShopItemSubscribe v-if="Subscribe" />
+
+    <button v-if="!getOderFrequency" @click="handleorder" class=" w-auto  max-h-11 product-button u-pirmary-button ">
       <Icon icon="prime:cart-arrow-down" class="text-xl" />
     </button>
+
+    <ShopProductSubscribeBtn v-else />
   </div>
+  <!-- 墊高用 -->
+  <div v-else class="min-h-11" />
+
 </template>
 
 <script setup>
+import ShopProductSubscribeBtn from "@/common/components/ui/button/ShopProductSubscribeBtn.vue";
 import { Icon, } from '@iconify/vue';
-import { computed, inject } from "vue";
+import { computed, inject, } from "vue";
 import MobileShopItemSubscribe from "@/common/components/ui/popup/profile/MobileShopItemSubscribe.vue";
-const clacWindowSize = computed(() => watchWindowSize.value < 600)
-const props = defineProps({
+
+
+defineProps({
   Subscribe: { type: Boolean },
   Limited: { type: String }
 })
-const { theSubscribe } = inject('subscribe')
 
-
-const { showSubscribe } = inject('subscribe')
+const { theSubscribe, showSubscribe } = inject('subscribe')
+const handleOrderAdd = inject('handleOrderAdd')
 const watchWindowSize = inject('watchWindowSize')
+const productItem = inject('productItem')
+const { getOderFrequency, isSubscribe } = inject('tdOrderInfo')
 
+
+const clacWindowSize = computed(() => watchWindowSize.value < 600)
+const handleorder = () => handleOrderAdd(productItem)
 
 
 </script>

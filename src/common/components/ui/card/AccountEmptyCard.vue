@@ -4,7 +4,7 @@
         <h3 class="mt-2 u-text-small">{{ description }}</h3>
         <img class="rounded-md  self-start w-full max-w-[325px max-sm:mt-10" src="@/assets/imgs/26hkhPJ5hmdD87HYA.gif"
             alt="">
-        <RouterLink class="mt-16 place-self-start	 text-color-primary-light" :to="'shop/麵包'">開始去購物！</RouterLink>
+        <RouterLink class="mt-16 place-self-start	 text-color-primary-light" :to="'/shop/麵包'">開始去購物！</RouterLink>
     </div>
 </template>
 
@@ -46,8 +46,6 @@ defineProps({
 
 
 }
-
-
 
 h2 {
     grid-area: title;

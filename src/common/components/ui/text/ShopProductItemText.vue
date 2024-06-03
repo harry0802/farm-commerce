@@ -2,17 +2,24 @@
   <div class=" product-item__details details__content flex flex-col h-full">
     <div class="details__texts flex flex-col grow h-full min-h-[115px]">
       <div class="texts__supplier-and-pdinfo flex flex-col ">
-        <a href="#" class="supplier-and-pdinfo--supplier  ">{{ productItem.supplier_name }}</a>
-        <a href="#" class="supplier-and-pdinfo--pdinfo text-lg tracking-wide	"> {{ productItem.product_name }}</a>
+        <RouterLink :to="`/producers/${productItem.supplier_name}`"
+          class="btn__linkUnderline--animate supplier-and-pdinfo--supplier">{{ productItem.supplier_name }}</RouterLink>
+
+        <RouterLink :to="`/product/${productItem.product_name}-${productItem.product_code}`"
+          class="btn__linkUnderline--animate supplier-and-pdinfo--pdinfo text-lg tracking-wide">
+          {{ productItem.product_name }}</RouterLink>
       </div>
       <div class="texts__price-and-weight flex justify-between pt-1.5 pb-2.5 auto ">
-        <p class="price-and-weight--weight">{{ productItem.weight }}</p>
+        <p class="font-[GalmuriMono9] tracking-wider price-and-weight--weight">{{ productItem.weight }}</p>
 
-        <strong class="price-and-weight--price font-bold ">
-          <span v-if="salePrice" class="mr-2 text-color-validate-error font-sans font-extrabold">{{
-          productItem.SALE.price }}元</span>
-          <span :class="saleStyle">{{ productItem.price }}
-            元</span>
+        <strong class=" price-and-weight--price font-bold ">
+          <span v-if="salePrice" class="mr-2  text-color-validate-error   font-[GalmuriMono9]">
+            {{ productItem.SALE.price }}元
+          </span>
+
+          <span :class="saleStyle" class="font-[GalmuriMono9]">
+            {{ productItem.price }}元
+          </span>
         </strong>
       </div>
     </div>

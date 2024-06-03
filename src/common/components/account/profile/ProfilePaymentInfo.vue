@@ -13,9 +13,10 @@ import AccountProfileCard from "@/common/components/ui/card/AccountProfileCard.v
 import AccountProfileActionBtn from '@/common/components/ui/button/AccountProfileActionBtn.vue'
 import ProfilePaymentInfoContent from "@/common/components/ui/content/account/profile/ProfilePaymentInfoContent.vue";
 import ProfilePaymentInfoForm from "@/common/components/ui/from/account/profile/ProfilePaymentInfoForm.vue";
-import { ref } from "vue";
+import { ref, provide } from "vue";
 const isForm = ref(false)
-
+const closeForm = () => isForm.value = false
+provide('closeForm', closeForm)
 </script>
 
 <style scoped>

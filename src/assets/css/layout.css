@@ -27,6 +27,10 @@
     gap: 0px;
   }
 
+  .account-subscribe__content {
+    @apply max-sm:fixed max-sm:flex max-sm:flex-col max-sm:w-full max-sm:bottom-0 max-sm:left-0   text-color-primary-light font-[cjkfonts]  max-sm:mt-auto  sm:self-center sm:justify-self-end;
+  }
+
   @media only screen and (min-width: 350px) {
     .category__product {
       display: grid;
@@ -119,10 +123,14 @@
     transition: all 0.4s;
   }
 
-  .u-pirmary-button:hover {
+  .u-pirmary-button:hover,
+  .u-pirmary-button[type="button"]:hover,
+  .u-pirmary-button[type="submit"]:hover {
     background: #f0c500;
   }
-  .u-pirmary-button:active {
+  .u-pirmary-button:active,
+  .u-pirmary-button[type="button"]:active,
+  .u-pirmary-button[type="submit"]:active {
     transform: scale(0.99) translateX(1px);
   }
   /* 訂閱案紐 */
@@ -145,8 +153,9 @@
     letter-spacing: 0.142857em;
     cursor: pointer;
     transition: all 0.4s;
-    border: 0.8px solid;
-    @apply text-color-primary-light border-color-grey-dark gap-2 transition-colors duration-300  hover:bg-b-color-green-light;
+    border: 2px solid;
+
+    @apply text-color-primary-light border-color-grey-light gap-2 transition-colors duration-300  hover:bg-b-color-green-light hover:border-b-color-green-light;
   }
 
   .u-subscribe-btn:active {
@@ -176,6 +185,10 @@
     background: #ffc33e;
   }
 
+  .u-account-subscribe__btn--mobile {
+    @apply max-sm:py-4 max-sm:border-t max-sm:bg-white;
+  }
+
   /*  */
 
   .overlay {
@@ -185,8 +198,7 @@
     left: 0;
     width: 100%;
     height: 100vh;
-    background-color: rgba(7, 38, 30, 0.5);
-    /* #07261e */
+    background-color: rgba(7, 38, 30, 0.25);
     z-index: -5;
   }
 

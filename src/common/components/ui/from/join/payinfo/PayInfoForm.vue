@@ -58,12 +58,14 @@
 <script setup>
 import { Form, FormField } from "@/common/composables/ui/form";
 import { profileUserAddress, useField } from "@/Plugins/zodValidators.js";
-import { ref, onMounted, inject, toRefs } from 'vue';
+import { ref, onMounted, toRefs, inject } from 'vue';
 import CostomInput from "@/common/components/ui/from/CostomInput.vue";
+import { useProfileInfoStore } from "@/store/modules/profile/profileStore.js";
 import CostomSelect from "@/common/components/ui/from/CostomSelect.vue";
 const twzipcodes = ref('')
+
+const { deliveryAddress } = toRefs(useProfileInfoStore())
 const { store } = inject('paymentInfo')
-const { deliveryAddress } = toRefs(store)
 const {
     initializeZipcodeWithPage,
     handleSubmit,
@@ -103,9 +105,9 @@ const onSubmit = handleSubmit((va) => getCustomAddress.value = va)
 onMounted(() => {
     const zipCode = initializeZipcodeWithPage(twzipcodes)
     zipCode.set({
-        "county": store.deliveryAddress.user_City.val,
-        "district": store.deliveryAddress.user_State.val,
-        'zipcode': store.deliveryAddress.user_ZipCode.val
+        "county": deliveryAddress.value.user_City.val,
+        "district": deliveryAddress.value.user_State.val,
+        'zipcode': deliveryAddress.value.user_ZipCode.val
     });
 })
 

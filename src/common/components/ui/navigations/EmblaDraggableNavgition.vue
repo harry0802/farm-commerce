@@ -1,18 +1,18 @@
 <template>
     <nav class=" prodict-supplier__nav p-6 pb-0 sticky top-16 overflow-hidden">
         <div class="section-container nav__draggable w-full embla relative " ref="emblaNode">
-            <div class="nav__content flex relative  will-change-transform ">
-                <slot name="selectorItem"></slot>
+            <div class="nav__content flex relative   will-change-transform ">
+                <slot name="selectorItem" />
             </div>
             <transition name="fade" mode="out-in">
                 <template v-if="showLeft && !reactivet">
-                    <span class="nav__mask left"></span>
+                    <span class="nav__mask left" />
                 </template>
             </transition>
 
             <transition name="fade" mode="out-in">
                 <template v-if="showRight && !reactivet">
-                    <span class="nav__mask right"></span>
+                    <span class="nav__mask right" />
                 </template>
             </transition>
         </div>

@@ -1,9 +1,10 @@
 <template>
   <shop-side-card>
     <template #title>
-      <h1 :id="currentId" class="pb-2 u-text-medium">
-        <RouterLink :to="'/shop/' + data.project">{{
-        data.project }} </RouterLink>
+      <h1 :id="currentId" class="pb-2 u-text-medium border-b border-color-grey-light">
+        <RouterLink :to="`/shop/${data.project}`">
+          {{ data.project }}
+        </RouterLink>
       </h1>
     </template>
     <template #navlist>
@@ -20,33 +21,9 @@ import ShopSideCard from "../../../common/components/ui/card/ShopSideCard.vue";
 import ShopSideList from "../../components/ui/navigations/ShopSideList.vue";
 
 const currentId = inject('observerCurrentID')
-
-
-
-// requestSupabaseData
 defineProps({
   data: Object
 });
-
-
-
-
-
-
-
-// const prodcutData = computed(() =>
-//   localDataKey(props.data)
-// )
-
-
-// console.log(prodcutData.value);
-
-
-
-
-
-
-
 </script>
 
 <style scoped></style>

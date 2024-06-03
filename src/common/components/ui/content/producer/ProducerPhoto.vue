@@ -1,5 +1,5 @@
 <template>
-    <div class="producer-photo__content">
+    <div class="producer-photo__content rounded-xl overflow-hidden">
         <figure>
             <img :src="photoPath" alt="">
         </figure>

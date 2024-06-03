@@ -1,18 +1,14 @@
 <template>
   <div class="oder__progress px-4 pt-2 pb-4">
-    <p class="mb-2">${{ feeTarget }}!</p>
+    <p class="mb-2">${{ feeTarget }}</p>
     <transition>
       <div v-show="!hiddenProgress">
         <span class="progress__text">{{ deliveryCharge }}%</span>
         <div class="progress">
           <span class="progress__hidden" :style="calcHidden"></span>
 
-          <span
-            class="progress__ligth"
-            v-for="(item, i) in colorArr"
-            :key="item"
-            :style="{ 'background-color': colorArr[i] }"
-          ></span>
+          <span class="progress__ligth" v-for="(item, i) in colorArr" :key="item"
+            :style="{ 'background-color': colorArr[i] }"></span>
         </div>
       </div>
     </transition>
@@ -20,7 +16,11 @@
 </template>
 
 <script setup>
-import { defineProps, computed } from "vue";
+import { computed } from "vue";
+const props = defineProps({
+  maxValue: Number,
+  progressLength: Number,
+});
 const colorArr = [
   "#cc0100",
   "#cf3200",
@@ -33,18 +33,15 @@ const colorArr = [
   "#fffdca",
   "#fff",
 ];
-const props = defineProps({
-  maxValue: Number,
-  progressLength: Number,
-});
+
 const hiddenProgress = computed(() => deliveryCharge.value === 100);
 
 const enterPrice = computed(() =>
   props.progressLength >= props.maxValue
     ? props.maxValue
     : props.progressLength > 0
-    ? props.progressLength
-    : 0
+      ? props.progressLength
+      : 0
 );
 
 const deliveryCharge = computed(() => {
@@ -53,14 +50,12 @@ const deliveryCharge = computed(() => {
 });
 
 const feeTarget = computed(() => {
-  const calcfloor = Math.floor(props.maxValue - enterPrice.value);
-  console.log(calcfloor);
-
+  let calcfloor = Math.floor(props.maxValue - enterPrice.value);
   return calcfloor === 0
     ? "免除運費！"
     : calcfloor >= 0
-    ? `在消費${calcfloor}元便可以免運!`
-    : "";
+      ? `在消費${calcfloor}元便可以免運!`
+      : "";
 });
 
 const calcHidden = computed(() => {
@@ -78,6 +73,7 @@ const calcHidden = computed(() => {
   font-size: 14px;
   letter-spacing: 3px;
 }
+
 .oder__progress {
   margin: auto;
 }
@@ -125,6 +121,7 @@ const calcHidden = computed(() => {
   transform: skew(-20deg);
   /* border-radius: 30px; */
 }
+
 .progress__ligth:not(:first-of-type) {
   margin-left: 4px;
   border-radius: 2px;
@@ -134,6 +131,7 @@ const calcHidden = computed(() => {
   .progress {
     height: 24px;
   }
+
   .progress__hidden {
     height: 24px;
   }
@@ -143,6 +141,7 @@ const calcHidden = computed(() => {
 .progress-leave-active {
   transition: opacity 0.5s;
 }
+
 .progress-enter-from,
 .progress-enter-to {
   opacity: 0;

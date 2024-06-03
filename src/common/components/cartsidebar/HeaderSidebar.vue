@@ -1,37 +1,87 @@
 <template>
   <div id="cart">
-    <transition name="overlay">
-      <div v-show="store.showCart">
-        <sidebar-overlay :switchOverlay="store.showCart" :switchOverlayFn="store.closeCart" :target="target"
-          class="z-[1]" />
-      </div>
-    </transition>
-    <transition>
-      <div class="cart__container" ref="target" v-show="store.showCart">
-        <aside class="cart__content">
-          <header-side-bar-selector-btn />
-          <cart-date v-if="!store.showProductItem"></cart-date>
-          <cart-produt v-else />
-        </aside>
-      </div>
-    </transition>
+    <teleport to="body">
+      <transition name="fade">
+        <div v-if="store.showCart">
+          <div class="overlay fixed  w-full inset-0  h-full  z-[9]" :class="{ open: store.showCart }"></div>
+        </div>
+      </transition>
+    </teleport>
+    <teleport to="#header">
+      <transition>
+        <div class="cart__container" :style="{ marginTop: width > 950 ? marginTop + 'px' : '' }" v-if="store.showCart">
+          <aside class="cart__content" :style="{ height: width > 950 ? `calc(100vh - ${80 + marginTop}px)` : '' }">
+            <HeaderSideBarSelectorBtn />
+            <cartDate v-if="!store.showProductItem" />
+            <CartProdut v-else />
+          </aside>
+        </div>
+      </transition>
+    </teleport>
   </div>
+
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted, watch, onBeforeUnmount, provide, toRefs, watchEffect } from "vue";
 import HeaderSideBarSelectorBtn from "../ui/button/HeaderSideBarSelectorBtn.vue";
-// import DynamicPhoto from "../ui/content/cartSideBar/DynamicPhoto.vue";
-// import ProcutLowesMinimum from  '../cartsidebar/procutItem/ProcutLowesMinimum.vue'
-import SidebarOverlay from "../ui/sidebar/SidebarOverlay.vue";
-
+import { onClickOutside, useWindowSize } from "@vueuse/core";
 import CartProdut from "../cartsidebar/cartProdut/CartProdut.vue";
 import cartDate from "../../components/cartsidebar/cartDate/CartDate.vue";
 import cartStore from "@/store/modules/cart/cartStore.js";
+import { useOrderStore } from "@/store/modules/order/index.js";
 
+const { handleOrderRemoveItem, workDayLists, myorder, calcOrderState, setProductCart, productCart, handleSelectionDay, calcSubtotal, promoCodeConstruction } = toRefs(useOrderStore());
 const store = cartStore();
+const marginTop = ref(40);
+const product = ref(null);
+const currentOrder = ref(null)
+const { width } = useWindowSize()
 
-const target = ref(null);
+
+
+const findOrderDate = function () {
+  const select = store.selectionDay?.orderDate || store.getFirstDay()
+  currentOrder.value = product.value = myorder.value.find((i) => i.order_date.date === select)
+  product.value ? setProductCart.value(product.value.products) : setProductCart.value([])
+}
+
+
+const handleScroll = () => {
+  const scrollTop = window.scrollY;
+  marginTop.value = scrollTop <= 40 ? 40 - scrollTop : 0;
+}
+
+watch(() => store.showCart, (newVal) => {
+  newVal ?
+    document.body.style.overflow = 'hidden' :
+    document.body.style.overflow = 'auto'
+})
+
+watchEffect(() => {
+  handleScroll()
+  findOrderDate();
+
+})
+
+onMounted(() => {
+  const header = document.getElementById('header')
+  onClickOutside(header, () => {
+    store.closeCart()
+  })
+  window.addEventListener("scroll", handleScroll)
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("scroll", handleScroll);
+})
+
+provide('store', store)
+provide('orderStore', { myorder, calcOrderState, workDayLists, productCart, handleSelectionDay, setProductCart, handleOrderRemoveItem, calcSubtotal, currentOrder, promoCodeConstruction })
+provide('findOrderDate', { findOrderDate, product })
+
+
+
 </script>
 
 <style scoped>
@@ -55,12 +105,12 @@ const target = ref(null);
 
 @media only screen and (min-width: 950px) {
   .cart__container {
-    top: 120px;
+    top: 80px;
   }
 
   .cart__content {
     width: 500px;
-    height: calc(100vh - 120px);
+    height: calc(100vh - 80px);
   }
 }
 
@@ -73,20 +123,14 @@ const target = ref(null);
 .v-leave-to {
   /* 从右侧滑入 */
   transform: translateX(100%);
+
 }
 
-.overlay-enter-active,
-.overlay-leave-active {
-  transition: opacity 0.4s;
+.fade-leave-active {
+  transition: opacity 0.1s ease;
 }
 
-.overlay-enter-from,
-.overlay-leave-to {
+.fade-leave-to {
   opacity: 0;
-}
-
-.overlay-enter-to,
-.overlay-leave-from {
-  opacity: 1;
 }
 </style>

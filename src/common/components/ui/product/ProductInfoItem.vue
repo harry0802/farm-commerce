@@ -14,6 +14,7 @@ import { inject } from 'vue'
 const productInfo = inject('productInfo')
 
 
+
 </script>
 <style scoped>
 @media only screen and (min-width:950px) {

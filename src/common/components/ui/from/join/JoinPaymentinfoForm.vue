@@ -21,12 +21,10 @@
                     <FormField name="creditMoon">
                         <CostomSelect user-label="moon">
                             <select v-model="creditMoonVl"
-                                class="flex w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 py-4 px-3.5 h-auto transition-shadow duration-300">
+                                class="flex w-full rounded-md border border-input bg-transparent text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 py-4 px-3.5 h-auto  duration-300">
                                 <option v-for="(day, i) in mo" :key="i">{{ day }}</option>
                             </select>
                         </CostomSelect>
-
-
                     </FormField>
 
 
@@ -76,13 +74,14 @@ import CostomInput from "@/common/components/ui/from/CostomInput.vue";
 import BaseCard from "@/common/components/ui/card/BaseCard.vue";
 import PayinfoRadioGroup from "@/common/components/ui/from/join/payinfo/PayinfoRadioGroup.vue";
 import LoadingCat2 from '../../../ui/animat/LoadingCat2.vue'
-import { inject, ref } from "vue";
+import { inject, ref, toRefs } from "vue";
 import { userInsertRows, getUserInfo } from "@/Plugins/supabaseClinets.js";
 import { Form, FormField } from "@/common/composables/ui/form";
 import { paymentinfo, useField } from "@/Plugins/zodValidators.js";
+import { useProfileInfoStore } from "@/store/modules/profile/profileStore.js";
 import { Button } from '@/common/composables/ui/button'
 import PayInfoForm from "@/common/components/ui/from/join/payinfo/PayInfoForm.vue";
-const { store, router } = inject('paymentInfo')
+const { router, store } = inject('paymentInfo')
 const {
     handleSubmit,
     loading
@@ -101,11 +100,10 @@ const { value: showAddress } = useField('sameAddress')
 const getCustomAddress = ref('')
 const closeAddress = ref(showAddress)
 const isAddresSave = ref(false)
-
-
+const { deliveryAddress } = toRefs(useProfileInfoStore())
 
 // 預設地址
-const getDeliveryAddress = () => Object.values(store.deliveryAddress).map(item => item.val).join(',')
+const getDeliveryAddress = () => Object.values(deliveryAddress.value).map(item => item.val).join(',')
 
 const mo = ['January',
     'February',
@@ -125,7 +123,6 @@ const onsubmit = handleSubmit(async (val) => {
     try {
         loading.value = true
         const { id } = await getUserInfo()
-        const { deliveryAddress } = store
         const paymentData = {
             client_id: id,
             card_name: val.userName,
@@ -136,11 +133,11 @@ const onsubmit = handleSubmit(async (val) => {
 
         let address = {
             clients_id: id,
-            user_Address: deliveryAddress.user_Address.val,
-            user_AddressLine: deliveryAddress.user_AddressLine.val,
-            user_City: deliveryAddress.user_City.val,
-            user_State: deliveryAddress.user_State.val,
-            user_ZipCode: deliveryAddress.user_ZipCode.val,
+            user_Address: deliveryAddress.value.user_Address.val,
+            user_AddressLine: deliveryAddress.value.user_AddressLine.val,
+            user_City: deliveryAddress.value.user_City.val,
+            user_State: deliveryAddress.value.user_State.val,
+            user_ZipCode: deliveryAddress.value.user_ZipCode.val,
         }
 
 

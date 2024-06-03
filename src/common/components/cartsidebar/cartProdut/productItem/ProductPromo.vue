@@ -8,7 +8,7 @@
     <!-- 點選後隱藏 -->
     <form class="flex" v-else @submit.prevent>
       <input type="text" placeholder="請輸入折扣碼" v-model="inputValue" />
-      <button v-if="calcInputValue === 0" @click="closeForm">關閉</button>
+      <button v-if="calcInputValue" @click="closeForm">關閉</button>
       <button v-else @click="sendPromo">使用</button>
     </form>
   </div>
@@ -16,27 +16,27 @@
 
 <script setup>
 import { Icon } from "@iconify/vue";
-import { computed, ref } from "vue";
-
+import { computed, ref, inject } from "vue";
 const selectPromo = ref("button");
+const inputValue = ref("");
+const isDiscount = defineModel('isDiscount')
+const { currentOrder, promoCodeConstruction } = inject('orderStore')
+const { addDiscount } = promoCodeConstruction.value(currentOrder)
+
 
 const isButton = computed(() => selectPromo.value === "button");
+const calcInputValue = computed(() => inputValue.value === '');
 
-const openForm = function () {
-  selectPromo.value = "form";
-};
-const closeForm = function () {
-  selectPromo.value = "button";
+
+const openForm = () => selectPromo.value = "form";
+const closeForm = () => selectPromo.value = "button";
+const sendPromo = async function () {
+  const reponse = await addDiscount(inputValue.value)
+  if (!reponse) return inputValue.value = ''
+  isDiscount.value = true
 };
 
-const inputValue = ref("");
-const calcInputValue = computed(() => inputValue.value.length);
 
-const sendPromo = function () {
-  // console.log(inputValue.value);
-  // 發送到後台檢查
-  inputValue.value = "";
-};
 </script>
 
 <style scoped>
@@ -46,6 +46,7 @@ const sendPromo = function () {
   font-size: 14px;
   letter-spacing: 2px;
 }
+
 .promo-codes__openform {
   display: flex;
   align-items: center;
@@ -63,6 +64,7 @@ input {
   color: #fff;
   padding: 5px;
 }
+
 input::placeholder {
   color: #fff;
 }

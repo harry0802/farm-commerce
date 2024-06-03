@@ -75,6 +75,7 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter()
 const { registerClientAddress } = inject(['deliveryAddress'])
+const { checkAllow } = inject('personall')
 const twzipcodes = ref('')
 
 
@@ -100,7 +101,6 @@ defineHandleFn(setCountys, setDistricts, setZipcode)
 
 const onSubmit = handleSubmit(async (val) => {
     try {
-
         loading.value = true
         const sendData = {
             user_Address: val.streetAddress,
@@ -113,6 +113,7 @@ const onSubmit = handleSubmit(async (val) => {
         }
         const reponse = await registerClientAddress.value(sendData)
         if (!reponse) return
+        checkAllow.value()
         router.push({ name: 'payment-info' })
     } finally {
         loading.value = false

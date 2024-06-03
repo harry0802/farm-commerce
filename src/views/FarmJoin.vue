@@ -7,13 +7,11 @@
 
 
 <script setup>
-import { toRefs, provide, onBeforeMount } from "vue";
-import { useRouter, onBeforeRouteUpdate, onBeforeRouteLeave } from "vue-router";
+import { toRefs, provide, } from "vue";
+import { useRouter, } from "vue-router";
 import accountStore from "@/store/modules/account/accountStore.js";
+const store = accountStore();
 const { setUserArea, userArea, registerClient, loginEmailOTP, registerClientAddress, allow, checkAllow, } = toRefs(accountStore())
-import { store, } from "@/common/composables/profileData.js";
-import useProfileInfoStore from "@/store/modules/profile/profileStore.js";
-const aa = useProfileInfoStore()
 const router = useRouter()
 
 

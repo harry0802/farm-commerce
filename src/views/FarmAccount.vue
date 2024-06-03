@@ -1,26 +1,25 @@
 <template>
-    <main id="main">
-        <AccountPageCard>
-            <template #hero>
-                <AccountHero />
-            </template>
-            <template #tab>
-                <EmblaDraggableNavgition>
-                    <template #selectorItem>
-                        <AccountNavigationBtns />
-                    </template>
-                </EmblaDraggableNavgition>
-            </template>
-            <template #subscriptions>
-                <RouterView></RouterView>
-            </template>
-        </AccountPageCard>
-        <slot name="sidebar"></slot>
-    </main>
+    <BaseMainPage>
+        <template #page>
+            <AccountMainSection />
+        </template>
+        <template #sidebar>
+            <slot name="sidebar" />
+        </template>
+    </BaseMainPage>
 </template>
 <script setup>
-import AccountPageCard from '@/common/components/ui/card/AccountPageCard.vue';
-import AccountHero from "@/common/components/ui/section/AccountHero.vue";
-import EmblaDraggableNavgition from "@/common/components/ui/navigations/EmblaDraggableNavgition.vue";
-import AccountNavigationBtns from "@/common/components/ui/button/AccountNavigationBtns.vue";
+import BaseMainPage from "@/common/components/ui/card/BaseMainPage.vue";
+import AccountMainSection from "@/common/components/ui/section/AccountMainSection.vue";
+import useAccountStore from "@/store/modules/account/accountStore.js";
+import { provide, toRefs, } from "vue";
+import { useOrderStore } from "@/store/modules/order/index.js";
+const { subscription, myorder, createGeneralSubScribeConstruction, handleOrderRemoveSubScribe } = toRefs(useOrderStore())
+const accountStore = useAccountStore
+const { changDeliveryDayAll, changDeliveryDay } = createGeneralSubScribeConstruction.value()
+
+provide('accountStore', accountStore)
+provide('orderStore', { subscription, myorder })
+provide('handelSubScribe', { changDeliveryDayAll, changDeliveryDay, handleOrderRemoveSubScribe })
+
 </script>

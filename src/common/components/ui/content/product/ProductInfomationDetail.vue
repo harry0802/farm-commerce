@@ -1,8 +1,11 @@
 <template>
     <div class="info__details">
         <div class="name-and-producer  flex flex-col">
-            <a src="#" class="name u-text-giant text-color-primary">{{ productInfo.name }}</a>
-            <RouterLink class="producer mt-2 u-text-medium sm:u-text-large" :to="`/producers/${productInfo.producer}`"> {{
+            <p class="btn__linkUnderline--animate  name u-text-giant text-color-primary underline-offset-8	">{{
+                productInfo.name }}</p>
+            <RouterLink class="btn__linkUnderline--animate  producer mt-2 u-text-medium sm:u-text-large   "
+                :to="`/producers/${productInfo.producer}`">
+                {{
                 productInfo.producer }}</RouterLink>
         </div>
         <div class="price-and-weight">

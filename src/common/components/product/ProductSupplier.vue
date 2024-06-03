@@ -7,7 +7,7 @@
             </template>
 
             <template #selectorContent>
-                <component :is="tabs[currentComponents]"></component>
+                <component :is="tabs[currentComponents]" />
             </template>
 
         </ProdcutSupplierCard>
@@ -25,6 +25,9 @@ import { ref, inject } from 'vue'
 
 const currentComponents = ref('SupplierInfomation')
 const productPageNavBtnBar = inject('productPageNavBtnBar')
+
+
+
 
 const tabs = {
     SupplierInfoIngredientsAndNutrition,

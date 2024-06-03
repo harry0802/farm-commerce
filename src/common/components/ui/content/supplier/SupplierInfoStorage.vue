@@ -10,11 +10,12 @@
 <script setup>
 import SupplierCard from '../../../ui/card/SupplierCard.vue'
 import { inject, ref } from "vue";
-const { productStorage } = inject('ProdictSupplier')
+const productStorage = inject('ProdictSupplier')
 
 const storageTips = ref(null)
-if (productStorage) {
-    const [product] = productStorage
+if (productStorage.value.productStorage) {
+    const [product] = productStorage.value.productStorage
+
     storageTips.value = product
 }
 
@@ -24,4 +25,3 @@ if (productStorage) {
 </script>
 
 <style scoped></style>
-

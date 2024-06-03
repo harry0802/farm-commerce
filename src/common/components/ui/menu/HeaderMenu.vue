@@ -1,10 +1,12 @@
 <template>
   <div class="nav-classification nav-container">
-    <div class="nav-categorie" v-for="( menus) in store.sideListData" :key="menus">
-      <div class="nav-categories-wrap">
-        <RouterLink :to="'/shop/' + `${menus.project}`">{{ menus.project }}</RouterLink>
-        <div class="nav-dropdown-wrap">
-          <div class="nav-dropdown" v-for="( menuCategories) in menus.categories">
+    <div class="nav-categorie" v-for="(menus) in productData" :key="menus">
+      <div class="nav-categories-wrap ">
+        <RouterLink :class="{ 'active': route.params.id === menus.project }" :to="'/shop/' + `${menus.project}`">{{
+      menus.project }}
+        </RouterLink>
+        <div class="nav-dropdown-wrap public__item-link">
+          <div class="nav-dropdown " v-for="( menuCategories) in menus.categories">
             <RouterLink :to="'/shop/' + `${menuCategories.category}`">{{ menuCategories.category }}</RouterLink>
           </div>
         </div>
@@ -14,13 +16,27 @@
 </template>
 
 <script setup>
-import { useProduct } from "@/store/modules/product/useProduct.js";
-const store = useProduct()
 
-
+import { inject, computed } from "vue";
+const productData = inject('productData')
+const { route, router } = inject('vueRouter')
 </script>
 
 <style scoped>
+.public__item-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  top: 12px;
+  width: 103%;
+  background-image: url("@/assets/imgs/texture_01_white.png");
+  background-size: 7px auto;
+  background-color: rgba(67, 83, 52, 0.6);
+  border-radius: 6px;
+  transform: translate(0px, 7px);
+  z-index: -1;
+}
+
 .nav-dropdown-wrap>.nav-dropdown>* {
   font-family: "cjkfonts";
 
@@ -45,9 +61,10 @@ const store = useProduct()
 .nav-dropdown-wrap {
   position: absolute;
   margin-left: -16px;
-  padding-top: 20px;
+  padding-top: 19px;
   opacity: 0;
   pointer-events: none;
+  transition: opacity .3s;
 }
 
 .nav-dropdown {
@@ -62,7 +79,8 @@ const store = useProduct()
 
 .nav-dropdown>a {
   min-width: 200px;
-  padding: 16px;
+  padding: 8px;
+  padding-left: 16px;
 }
 
 .nav-categories-wrap>a::after {
@@ -79,6 +97,12 @@ const store = useProduct()
   border-radius: 20px;
   transition: all 0.2s cubic-bezier(0.45, 0, 0.55, 1),
     opacity 0.1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.nav-categories-wrap>.active::after {
+  opacity: 1;
+  transform: translate(-50%, 20px);
+  width: 100%;
 }
 
 .nav-categorie:hover .nav-categories-wrap a::after {
@@ -108,14 +132,15 @@ const store = useProduct()
   z-index: -1;
   transform: translateX(-100%);
   clip-path: polygon(0 0, 100% 0%, 75% 100%, 0% 100%);
-  transition: transform 0.3s cubic-bezier(0.5, 1, 0.89, 1);
   opacity: 0;
+  transition: transform 0.3s cubic-bezier(0.5, 1, 0.89, 1), opacity .4s;
   @apply bg-b-color-green-light;
 }
 
 .nav-dropdown>a:hover:before {
   opacity: 1;
   transform: translateX(0%);
+  transition: transform 0.4s cubic-bezier(0.5, 1, 0.89, 1), opacity .1s ease-in;
 }
 
 .nav-dropdown> :not(:last-child) {

@@ -6,7 +6,10 @@ import {
   verifyOtp,
   getUserInfo,
 } from "@/Plugins/supabaseClinets.js";
+
+import { getAccountInfo } from "@/common/composables/profileData.js";
 // 註冊帳戶紀錄
+
 const useAccountStore = defineStore("accountStore", {
   state() {
     return {
@@ -27,6 +30,7 @@ const useAccountStore = defineStore("accountStore", {
       userAddress: {},
     };
   },
+
   getters: {
     isaAuthenticated: (state) => !!state.userState.role,
     hasUserEmail: (state) => !!state.userInfo.user_Email,
@@ -65,7 +69,8 @@ const useAccountStore = defineStore("accountStore", {
       };
       return await userSignUp(
         this.userInfo.user_Email,
-        this.userInfo.user_Password
+        this.userInfo.user_Password,
+        this.userInfo.user_LastName
       );
     },
 
@@ -75,7 +80,19 @@ const useAccountStore = defineStore("accountStore", {
         address.clients_id = getUser.id;
         const zipcode = await queryZipCode(address.user_ZipCode);
         if (!zipcode.length > 0) return;
-        return await userInsertRows("deliveryAddress", address);
+
+        const [deliveryAddress, order] = await Promise.all([
+          userInsertRows("deliveryAddress", address),
+          userInsertRows("order", {
+            order: [],
+            recently_viewed: [],
+            subscription: [],
+            favorite: [],
+            clients_id: getUser.id,
+          }),
+          getAccountInfo(),
+        ]);
+        return deliveryAddress;
       } catch (err) {
         console.log(err.message);
       }
@@ -98,7 +115,7 @@ const useAccountStore = defineStore("accountStore", {
   },
   persist: {
     storage: window.sessionStorage,
-    paths: ["userArea", "userState", "userInfo"],
+    paths: ["userArea", "userState", "userInfo", "registration"],
   },
 });
 

@@ -1,9 +1,7 @@
 <template>
-  <div>
-    <a :href="path">
-      <img :src="imgPath" :alt="des" />
-    </a>
-  </div>
+  <a class="flex justify-center " :href="path">
+    <img loading="lazy" class="w-full aspect-square " :src="imgPath" :alt="des" />
+  </a>
 </template>
 
 <script>
@@ -13,11 +11,6 @@ export default {
 </script>
 
 <style scoped>
-div {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 img {
   width: 1.8rem;
   height: 1.8rem;

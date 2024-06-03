@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-const useProfileInfoStore = defineStore("ProfileInfoStore", {
+export const useProfileInfoStore = defineStore("ProfileInfoStore", {
   state() {
     return {
       personalInfo: {
@@ -69,11 +69,11 @@ const useProfileInfoStore = defineStore("ProfileInfoStore", {
       });
 
       spBilling.length === 0
-        ? (this.billingAddress = false)
+        ? this.billingAddress
         : spBilling.map((item) => assignmentLoop(billingAddress, item));
 
       spPayment.length === 0
-        ? (this.paymentInfo = false)
+        ? this.paymentInfo
         : spPayment.map((item) => {
             const paymentInfo = this.paymentInfo;
             paymentInfo.card_date = item.card_date;
@@ -87,6 +87,8 @@ const useProfileInfoStore = defineStore("ProfileInfoStore", {
       );
     },
   },
-});
 
-export default useProfileInfoStore;
+  persist: {
+    storage: window.sessionStorage,
+  },
+});

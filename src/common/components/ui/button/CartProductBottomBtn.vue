@@ -1,28 +1,62 @@
 <template>
   <dynamic-bottom-bar>
-    <div class="flex-1 flex flex-col items-center" v-if="hasProduct">
-      <!-- 透過 router 首位 判斷是否登陸。 -->
-      <!-- 是進入結帳 ，否進入登錄頁面 -->
-      <a class="cta__buttom u-pirmary-button mb-2" href="#">提交表單</a>
+    <div class="flex-1 flex flex-col items-center" v-if="!accountStore.isaAuthenticated">
+      <RouterLink :to="{ name: 'zip-check' }" class="cta__buttom u-pirmary-button mb-2" href="#">前往註冊</RouterLink>
       <!-- 當檢測沒有登陸時 -->
-      <p>
+      <p class="text-center">
         請在
-        <strong> 9 月 30 日星期六上午 11:59</strong>
-        之前建立帳戶，否則您購物車中的商品將被刪除。已經是會員 ？登入
+        <strong class="text-color-validate-error">{{ lastEditTrans }}日星期六上午 11:59</strong>
+        之前建立帳戶，<br />否則您購物車中的商品將被刪除。
+        <br />已經是會員 ？ <router-link class="btn__linkUnderline--animate text-color-eva-dark-yellow "
+          :to="{ name: 'login' }"> 登入</router-link>
       </p>
     </div>
-    <div class="flex-1 flex justify-center" v-else>
-      <a class="cta__buttom u-pirmary-button mb-2" href="#">開始購物！</a>
+
+
+    <div class="flex-1 flex justify-center" v-else-if="!product">
+      <router-link :to="{ path: '/shop/Farm Boxes' }" class="cta__buttom u-pirmary-button mb-2">開始購物！</router-link>
+    </div>
+
+    <div v-else>
+      <div class="flex  ">
+        <Icon class="text-color-eva-light-green text-3xl w-[100px]  mb-auto" icon="fluent:box-checkmark-20-regular" />
+        <p class="text ">
+          無需結帳！在截止時間之後，您的購物車中的商品將自動扣款。
+          若要<span class=" text-color-eva-dark-yellow"> 跳過或編輯</span>，
+          請於 <span class="text-color-eva-light-red">{{
+      lastEditTrans }}上午11:59前處理。</span>
+        </p>
+      </div>
     </div>
   </dynamic-bottom-bar>
 </template>
 
 <script setup>
 import DynamicBottomBar from "../content/cartSideBar/DynamicBottomBar.vue";
+import useAccountStore from "@/store/modules/account/accountStore.js";
+import { inject, computed, } from "vue";
+import { Icon } from '@iconify/vue';
+import dayjs from "dayjs";
 
-import { ref } from "vue";
+const accountStore = useAccountStore()
+const { product } = inject('findOrderDate')
+const store = inject('store')
 
-const hasProduct = ref(true);
+
+
+const lastEditTrans = computed(() => {
+  if (store.selectionDay.orderDate) {
+    let [y, m, d] = store.selectionDay.orderDate.split('/')
+    return dayjs(`${y}-${m}-${d - 1}`).format("dd, M月D")
+  }
+
+  if (!accountStore.isaAuthenticated) {
+    return dayjs().date(1).format("dd, M月D")
+  }
+})
+
+
+
 </script>
 
 <style scoped>

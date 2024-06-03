@@ -24,11 +24,13 @@ export default {};
   right: 0;
   bottom: 0;
 }
+
 @media only screen and (min-width: 950px) {
   .dynamic__wrapper {
     left: calc(100% - 500px);
   }
 }
+
 .dynamic__content {
   flex: 1;
   background: rgba(50, 50, 84, 0.8);
@@ -37,6 +39,7 @@ export default {};
 .dynamic__content::-webkit-scrollbar {
   background: transparent;
 }
+
 .dynamic__buttom-bar {
   background: #0c1d00;
   z-index: 1;

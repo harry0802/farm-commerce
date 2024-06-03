@@ -1,8 +1,11 @@
 import * as z from "zod";
 import { initializeTWzipcode, defineHandleFn } from "@/Plugins/zipCode.js";
+import { useOrderStore } from "@/store/modules/order/index.js";
 import { toTypedSchema } from "@vee-validate/zod";
 import { useForm, useField } from "vee-validate";
 import { ref, computed } from "vue";
+import { useDebounceFn } from "@vueuse/core";
+import { toast } from "vue-sonner";
 
 // 全局變數
 const loading = ref(false);
@@ -38,6 +41,7 @@ const passwordSchema = z
 const emailSchema = z
   .string({
     required_error: "* 不可空白",
+    invalid_type_error: "只接收文字",
   })
   .regex(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/, {
     message: "* 請輸入有效的電子郵件地址",
@@ -53,7 +57,9 @@ const zipCodeLimitNumber = z
   })
   .max(999, { message: "* 限制3碼" });
 
-const emailStr = z.string().email({ message: "* 請輸入正確的格式" });
+const emailStr = z
+  .string({ required_error: "* 不可空白" })
+  .email({ message: "* 請輸入正確的格式" });
 
 // 通用 HandleSubmit 流程
 const createHandleSubmit = (fields, initialValue = null) => {
@@ -63,6 +69,17 @@ const createHandleSubmit = (fields, initialValue = null) => {
     initialValues: initialValue,
   });
   return handleSubmit;
+};
+
+// 註冊信箱
+const singinupEmail = () => {
+  const fields = z.object({
+    email: emailStr,
+  });
+  const handleSubmit = createHandleSubmit(fields);
+  return {
+    handleSubmit,
+  };
 };
 
 // Account 資料 （註冊頁面）
@@ -270,8 +287,127 @@ const profileUserEmail = (initialValues) => {
   const handleSubmit = createHandleSubmit(fields, initialValues);
   return { handleSubmit };
 };
+
+// 訂單操作
+
+const userHandleProductItem = function (pd, qty) {
+  const { handleOrderAdd } = useOrderStore();
+
+  // qty 訂單頻率
+  // product 訂單資料
+  const product = ref(pd);
+  const loading = ref(false);
+  const theAmount = ref(qty);
+
+  const disableBlur = ref(false);
+  const amountSchema = z
+    .number({ required_error: "只接受數字", invalid_type_error: "只接受數字" })
+    .positive({ message: "不可以小於0" })
+    .lte(99, { message: "已超過最大限制值" });
+
+  const sendAmount = (operate) => {
+    if (operate) operate();
+    loading.value = true;
+    amountDebounce(operate);
+  };
+
+  const amountDebounce = useDebounceFn(async () => {
+    const { success, error } = amountSchema.safeParse(+theAmount.value);
+    if (!success) {
+      const [{ message }] = error.issues;
+      toast.error(message);
+      loading.value = false;
+      return (theAmount.value = qty);
+    }
+    const data = { ...product.value, quantity: theAmount.value };
+    await handleOrderAdd(data);
+    toast.success("商品更新成功");
+    loading.value = false;
+  }, 1000);
+
+  // 訂單的數量操作
+  const productOperate = () => {
+    const addProduct = () => sendAmount(() => theAmount.value++);
+    const reduceProduct = () => sendAmount(() => theAmount.value--);
+    return {
+      addProduct,
+      reduceProduct,
+    };
+  };
+
+  // 可選:處理事件監聽邏輯
+  const preventBlurEvent = () => {
+    // 初始化 Blur 事件狀態
+    const handleFocus = () => {
+      disableBlur.value = false;
+    };
+    // 使用 Enter 事件時阻止 Blur
+    const handleEnter = (event) => {
+      disableBlur.value = true;
+      loading.value = true;
+      sendAmount();
+      event.target.blur();
+    };
+    // 操作 Blur 事件
+    const handleBlur = () => {
+      if (disableBlur.value) return (disableBlur.value = false);
+      sendAmount();
+    };
+
+    return {
+      handleFocus,
+      handleEnter,
+      handleBlur,
+    };
+  };
+  // 設定新的產品狀態
+  const setProduct = (newPd) => (product.value = newPd);
+  // 設定新的產品數量
+  const setNewQty = (qty) => (theAmount.value = qty);
+
+  return {
+    theAmount,
+    loading,
+    setProduct,
+    preventBlurEvent,
+    productOperate,
+    sendAmount,
+    setNewQty,
+  };
+};
+
+// 訂閱商品
+
+const userChangeSubscriptionDeliveryday = function (initialValues) {
+  const fields = z.object({
+    deliveryday: emptyStr,
+  });
+  const handleSubmit = createHandleSubmit(fields, initialValues);
+  return {
+    handleSubmit,
+  };
+};
+
+const userHandleSubscription = function (initialValues) {
+  const fields = z.object({
+    quantity: emptyStr,
+    frequency: emptyStr,
+    deliveryday: emptyStr,
+    changeNextDate: emptyStr,
+  });
+
+  const handleSubmit = createHandleSubmit(fields, initialValues);
+  return {
+    handleSubmit,
+  };
+};
+
 export {
   useField,
+  useForm,
+  toast,
+  // homepage
+  singinupEmail,
   // register page
   checkZipcode,
   userFields,
@@ -286,4 +422,9 @@ export {
   profileUserAddress,
   profileUserDriverInstructions,
   profileUserEmail,
+  // order
+  userHandleProductItem,
+  // subscribe
+  userChangeSubscriptionDeliveryday,
+  userHandleSubscription,
 };

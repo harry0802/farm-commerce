@@ -33,7 +33,6 @@ const useChatbotStore = defineStore("useChatbot", {
   actions: actions,
   persist: {
     storage: window.sessionStorage,
-    paths: [],
   },
 });
 

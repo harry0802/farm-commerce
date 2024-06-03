@@ -8,20 +8,27 @@
     </component>
   </router-view>
   <farm-footer />
-  <Toaster position="bottom-left" richColors :expand="true" />
+  <Toaster closeButton position="bottom-left" richColors :expand="true" />
   <chatbotPage />
+  <!-- <LoadingDeliciousOverlayer /> -->
 </template>
 
 <script setup>
-
+import { onMounted, } from "vue";
 import { RouterView } from "vue-router";
 import FarmFooter from "./layout/FarmFooter.vue";
 import farmHeader from "./layout/FarmHeader.vue";
 import HeaderSidebar from "@/common/components/cartsidebar/HeaderSidebar.vue";
 import chatbotPage from "@/common/components/chatbot/chatbotPage.vue";
+import LoadingDeliciousOverlayer from "@/common/components/ui/animat/LoadingDeliciousOverlayer.vue";
 import { Toaster } from "@/common/composables/ui/sonner";
+import { startAuthStateListener } from "@/Plugins/sessionHandler.js";
 
 
+
+onMounted(() => {
+  startAuthStateListener()
+})
 
 
 </script>
