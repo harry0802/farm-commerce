@@ -67,10 +67,10 @@ watchEffect(() => {
 
 
 provide('productInfo', watchingProductInfo)
+provide('productItem', watchingProductInfo.value)
 provide('productPageBreadcrumbs', watchingProductPageBreadcrumbs.value)
 provide('ProdictSupplier', watchingProductInfoPageData)
 provide('productPageNavBtnBar', watchingProductPageNavBtnBar.value)
-
 provide('sendSubScript', { addSubscribe })
 provide('handleOrderAdd', handleOrderAdd)
 

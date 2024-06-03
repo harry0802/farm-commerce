@@ -7,8 +7,8 @@
 
         <RouterLink @click="addrecentlyVie(data)" class="photo__links"
           :to="`/product/${data.product_name}-${data.product_code}`">
-          <div>
-            <img @load="imgLoading = true" loading="lazy" class="object-cover rounded-lg img__load "
+          <div class="w-full">
+            <img @load="imgLoading = true" loading="lazy" class="h-full w-full object-cover rounded-lg img__load "
               :class="{ 'opacity-100': imgLoading }" :src=data.image_url alt="" />
             <p v-if="getOderFrequency"
               class="absolute flex flex-col  w-full h-full inset-0 place-content-center place-items-center  rounded-lg bg-[#07261e73] text-white ">
@@ -85,7 +85,6 @@ const onsubmit = async () => {
 
 watchEffect(() => {
   clacWindowSize.value ? closeSubscribe() : clacWindowSize.value
-  sendProvide()
 })
 
 
@@ -95,8 +94,6 @@ provide('subscribe', { theSubscribe, showSubscribe })
 provide('watchWindowSize', watchWindowWidth)
 provide('sendSubScript', { addSubscribe, handleSubmit })
 provide('handleOrderAdd', handleOrderAdd)
-
-
 sendProvide()
 </script>
 
@@ -106,6 +103,9 @@ sendProvide()
   aspect-ratio: 1/.67;
 }
 
+.photo__links>div {
+  aspect-ratio: 1/.9;
+}
 
 button.u-subscribe-btn {
   @apply text-color-primary
@@ -132,7 +132,21 @@ button.u-subscribe-btn.confirm {
     height: 100%;
   }
 
+  .photo__links>div {
+    aspect-ratio: 1/.83;
+  }
+
 }
+
+@media screen and (min-width: 400px) {
+
+  .photo__links>div {
+    aspect-ratio: 1/.63;
+  }
+
+}
+
+
 
 
 
@@ -144,6 +158,10 @@ button.u-subscribe-btn.confirm {
 
   .product-item__container {
     padding: .5rem;
+  }
+
+  .photo__links>div {
+    aspect-ratio: 1/.63;
   }
 
 }

@@ -35,7 +35,7 @@ const userSignUp = async function (userEmail, userPassword, name) {
 
     return data;
   } catch (err) {
-    console.error(`Handle_SupabaseAPI_ERROR 💣:${error.message}`);
+    console.error(`Handle_SupabaseAPI_ERROR 💣:${err.message}`);
     handleSupabaseError(err);
   }
 };

@@ -50,7 +50,7 @@ const deliveryCharge = computed(() => {
 });
 
 const feeTarget = computed(() => {
-  const calcfloor = Math.floor(props.maxValue - enterPrice.value);
+  let calcfloor = Math.floor(props.maxValue - enterPrice.value);
   return calcfloor === 0
     ? "免除運費！"
     : calcfloor >= 0

@@ -39,6 +39,7 @@ const currentOrder = ref(null)
 const { width } = useWindowSize()
 
 
+
 const findOrderDate = function () {
   const select = store.selectionDay?.orderDate || store.getFirstDay()
   currentOrder.value = product.value = myorder.value.find((i) => i.order_date.date === select)
@@ -59,6 +60,8 @@ watch(() => store.showCart, (newVal) => {
 
 watchEffect(() => {
   handleScroll()
+  findOrderDate();
+
 })
 
 onMounted(() => {

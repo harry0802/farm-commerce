@@ -105,8 +105,8 @@ const getSupabaseSpecificData = async (spFrom, spSelect, spEq) => {
 };
 
 const getAccountInfo = async function () {
-  const store = useProfileInfoStore(pinia);
-  const { registration, userState } = toRefs(useAccountStore(pinia));
+  const store = useProfileInfoStore();
+  const { registration, userState } = toRefs(useAccountStore());
   const [client, deliveryAddress, billingAddress, paymentInfo] =
     await Promise.all([
       getSupabaseSpecificData(
@@ -128,7 +128,6 @@ const getAccountInfo = async function () {
     deliveryAddress?.[0]?.clients_id === userid;
   registration.value.personalinfo = client?.[0]?.user_id === userid;
   registration.value.paymentinfo = paymentInfo?.[0]?.client_id === userid;
-
   store.setAccountProfileInfo(
     client,
     deliveryAddress,

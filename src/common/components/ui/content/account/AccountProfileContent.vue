@@ -17,7 +17,8 @@
 import { provide, onMounted } from "vue";
 import { toast } from 'vue-sonner'
 import { useProfileInfoStore } from "@/store/modules/profile/profileStore.js";
-import { updateAccount, multipleTablesChannel } from "@/common/composables/profileData.js";
+import useAccountStore from "@/store/modules/account/accountStore.js";
+import { updateAccount, multipleTablesChannel, getAccountInfo } from "@/common/composables/profileData.js";
 import {
     ProfileInfomation,
     ProfileDeliveryAddress,
@@ -31,14 +32,20 @@ import {
     ProfileChangePassword
 } from "@/common/components/account/profile/index.js";
 
+
+
+
 const store = useProfileInfoStore();
+const account = useAccountStore()
 
 
 
 provide('store', { updateAccount, store })
+provide('account', account)
 provide('toast', toast)
 onMounted(() => {
-    multipleTablesChannel()
+    multipleTablesChannel();
+    getAccountInfo();
 })
 </script>
 

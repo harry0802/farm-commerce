@@ -12,6 +12,7 @@ const props = defineProps({
   target: Element,
 });
 
+
 watch(
   () => props.target,
   (newValue) => {
@@ -25,7 +26,6 @@ watch(
 
 
 watch(() => props.switchOverlay, (newVal) => {
-  console.log(newVal);
   newVal ?
     document.body.style.overflow = 'hidden' :
     document.body.style.overflow = 'auto'

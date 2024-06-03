@@ -35,11 +35,10 @@ import ProducerCard from '../ui/card/ProducerCard.vue'
 import ProducerInfo from "../ui/content/producer/ProducerInfo.vue";
 import ProducerPhoto from '../ui/content/producer/ProducerPhoto.vue'
 import ShopMainProdutItemCard from "../ui/card/ShopMainProdutItemCard.vue";
-import { promise } from "zod";
+
 
 const router = useRouter();
 const id = useRouteParams('id')
-const isloading = ref(true)
 const currentProducer = ref([])
 const currentProduct = ref([])
 

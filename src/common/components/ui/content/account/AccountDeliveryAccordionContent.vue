@@ -23,7 +23,7 @@ const handleEditOrder = function (data) {
                 <AccointDeliverlyList :deliverlyIndex="i" :products="item" />
             </AccordionTrigger>
             <AccordionContent class="mb-8">
-                <AccointDeliverlyItem v-bind="item" />
+                <AccointDeliverlyItem :products="item.products" />
                 <div class="flex w-full mt-8 justify-between items-center">
                     <div class="self-end ">
                         <p class="text-color-primary font-[GalmuriMono9] tracking-widest">總金額： <span

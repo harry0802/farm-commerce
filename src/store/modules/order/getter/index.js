@@ -28,31 +28,22 @@ const getOrderState = () => {
   };
 };
 
-const calcSubtotalFn = (pd) => () => calcSubtotal(pd.value);
 const calcTotalFn = (amount) =>
   calcOverDiliverFree(amount) ? amount : amount + diliverCharge.value;
-
-const calcOverDiliverFree = (tarGet) => tarGet > diliverFree.value;
+const calcOverDiliverFree = (tarGet) => tarGet >= diliverFree.value;
 
 // 計算購物車的金額
-const orderGetter = function () {
-  const { productCart } = toRefs(getOrderState());
-
-  const getSubtotal = computed(calcSubtotalFn(productCart));
-  const getFree = computed(() =>
-    calcOverDiliverFree(getSubtotal.value) ? 0 : diliverCharge.value
-  );
-  const getTotal = computed(() => calcTotalFn(getSubtotal.value));
-  return { getSubtotal, getTotal, getFree };
-};
 
 const orderAmount = function (pd, discount) {
-  const subtotal = calcSubtotal(pd);
-  const deliveryFee = calcOverDiliverFree(subtotal) ? 0 : diliverCharge.value;
-  const total = discount
-    ? calcTotalFn(subtotal) - discount
-    : calcTotalFn(subtotal);
+  let subtotal = calcSubtotal(pd);
+  let deliveryFee = calcOverDiliverFree(subtotal) ? 0 : diliverCharge.value;
+  let total = calcTotalFn(subtotal);
+  if (discount) {
+    deliveryFee = calcOverDiliverFree(subtotal) ? 0 : diliverCharge.value;
+    total = calcTotalFn(subtotal) - discount;
+  }
+
   return { subtotal, deliveryFee, total };
 };
 
-export { orderGetter, diliverCharge, diliverFree, orderAmount };
+export { getOrderState, diliverCharge, diliverFree, orderAmount };

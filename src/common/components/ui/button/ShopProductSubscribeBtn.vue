@@ -26,8 +26,8 @@ import { inject, watch } from "vue";
 import { userHandleProductItem } from "@/Plugins/zodValidators.js";
 
 const productItem = inject('productItem')
-const productInfo = inject('productInfo')
 const { getOderFrequency } = inject('tdOrderInfo')
+
 
 
 const {
@@ -35,7 +35,7 @@ const {
     loading,
     preventBlurEvent,
     productOperate } =
-    userHandleProductItem({ ...productItem || productInfo.value }, getOderFrequency.value?.quantity)
+    userHandleProductItem({ ...productItem }, getOderFrequency.value?.quantity)
 
 const {
     handleFocus,

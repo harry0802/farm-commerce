@@ -101,7 +101,6 @@ defineHandleFn(setCountys, setDistricts, setZipcode)
 
 const onSubmit = handleSubmit(async (val) => {
     try {
-
         loading.value = true
         const sendData = {
             user_Address: val.streetAddress,

@@ -1,12 +1,21 @@
 <template>
-  <figure class="rounded-lg overflow-hidden" :class="reverse ? 'img__recontainer' : 'img__container'">
-    <img class="response__img--col-1 object-cover " :src="img" alt="" />
+  <figure class=" rounded-lg overflow-hidden" :class="reverse ? 'img__recontainer' : 'img__container'">
+    <img @load="isloading" loading="" :class="{ 'img__loaded--animate': loading }"
+      class="img__load response__img--col-1 object-cover " :src="img" alt="" />
   </figure>
 </template>
 
 <script>
 export default {
   props: { reverse: { type: Boolean, default: false }, img: { String, default: 'https://picsum.photos/800' } },
+  data() {
+    return { loading: false }
+  },
+  methods: {
+    isloading() {
+      this.loading = true
+    }
+  }
 };
 </script>
 

@@ -51,7 +51,7 @@ const createOrderConstruction = function () {
       product_name: item.product_name || item.name,
       price: item.price,
       image_url: item.image_url || item.photoPath,
-      quantity: item.quantity || 1,
+      quantity: +item.quantity || 1,
       weight: item.weight,
       supplier_name: item.supplier_name || item.producer,
       Subscribe: item.Subscribe || null,
@@ -67,7 +67,7 @@ const createOrderConstruction = function () {
       image_url: data.image_url || data.photoPath,
       product_name: data.product_name || data.name,
       product_code: data.product_code || data.code,
-      Quantity: data.quantity,
+      Quantity: +data.quantity,
       Frequency: data.frequency,
       DeliveryDay: delivery.dayOfWeek,
       NextDelivery_Date: delivery.date,
@@ -477,11 +477,10 @@ const createGeneralSubScribeConstruction = function () {
     //------- 更新訂單 -----------
     orderProsece(oldOrder, newOrder, productMap, oldProductList, newweekData);
 
-    clearEmptyAndSortOrder(myorder).value;
-    // upDateOrder({
-    //   subscription: subscription.value,
-    //   order: clearEmptyAndSortOrder(myorder).value,
-    // });
+    upDateOrder({
+      subscription: subscription.value,
+      order: clearEmptyAndSortOrder(myorder).value,
+    });
   };
 
   // 替換日期 (個別操作)
@@ -537,7 +536,10 @@ const createGeneralSubScribeConstruction = function () {
       changePdId
     );
 
-    clearEmptyAndSortOrder(myorder).value;
+    upDateOrder({
+      subscription: subscription.value,
+      order: clearEmptyAndSortOrder(myorder).value,
+    });
   };
 
   return {

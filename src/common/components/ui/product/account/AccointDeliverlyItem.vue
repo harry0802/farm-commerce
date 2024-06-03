@@ -28,6 +28,8 @@ const props = defineProps({
     }
 })
 
+
+
 const showMore = ref(false)
 const isLoad = ref(false)
 const displayedProducts = computed(() => showMore.value ? props.products : props.products.slice(0, 3));

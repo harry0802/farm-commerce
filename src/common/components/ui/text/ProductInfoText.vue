@@ -1,20 +1,23 @@
 <template>
     <div v-if="productInfo" class="product-info__description mt-8">
 
-        <div class="rich-text">
-            <p v-for=" (text, i) in productInfo.descripttion " :key="i">{{ text.description }}</p>
-            <!-- <ul>
-                <li v-for=" (list, i) in paragraph " :key="i">{{ list }}</li>
-            </ul> -->
+        <div class="rich-text w-[80%] ">
+            <p class=" mt-3 tracking-widest" v-for=" (text, i) in richText " :key="i">{{ text }}</p>
         </div>
 
     </div>
 </template>
 
 <script setup>
-import { inject } from "vue";
+import { inject, computed } from "vue";
 
 const productInfo = inject('productInfo')
+const richText = computed(() => {
+    const { descripttion } = productInfo.value
+    const [text] = descripttion
+    return text
+
+})
 </script>
 
 <style scoped>

@@ -1,21 +1,11 @@
 <template>
     <li class=" list-none relative ">
         <div class="text-left">
-            <!-- 他只有在第最近的日期出現 -->
             <p v-if="deliverlyIndex === 0"
                 class="delivery-badge inline-flex items-center border border-color-primary-light  bg-color-eva-dark-yellow rounded-xl px-2">
                 <Icon class="text-color-primary-light" :icon="haveOderIcon" />
                 <span class="ml-2 tracking-wider"> {{ productState }} </span>
             </p>
-            <!-- 只有即將出貨出現 -->
-            <!-- <p
-          class="delivery-badge delivery-badge inline-flex  items-center border border-color-primary-light  bg-color-eva-dark-yellow rounded-xl px-2">
-  
-          <Icon class="text-color-primary-light" icon="carbon:delivery" />
-  
-          <span class="ml-2  tracking-wider"> 配送進行... </span>
-        </p> -->
-
             <p v-if="products.order_date.date" class="item__title  tracking-widest ">
                 <span class="  text-xl tracking-widest">{{ products.order_date.dayOfWeek }}</span>
                 <span class="text-lg tracking-widest">{{ products.order_date.date.slice(4) }}</span>

@@ -1,15 +1,16 @@
 <template>
     <AccountProfileInfoCard>
         <template #card-item>
-            <AccountProfileItems v-if="store.billingAddress" :profileInfo="store.billingAddress" />
+            <AccountProfileItems v-if="account.regPaymentinfo" :profileInfo="store.billingAddress" />
             <div v-else>
                 <p class="text-lg ">尚未綁定帳單地址</p>
             </div>
         </template>
         <template #card-Button>
-            <slot v-if="store.billingAddress" name="customButton" />
+            <slot v-if="account.regPaymentinfo" name="customButton" />
             <div v-else class="card__action  mt-8 col-span-full place-self-end">
-                <RouterLink :to="{ name: 'payment-info' }" class="text-lg  text-color-primary-light flex items-center ">
+                <RouterLink @click="account.checkAllow" :to="{ name: 'payment-info' }"
+                    class="text-lg  text-color-primary-light flex items-center ">
                     <Icon class="mr-1 text-xl" icon="material-symbols-light:add-notes-outline" />
                     添加帳單地址
                 </RouterLink>
@@ -24,9 +25,6 @@ import AccountProfileItems from "@/common/components/ui/text/AccountProfileItems
 import { Icon } from '@iconify/vue';
 import { inject } from 'vue';
 const { store } = inject('store')
-
-
-
-
+const account = inject('account')
 
 </script>

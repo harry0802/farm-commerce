@@ -7,21 +7,30 @@ import { getAccountInfo } from "@/common/composables/profileData.js";
 import { creatOrderList } from "@/Plugins/day.js";
 import cartStore from "@/store/modules/cart/cartStore.js";
 
-const throttledLoginHandler = useThrottleFn(async (event, session) => {
+const getPiniaState = () => {
   const accountStore = useAccountStore(pinia);
+  const { initializeOrderStore } = useOrderStore();
+  const { resetOrder } = useOrderStore();
+
+  return {
+    accountStore,
+    initializeOrderStore,
+    resetOrder,
+  };
+};
+
+const throttledLoginHandler = useThrottleFn(async (event, session) => {
+  const { accountStore, initializeOrderStore, resetOrder } = getPiniaState();
 
   if (event === "SIGNED_IN" && accountStore.userState.aud !== "authenticated") {
-    const { initializeOrderStore } = useOrderStore();
     accountStore.setAuthenticated(session.user);
     getAccountInfo();
-
     initializeOrderStore();
   }
   // 处理登录状态的变化
   if (event === "SIGNED_OUT") {
     const { resetOrder } = useOrderStore();
     accountStore.$reset();
-    // cart.$reset();
     resetOrder();
   }
 }, 1000);
@@ -32,11 +41,11 @@ function startAuthStateListener() {
   });
 
   window.addEventListener("load", async () => {
-    const accountStore = useAccountStore(pinia);
+    const { accountStore, initializeOrderStore } = getPiniaState();
     const cart = cartStore(pinia);
-    const { initializeOrderStore } = useOrderStore();
     cart.workDay = await creatOrderList().filteredDates();
     if (accountStore.userState.aud === "authenticated") {
+      getAccountInfo();
       initializeOrderStore();
     }
   });

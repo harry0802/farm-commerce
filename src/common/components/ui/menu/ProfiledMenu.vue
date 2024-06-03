@@ -57,9 +57,9 @@ const useRootStore = inject('useRootStore')
 
 .nav-dropdown-wrap {
     position: absolute;
-    left: -150%;
     margin-left: -16px;
     top: 0px;
+    right: 0;
     padding-top: 32px;
     opacity: 0;
     pointer-events: none;

@@ -35,6 +35,7 @@ watchDebounced(
   width,
   (newVal) =>
     newVal > 950 ? useRootStore.toggleSiderBar = false : newVal,
+
   { debounce: 500, maxWait: 1000 },
 )
 

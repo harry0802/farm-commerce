@@ -1,6 +1,7 @@
 <template>
     <div class="flex items-baseline">
         <h2 class=" u-text-giant ">{{ DeliveryDay }}</h2>
+        {{ DeliveryDay }}
         <AccountSubscribeDialog title="更改交貨日期" description="請選擇您希望將訂閱轉移到的日期。">
             <template #customContent>
                 <SubscribeChangDeliveryDay :week="DeliveryDay" />

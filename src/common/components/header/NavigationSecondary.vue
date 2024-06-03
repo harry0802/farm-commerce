@@ -20,7 +20,7 @@
             <span class="p-2">|</span>
             <RouterLink :to="{ name: 'zip-check' }">註冊</RouterLink>
           </div>
-          <div class="relative" v-else>
+          <div class="" v-else>
             <p>嗨 {{ profileInfoStore.personalInfo.user_LastName.val }} !</p>
           </div>
           <ProfiledMenu v-if="accountStore.isaAuthenticated" />

@@ -4,7 +4,7 @@
     <!-- 低消提示 -->
     <!-- <procut-lowes-minimum></procut-lowes-minimum> -->
     <side-bar-oder-item />
-    <product-progress :maxValue="diliverFree" :progressLength="currentOrder.order_amount.total" />
+    <product-progress :maxValue="diliverFree" :progressLength="currentOrder.order_amount.subtotal" />
     <product-summary v-bind:="currentOrder.order_amount" :promoCode="currentOrder.promoCode" />
   </div>
 
