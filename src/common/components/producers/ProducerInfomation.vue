@@ -43,6 +43,7 @@ const currentProducer = ref([])
 const currentProduct = ref([])
 
 
+
 provide('producerInfo', currentProducer)
 
 

@@ -7,9 +7,8 @@ export const getShopData = async function () {
   try {
     const data = await getSupabaseData("shop");
     const projectMap = new Map();
-
     data.forEach((item) => {
-      const { project, category, subcategory } = item;
+      const { project, category, subcategory, keyword } = item;
 
       if (!projectMap.has(project)) {
         projectMap.set(project, {
@@ -50,6 +49,7 @@ export const getShopData = async function () {
         };
       }
     });
+
     return callbackStack;
   } catch (err) {
     console.error(err);
@@ -114,7 +114,6 @@ export const keywordSearch = async function (tag) {
           uniqueData.push(sendData);
         }
       });
-
       return uniqueData;
     }
   } catch (err) {
@@ -138,4 +137,17 @@ export const requestProducer = async function (search) {
   } catch (err) {
     console.error(err);
   }
+};
+
+export const getKeyWord = async function (key) {
+  const { data, err } = await supabase
+    .from("shop")
+    .select(`image_url,supplier_name,product_code,product_name`)
+    .range(0, 5)
+    .contains("keyword", key);
+
+  console.log(data);
+
+  if (err) throw err;
+  if (data) return data;
 };

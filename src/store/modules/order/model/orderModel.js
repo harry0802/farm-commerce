@@ -72,6 +72,7 @@ const createOrderConstruction = function () {
       DeliveryDay: delivery.dayOfWeek,
       NextDelivery_Date: delivery.date,
       Delivery_List: range,
+      price: data.price,
     };
   };
 

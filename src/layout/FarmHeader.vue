@@ -18,19 +18,32 @@ import NavigationPrimary from "@/common/components/header/NavigationPrimary.vue"
 import useAccountStore from "@/store/modules/account/accountStore.js";
 import rootStore from "@/store/rootStore.js";
 import store from "@/store/modules/cart/cartStore.js";
-import { onMounted, ref, provide } from "vue";
+import { onMounted, ref, provide, toRefs, watchEffect } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useProfileInfoStore } from "@/store/modules/profile/profileStore.js";
 import { getShopData } from "@/Plugins/SupabasePruductsData.js";
 import { useWindowSize, watchDebounced } from '@vueuse/core'
+import { useSearch } from "@/store/modules/search/index.js";
+
+
 const account = useAccountStore()
 const cartStore = store()
 const profileInfoStore = useProfileInfoStore()
 const productData = ref(null)
 const useRootStore = rootStore()
+
 const route = useRoute()
 const router = useRouter()
+
+const { searchState,
+  openSearch,
+  closeSearch, searchArearKeyword, handleUserinput, userEnter, searchArearProduct } = toRefs(useSearch())
+
+
 const { width } = useWindowSize()
+
+
+
 watchDebounced(
   width,
   (newVal) =>
@@ -45,6 +58,21 @@ provide('profileInfoStore', profileInfoStore)
 provide('productData', productData)
 provide('vueRouter', { route, router })
 provide('useRootStore', useRootStore)
+provide('useSearch', {
+  searchState,
+  openSearch,
+  closeSearch, searchArearKeyword, handleUserinput, userEnter, searchArearProduct
+})
+
+
+const setWindowScroll = (state) => document.body.style.overflow = state
+
+
+watchEffect(() => {
+  setWindowScroll(searchState.value ? 'hidden' : '');
+});
+
+
 
 onMounted(() => {
   (async () => productData.value = await getShopData())()

@@ -1,11 +1,12 @@
 <template>
-    <div class="card__action justify-end mt-8 col-span-full">
+    <div class="card__action flex-col gap-y-3  sm:flex-row  sm:justify-end mt-8 col-span-full">
         <button @click="closeForm" v-show="isForm" type="button"
-            class="u-pirmary-button profil__cancel text-color-grey-dark mr-8 text-sm textc ">
+            class="u-pirmary-button profil__cancel  text-color-grey-dark sm:mr-8 text-sm  ">
             取消
             <Icon class="ml-2 " icon="vaadin:cross-cutlery" />
         </button>
-        <button @click="showForm" class=" u-pirmary-button profil__edit   text-color-primary-light " :type="calcBtnType">
+        <button @click="showForm" class=" u-pirmary-button profil__edit   text-color-primary-light "
+            :type="calcBtnType">
             {{ calcBtnText }}
             <Icon class="ml-2 text-lg  " :icon="calcBtnIcon" />
         </button>
@@ -31,4 +32,8 @@ const closeForm = function () {
 
 </script>
 
-<style scoped></style>
+<style scoped>
+bottom.u-pirmary-button {
+    width: 100%;
+}
+</style>

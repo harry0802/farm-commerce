@@ -17,9 +17,9 @@
 
 <script setup>
 
-import { inject, computed } from "vue";
+import { inject, } from "vue";
 const productData = inject('productData')
-const { route, router } = inject('vueRouter')
+const { route, } = inject('vueRouter')
 </script>
 
 <style scoped>

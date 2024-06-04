@@ -28,7 +28,7 @@
                         </SelectContent>
                     </Select>
                 </div>
-                <p v-if="item.price">${{ item.price }}</p>
+                <p v-if="item.price">${{ quantityVal * item.price }} </p>
 
             </FormItem>
         </FormField>
@@ -91,7 +91,7 @@ const closeFormFn = inject('closeFormFn')
 const { changDeliveryDay, handleOrderRemoveSubScribe } = inject('handelSubScribe')
 
 const selectList = [
-    { id: 'quantity', label: '數量', value: 99, price: 1, placeholder: '' },
+    { id: 'quantity', label: '數量', value: 99, price: props.data.price, placeholder: '' },
     { id: 'frequency', label: '多久配送一次', value: ['每週一次', '隔週一次', '每月一次'] },
     { id: 'deliveryday', label: '星期幾出貨', value: ["週一", "週二", "週三", "週四", "週五",] },
     { id: 'changeNextDate', label: '下一筆出貨的時間', value: {} },
@@ -115,6 +115,7 @@ const { handleSubmit } = userHandleSubscription(
 
 const { value: deliverydayVal } = useField('deliveryday')
 const { value: nextDate, setValue: setNextDate } = useField('changeNextDate')
+const { value: quantityVal } = useField('quantity')
 
 
 

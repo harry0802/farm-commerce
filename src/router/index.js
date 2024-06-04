@@ -201,6 +201,11 @@ const router = createRouter({
         },
       ],
     },
+
+    {
+      path: "/search",
+    },
+
     {
       path: "/:catchAll(.*)",
       component: catchAll,

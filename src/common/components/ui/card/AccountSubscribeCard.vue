@@ -3,10 +3,10 @@
         <div v-for="item, i in data " :key="i" class="col-span-full     mr:col-span-6     mr:col-start-auto">
             <AccountSubscribeContent>
                 <template #image>
-                    <a href="">
+                    <RouterLink :to="`/product/${item.product_name}-${item.product_code}`">
                         <img class="w-full  aspect-square  object-cover  " :src="item.image_url"
                             :alt="item.product_name">
-                    </a>
+                    </RouterLink>
                 </template>
 
                 <template #button="{ openFormFn, openForm }">
@@ -15,8 +15,12 @@
                 </template>
 
                 <template #details>
-                    <a class=" inline-flex u-text-small    txt-decoration  mb-4 underline  transition-colors duration-300"
-                        href="">{{ item.product_name }}</a>
+
+                    <RouterLink :to="`/product/${item.product_name}-${item.product_code}`"
+                        class="inline-flex u-text-small    txt-decoration  mb-4 underline  transition-colors duration-300">
+                        {{ item.product_name }}
+                    </RouterLink>
+
                     <div>
                         <p>Next Delivery</p>
                         <time :datetime="item.NextDelivery_Date"> {{ transformDormats(item.NextDelivery_Date
