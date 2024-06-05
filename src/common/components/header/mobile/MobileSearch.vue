@@ -4,11 +4,11 @@
       <span>返回</span>
     </div>
     <div class="search-wrap " :class="{ 'cover-content': searchState }">
-      <button class="submit-wrap" aria-label="Submit serach" @click="searchState ? submitResult() : (openSearch())">
+      <button class="submit-wrap" aria-label="Submit serach" @click="searchState ? sendSearchPage() : (openSearch())">
         <Icon class="icon" icon="pixelarticons:search" />
       </button>
-      <input v-if="searchState" @input="handleUserinput" v-model="userEnter" class="serach__input outline-none w-full"
-        type="text" placeholder="尋找你心儀商品❤️" />
+      <input v-if="searchState" @keyup.enter="sendSearchPage" @input="handleUserinput" v-model="userEnter"
+        class="serach__input outline-none w-full" type="text" placeholder="尋找你心儀商品❤️" />
     </div>
   </div>
   <SearchArea v-if="searchState" />
@@ -22,7 +22,7 @@ const store = inject('useRootStore')
 const {
   searchState,
   closeSearch,
-  openSearch, userEnter, handleUserinput }
+  openSearch, userEnter, handleUserinput, sendSearchPage }
   = inject('useSearch')
 
 
@@ -31,10 +31,6 @@ const closeSearchAndSide = function () {
   store.closeSiderBar();
 };
 
-
-const submitResult = function () {
-  //傳送收尋結果
-};
 
 </script>
 

@@ -55,6 +55,14 @@
   z-index: -1;
 }
 
+.fade-in {
+  opacity: 1;
+  transition: opacity 0.5s;
+}
+.fade-target {
+  opacity: 0;
+}
+
 @keyframes rotateGradient {
   0% {
     transform: rotate(65deg);

@@ -8,6 +8,7 @@ import FarmProducers from "@/views/FarmProducers.vue";
 import FarmJoin from "@/views/FarmJoin.vue";
 import FarmAccount from "@/views/FarmAccount.vue";
 import FarmLogin from "@/views/FarmLogin.vue";
+import FarmSearch from "@/views/FarmSearch.vue";
 import catchAll from "@/views/CatchAll.vue";
 
 const router = createRouter({
@@ -204,6 +205,9 @@ const router = createRouter({
 
     {
       path: "/search",
+      name: "search",
+      component: FarmSearch,
+      meta: { title: "搜尋" },
     },
 
     {

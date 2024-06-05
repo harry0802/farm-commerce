@@ -145,9 +145,15 @@ export const getKeyWord = async function (key) {
     .select(`image_url,supplier_name,product_code,product_name`)
     .range(0, 5)
     .contains("keyword", key);
+  if (err) throw err;
+  if (data) return data;
+};
 
-  console.log(data);
-
+export const getSearchData = async function (key) {
+  const { data, err } = await supabase
+    .from("shop")
+    .select()
+    .contains("keyword", key);
   if (err) throw err;
   if (data) return data;
 };

@@ -2,7 +2,7 @@
 
   <BaseMainPage>
     <template #page>
-      <div class="overflow-hidden">
+      <div class="overflow-hidden ">
         <home-hero />
         <home-product />
         <MountainFlow class="bg-white  text-b-color-browm" />

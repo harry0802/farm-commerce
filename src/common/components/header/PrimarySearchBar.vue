@@ -3,7 +3,7 @@
     <div class="search-input__wrapper relative w-[80%]">
       <div class="search-input__content w-full relative">
         <input placeholder="請輸入內容" @input="handleUserinput" patype="text" class="search-input__text w-full"
-          v-model="userEnter" @focus="showDelete" @blur="closeDelete" />
+          v-model="userEnter" @focus="showDelete" @blur="closeDelete" @keyup.enter="sendSearchPage" />
         <div class="submit__wrapper">
           <button aria-label="Delete Search Sentence" class="button__delete" :class="deleteOpasity">
             <Icon class="active:translate-x-px" icon="pixelarticons:delete" @click="reEnter" />
@@ -13,7 +13,7 @@
             <Icon icon="bx:dots-vertical" />
           </span>
 
-          <button aria-label="Submit Search" class="button__wrapper">
+          <button @click="sendSearchPage" aria-label="Submit Search" class="button__wrapper">
             <Icon class="active:translate-x-px" icon="pixelarticons:search" />
           </button>
         </div>
@@ -34,7 +34,7 @@
 import { Icon } from "@iconify/vue";
 import { computed, ref, inject } from "vue";
 import SearchArea from "@/common/components/search/SearchArea.vue";
-const { closeSearch, userEnter, handleUserinput } = inject('useSearch')
+const { closeSearch, userEnter, handleUserinput, sendSearchPage } = inject('useSearch')
 
 const deleteBtn = ref(false);
 const showDelete = function () {

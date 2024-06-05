@@ -20,8 +20,6 @@ export const useSearch = defineStore(
     const searchArearProduct = ref([]);
 
     const createSearchProduct = (data) => {
-      console.log(data);
-
       return {
         imgurl: data.image_url,
         supplierName: data.supplier_name,
@@ -37,14 +35,10 @@ export const useSearch = defineStore(
 
     const throttleFn = useThrottleFn(
       async (key) => {
-        const wordsArray = key.trim().split(" ");
-        console.log(wordsArray);
-
+        const wordsArray = key.trimEnd().split(" ");
         const repose = await getKeyWord(wordsArray);
         if (repose) {
           searchArearProduct.value = [];
-          console.log(repose);
-
           repose.forEach((item) => {
             searchArearProduct.value.push(createSearchProduct(item));
           });
