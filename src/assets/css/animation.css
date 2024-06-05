@@ -56,11 +56,12 @@
 }
 
 .fade-in {
-  opacity: 1;
-  transition: opacity 0.5s;
-}
-.fade-target {
   opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+}
+
+.fade-in-visible {
+  opacity: 1;
 }
 
 @keyframes rotateGradient {

@@ -1,5 +1,4 @@
 <template>
-
   <BaseMainPage>
     <template #page>
       <div class="overflow-hidden ">
@@ -16,14 +15,11 @@
         <linked-resources />
         <opening-hours-segment />
       </div>
-
     </template>
     <template #sidebar>
       <slot name="sidebar" />
     </template>
   </BaseMainPage>
-
-
 </template>
 
 <script setup>

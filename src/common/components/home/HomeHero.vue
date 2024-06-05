@@ -1,5 +1,5 @@
 <template>
-  <section class="hero-section overflow-hidden relative w-full  max-h-[600px]">
+  <section v-fade-in class="hero-section overflow-hidden relative w-full  max-h-[600px]">
     <div class="hero__image ">
       <figure class="">
         <img loading="lazy" class="absolute w-full h-full object-cover" src="@/assets/imgs/farm-hero-390.png"

@@ -22,7 +22,10 @@
         <Icon class="text-color-eva-light-green text-3xl w-[100px]  mb-auto" icon="fluent:box-checkmark-20-regular" />
         <p class="text ">
           無需結帳！在截止時間之後，您的購物車中的商品將自動扣款。
-          若要<span class=" text-color-eva-dark-yellow"> 跳過或編輯</span>，
+
+          若要 <RouterLink class="text-color-eva-dark-yellow btn__linkUnderline--animate" to="/account/subscriptions">
+            跳過或編輯
+          </RouterLink>,
           請於 <span class="text-color-eva-light-red">{{
       lastEditTrans }}上午11:59前處理。</span>
         </p>
