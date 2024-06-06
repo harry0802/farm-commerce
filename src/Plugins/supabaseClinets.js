@@ -71,7 +71,7 @@ const userInsertRows = async function (fromName, userData) {
     if (error) throw error;
     return data;
   } catch (err) {
-    console.error(`Handle_SupabaseAPI_ERROR 💣:${error.message}`);
+    console.error(`Handle_SupabaseAPI_ERROR 💣:${err.message}`);
     handleSupabaseError(err);
     throw err;
   }
@@ -90,8 +90,8 @@ const signInWithPassword = async function (userEnter) {
     throw error;
   }
 };
-// "furryfriendfan@yopmail.com"
-// Zxc123123
+
+// --port=8080 --host=localhost ./dist
 const signinWithEmail = async function (userEnter) {
   try {
     const { error } = await supabase.auth.signInWithOtp({
@@ -135,7 +135,6 @@ const queryZipCode = async function (zip) {
       throw error;
     }
   } catch (err) {
-    console.error(`Handle_QueryZip_ERROR 💣:${error.message}`);
     throw err;
   }
 };

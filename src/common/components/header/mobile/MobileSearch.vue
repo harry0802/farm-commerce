@@ -1,49 +1,36 @@
 <template>
-  <div class="mobile__menu--search " :class="{ openSearch: showSearch }">
-    <div v-if="showSearch" class="search__back" @click="closeSearch()">
+  <div class="mobile__menu--search relative" :class="{ openSearch: searchState }">
+    <div v-if="searchState" class="search__back" @click="closeSearchAndSide">
       <span>返回</span>
     </div>
-    <div class="search-wrap" :class="{ 'cover-content': showSearch }">
-      <button class="submit-wrap" aria-label="Submit serach"
-        @click="showSearch ? submitResult() : (openSearch(), openNavMenu())">
+    <div class="search-wrap " :class="{ 'cover-content': searchState }">
+      <button class="submit-wrap" aria-label="Submit serach" @click="searchState ? sendSearchPage() : (openSearch())">
         <Icon class="icon" icon="pixelarticons:search" />
       </button>
-      <input v-if="showSearch" class="serach__input" type="text" placeholder="尋找你心儀商品❤️" />
+      <input v-if="searchState" @keyup.enter="sendSearchPage" @input="handleUserinput" v-model="userEnter"
+        class="serach__input outline-none w-full" type="text" placeholder="尋找你心儀商品❤️" />
     </div>
   </div>
+  <SearchArea v-if="searchState" />
 </template>
 
 <script setup>
 import { Icon } from "@iconify/vue";
-import { ref, } from "vue";
-import rootStore from "@/store/rootStore.js";
-const store = rootStore()
-const showSearch = ref(false);
-const showMenu = defineModel('showMenu')
+import { inject } from "vue";
+import SearchArea from "@/common/components/search/SearchArea.vue";
+const store = inject('useRootStore')
+const {
+  searchState,
+  closeSearch,
+  openSearch, userEnter, handleUserinput, sendSearchPage }
+  = inject('useSearch')
 
 
-
-
-
-const openSearch = function () {
-  showSearch.value = true;
-};
-
-
-const closeSearch = function () {
-  showSearch.value = false;
+const closeSearchAndSide = function () {
+  closeSearch.value()
   store.closeSiderBar();
-  showMenu.value = true
 };
 
-const openNavMenu = function () {
-  showMenu.value = false
-};
-
-
-const submitResult = function () {
-  //傳送收尋結果
-};
 
 </script>
 

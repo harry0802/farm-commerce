@@ -10,7 +10,6 @@
 </template>
 
 <script setup>
-// import NavMenu from "../common/components/ui/menu/HeaderMenu.vue";
 import MobileNav from "@/common/components/header/mobile/MobileNav.vue";
 import MobileMenuSiderbar from "@/common/components/header/mobile/MobileMenuSiderbar.vue";
 import NavigationSecondary from "@/common/components/header/NavigationSecondary.vue";
@@ -18,19 +17,55 @@ import NavigationPrimary from "@/common/components/header/NavigationPrimary.vue"
 import useAccountStore from "@/store/modules/account/accountStore.js";
 import rootStore from "@/store/rootStore.js";
 import store from "@/store/modules/cart/cartStore.js";
-import { onMounted, ref, provide } from "vue";
+import { onMounted, ref, provide, toRefs, watchEffect } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useProfileInfoStore } from "@/store/modules/profile/profileStore.js";
 import { getShopData } from "@/Plugins/SupabasePruductsData.js";
 import { useWindowSize, watchDebounced } from '@vueuse/core'
+import { useSearch } from "@/store/modules/search/index.js";
+
 const account = useAccountStore()
 const cartStore = store()
 const profileInfoStore = useProfileInfoStore()
 const productData = ref(null)
 const useRootStore = rootStore()
+
 const route = useRoute()
 const router = useRouter()
+
+const {
+  searchState,
+  openSearch,
+  closeSearch,
+  searchArearKeyword,
+  handleUserinput,
+  userEnter,
+  searchArearProduct
+} = toRefs(useSearch())
+
 const { width } = useWindowSize()
+
+
+
+const sendSearchPage = async function () {
+  const queryText = userEnter.value.trimEnd().replaceAll(' ', '+')
+
+  router.push({ name: 'search', query: { search: queryText } })
+  closeSearch.value()
+}
+
+
+
+const sendSearchPageForLink = async function (key) {
+  router.push({ name: 'search', query: { search: key + '' } })
+  closeSearch.value()
+}
+
+
+
+
+
+
 watchDebounced(
   width,
   (newVal) =>
@@ -45,6 +80,21 @@ provide('profileInfoStore', profileInfoStore)
 provide('productData', productData)
 provide('vueRouter', { route, router })
 provide('useRootStore', useRootStore)
+provide('useSearch', {
+  searchState,
+  openSearch,
+  closeSearch, searchArearKeyword, handleUserinput, userEnter, searchArearProduct, sendSearchPage, sendSearchPageForLink
+})
+
+
+const setWindowScroll = (state) => document.body.style.overflow = state
+
+
+watchEffect(() => {
+  setWindowScroll(searchState.value ? 'hidden' : '');
+});
+
+
 
 onMounted(() => {
   (async () => productData.value = await getShopData())()

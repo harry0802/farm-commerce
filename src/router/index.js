@@ -8,6 +8,7 @@ import FarmProducers from "@/views/FarmProducers.vue";
 import FarmJoin from "@/views/FarmJoin.vue";
 import FarmAccount from "@/views/FarmAccount.vue";
 import FarmLogin from "@/views/FarmLogin.vue";
+import FarmSearch from "@/views/FarmSearch.vue";
 import catchAll from "@/views/CatchAll.vue";
 
 const router = createRouter({
@@ -201,6 +202,14 @@ const router = createRouter({
         },
       ],
     },
+
+    {
+      path: "/search",
+      name: "search",
+      component: FarmSearch,
+      meta: { title: "搜尋" },
+    },
+
     {
       path: "/:catchAll(.*)",
       component: catchAll,
@@ -231,6 +240,7 @@ router.beforeEach((to, from) => {
   if (to.meta.isjoin && store.getRegistration) {
     return { name: "home" };
   }
+  // 註冊到一半 引導完成註冊
   if (to.meta.requiresAuth && !store.regDeliveryaddress) {
     store.checkAllow();
     return { name: "delivery-address" };

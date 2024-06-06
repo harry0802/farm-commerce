@@ -5,7 +5,7 @@
       <!-- 當檢測沒有登陸時 -->
       <p class="text-center">
         請在
-        <strong class="text-color-validate-error">{{ lastEditTrans }}日星期六上午 11:59</strong>
+        <strong class="text-color-validate-error">{{ lastEditTrans }}下午 11:59</strong>
         之前建立帳戶，<br />否則您購物車中的商品將被刪除。
         <br />已經是會員 ？ <router-link class="btn__linkUnderline--animate text-color-eva-dark-yellow "
           :to="{ name: 'login' }"> 登入</router-link>
@@ -22,7 +22,10 @@
         <Icon class="text-color-eva-light-green text-3xl w-[100px]  mb-auto" icon="fluent:box-checkmark-20-regular" />
         <p class="text ">
           無需結帳！在截止時間之後，您的購物車中的商品將自動扣款。
-          若要<span class=" text-color-eva-dark-yellow"> 跳過或編輯</span>，
+
+          若要 <RouterLink class="text-color-eva-dark-yellow btn__linkUnderline--animate" to="/account/subscriptions">
+            跳過或編輯
+          </RouterLink>,
           請於 <span class="text-color-eva-light-red">{{
       lastEditTrans }}上午11:59前處理。</span>
         </p>
@@ -51,7 +54,7 @@ const lastEditTrans = computed(() => {
   }
 
   if (!accountStore.isaAuthenticated) {
-    return dayjs().date(1).format("dd, M月D")
+    return dayjs(new Date()).format("dd, M月D")
   }
 })
 

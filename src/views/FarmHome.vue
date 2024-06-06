@@ -1,8 +1,7 @@
 <template>
-
   <BaseMainPage>
     <template #page>
-      <div class="overflow-hidden">
+      <div class="overflow-hidden ">
         <home-hero />
         <home-product />
         <MountainFlow class="bg-white  text-b-color-browm" />
@@ -16,14 +15,11 @@
         <linked-resources />
         <opening-hours-segment />
       </div>
-
     </template>
     <template #sidebar>
       <slot name="sidebar" />
     </template>
   </BaseMainPage>
-
-
 </template>
 
 <script setup>

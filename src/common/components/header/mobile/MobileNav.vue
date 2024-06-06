@@ -1,12 +1,12 @@
 <template>
   <section class="mobile__nav  bg-white  h-16 flex  w-full px-5  justify-between items-center lg:hidden">
     <div class="mobile__menu--button flex  items-center flex-1">
-      <mobile-hamburger v-show="showMenu" />
-      <mobile-search v-model:showMenu="showMenu"></mobile-search>
+      <mobile-hamburger v-if="!searchState" />
+      <mobile-search />
     </div>
 
     <transition name="fade">
-      <div v-if="showMenu" class="mobile__logo">
+      <div v-if="!searchState" class="mobile__logo">
         <figure class="flex justify-between items-center">
           <RouterLink :to="{ name: 'home' }">
             <img src="@/assets/imgs/organicX70.svg" alt="Farm Village Logo" size="64px" class="h-16" />
@@ -15,7 +15,7 @@
       </div>
     </transition>
 
-    <div v-if="showMenu" class="mobile__car flex flex-1 justify-end">
+    <div v-if="!searchState" class="mobile__car flex flex-1 justify-end relative">
       <a v-if="store.existenceProduct" href="#" class="button__login">
         Login
       </a>
@@ -23,8 +23,12 @@
         <Icon class="text-color-primary text-2xl" icon="simple-line-icons:basket" @click="store.openCart()" />
       </span>
 
-      <span v-show="store.getshowCart" class="text-color-primary text-2xl">
+      <span v-show="store.getshowCart" class="text-color-primary relative text-2xl">
         <Icon icon="pixelarticons:close" @click="store.closeCart()" />
+      </span>
+      <span v-if="productAmount !== 0 && !store.getshowCart"
+        class="flex justify-center items-center absolute ring-0 top-0 -translate-y-[50%] translate-x-[50%]   border-[2px] border-color-primary rounded-full w-5 h-5 aspect-square bg-color-eva-dark-yellow font-[GalmuriMono9] text-xs  font-black">{{
+        productAmount }}
       </span>
     </div>
     <SidebarOverlay />
@@ -35,13 +39,23 @@
 import MobileHamburger from "../../ui/menu/MobileHamburger.vue";
 import MobileSearch from "../../header/mobile/MobileSearch.vue";
 import SidebarOverlay from "../../ui/sidebar/MobileSidebarOverlay.vue";
-import cartStore from "@/store/modules/cart/cartStore.js";
+import { useOrderStore } from "@/store/modules/order/index.js";
 
-
-import { ref } from "vue";
 import { Icon } from "@iconify/vue";
-const store = cartStore();
-const showMenu = ref(true);
+import { inject, toRefs, computed } from "vue";
+const store = inject('cartStore')
+const { searchState, } = inject('useSearch')
+
+
+
+
+
+
+
+const { productCart } = toRefs(useOrderStore())
+const productAmount = computed(() => productCart.value?.length)
+
+
 
 </script>
 

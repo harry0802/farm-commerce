@@ -10,7 +10,6 @@
   <farm-footer />
   <Toaster closeButton position="bottom-left" richColors :expand="true" />
   <chatbotPage />
-  <!-- <LoadingDeliciousOverlayer /> -->
 </template>
 
 <script setup>
@@ -20,7 +19,6 @@ import FarmFooter from "./layout/FarmFooter.vue";
 import farmHeader from "./layout/FarmHeader.vue";
 import HeaderSidebar from "@/common/components/cartsidebar/HeaderSidebar.vue";
 import chatbotPage from "@/common/components/chatbot/chatbotPage.vue";
-import LoadingDeliciousOverlayer from "@/common/components/ui/animat/LoadingDeliciousOverlayer.vue";
 import { Toaster } from "@/common/composables/ui/sonner";
 import { startAuthStateListener } from "@/Plugins/sessionHandler.js";
 

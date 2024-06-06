@@ -22,20 +22,18 @@
 <script setup>
 import LoadingCat2 from "@/common/components/ui/animat/LoadingCat2.vue";
 import { Icon, } from '@iconify/vue';
-import { inject, watch } from "vue";
+import { inject, watch, computed } from "vue";
 import { userHandleProductItem } from "@/Plugins/zodValidators.js";
 
 const productItem = inject('productItem')
 const { getOderFrequency } = inject('tdOrderInfo')
-
-
-
+const product = computed(() => productItem.value || productItem)
 const {
     theAmount,
     loading,
     preventBlurEvent,
     productOperate } =
-    userHandleProductItem({ ...productItem }, getOderFrequency.value?.quantity)
+    userHandleProductItem({ ...product.value }, getOderFrequency.value?.quantity)
 
 const {
     handleFocus,

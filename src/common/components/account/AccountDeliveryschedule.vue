@@ -1,7 +1,7 @@
 <template>
     <div class="section-container">
         <AccountEmptyCard v-if="!dynamicComponent" :title="'即將出貨'" :description="'目前並沒有訂購任何商品'" />
-        <AccountDeliveryContnet />
+        <AccountDeliveryContnet v-else />
     </div>
 </template>
 

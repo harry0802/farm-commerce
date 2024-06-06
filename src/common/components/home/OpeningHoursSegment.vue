@@ -1,6 +1,6 @@
 <template>
   <div class="bg-b-color-browm">
-    <base-section>
+    <base-section v-fade-in>
       <base-content>
         <base-phto-content :img="'src/assets/imgs/homePage/eileen-pan-5d5DSRQ5dUc-unsplash.jpg'" />
         <base-text-content>

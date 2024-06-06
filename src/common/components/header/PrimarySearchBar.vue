@@ -1,9 +1,9 @@
 <template>
-  <div id="search-bar" class="w-full">
-    <div class="search-input__wrapper w-[80%]">
-      <div class="search-input__content w-full">
-        <input placeholder="請輸入內容" patype="text" class="search-input__text w-full" v-model="searchValue"
-          @focus="showDelete" @blur="closeDelete" />
+  <div id="search-bar" class=" px-5 w-full">
+    <div class="search-input__wrapper relative w-[80%]">
+      <div class="search-input__content w-full relative">
+        <input placeholder="請輸入內容" @input="handleUserinput" patype="text" class="search-input__text w-full"
+          v-model="userEnter" @focus="showDelete" @blur="closeDelete" @keyup.enter="sendSearchPage" />
         <div class="submit__wrapper">
           <button aria-label="Delete Search Sentence" class="button__delete" :class="deleteOpasity">
             <Icon class="active:translate-x-px" icon="pixelarticons:delete" @click="reEnter" />
@@ -13,33 +13,30 @@
             <Icon icon="bx:dots-vertical" />
           </span>
 
-          <button aria-label="Submit Search" class="button__wrapper">
+          <button @click="sendSearchPage" aria-label="Submit Search" class="button__wrapper">
             <Icon class="active:translate-x-px" icon="pixelarticons:search" />
           </button>
         </div>
       </div>
-
+      <SearchArea />
     </div>
+
     <div class="button--close">
       <button aria-label="Close Search Bar" class="">
         <Icon class="hover:scale-105 active:translate-x-px" icon="pixelarticons:close" @click="closeSearch" />
       </button>
     </div>
-
   </div>
-  <SearchArea />
 
 </template>
 
 <script setup>
 import { Icon } from "@iconify/vue";
-import { computed, ref, defineEmits } from "vue";
+import { computed, ref, inject } from "vue";
 import SearchArea from "@/common/components/search/SearchArea.vue";
+const { closeSearch, userEnter, handleUserinput, sendSearchPage } = inject('useSearch')
 
-const emits = defineEmits(["closeSearch"]);
 const deleteBtn = ref(false);
-const searchValue = ref("");
-
 const showDelete = function () {
   deleteBtn.value = true;
 };
@@ -47,9 +44,7 @@ const showDelete = function () {
 const closeDelete = function () {
   deleteBtn.value = false;
 };
-const closeSearch = function () {
-  emits("closeSearch", false);
-};
+
 
 const deleteOpasity = computed(() => {
   return deleteBtn.value ? "opacity-100" : "opacity-0";

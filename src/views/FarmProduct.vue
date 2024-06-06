@@ -66,8 +66,9 @@ watchEffect(() => {
 })
 
 
+
 provide('productInfo', watchingProductInfo)
-provide('productItem', watchingProductInfo.value)
+provide('productItem', watchingProductInfo)
 provide('productPageBreadcrumbs', watchingProductPageBreadcrumbs.value)
 provide('ProdictSupplier', watchingProductInfoPageData)
 provide('productPageNavBtnBar', watchingProductPageNavBtnBar.value)

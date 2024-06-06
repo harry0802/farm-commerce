@@ -78,7 +78,6 @@ export default {
       Subscribe,
       product_code,
     } = data;
-    console.log(product_description);
 
     Object.assign(page, {
       name: product_name,
