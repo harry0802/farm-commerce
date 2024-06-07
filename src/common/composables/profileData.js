@@ -155,4 +155,9 @@ const updateAccount = async function (spFrom, columnVal, spEq) {
   }
 };
 
-export { updateAccount, getAccountInfo, multipleTablesChannel };
+export {
+  updateAccount,
+  getAccountInfo,
+  multipleTablesChannel,
+  getSupabaseSpecificData,
+};
