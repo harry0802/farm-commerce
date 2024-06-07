@@ -13,13 +13,13 @@
                     <div class="category__product" v-if="productData">
                         <ShopMainProdutItemCard v-for="product, i in productData" :key="i" :data="product" />
                     </div>
-                    <div v-else class=" w-full text-center text-color-primary">
+                    <div v-fade-in v-else class=" w-full text-center text-color-primary">
                         <figure class="flex flex-col gap-y-10  overflow-hidden">
                             <figcaption class="font-[RiiPopkkR] u-text-large"><span class="u-text-giant">OPPS</span>
                                 目前沒有相關產品 , 不過別擔心 !
                                 或許你可以來我們市集找找
                             </figcaption>
-                            <img class="rounded-3xl w-full h-full object-cover"
+                            <img loading="lazy" class="rounded-3xl w-full h-full object-cover"
                                 src="@/assets/imgs/homePage/farmmarkets.jpg" alt="">
                         </figure>
                     </div>

@@ -81,6 +81,7 @@ import { paymentinfo, useField } from "@/Plugins/zodValidators.js";
 import { useProfileInfoStore } from "@/store/modules/profile/profileStore.js";
 import { Button } from '@/common/composables/ui/button'
 import PayInfoForm from "@/common/components/ui/from/join/payinfo/PayInfoForm.vue";
+
 const { router, store } = inject('paymentInfo')
 const {
     handleSubmit,
@@ -150,9 +151,8 @@ const onsubmit = handleSubmit(async (val) => {
 
         await Promise.all([
             userInsertRows('PaymentInfo', paymentData),
-            userInsertRows('BillingAddress', address)]).catch((e) => {
-                throw e
-            })
+            userInsertRows('BillingAddress', address)])
+
         router.push({ name: 'welcome' })
     } finally {
         loading.value = false
