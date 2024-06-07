@@ -6,7 +6,7 @@
     "dev": "vite --host",
     "build:prod": "vite build",
     "build:stage": "vite build --mode staging",
-    "predeploy": "npm run build",
+    "predeploy": "npm run build:prod",
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
