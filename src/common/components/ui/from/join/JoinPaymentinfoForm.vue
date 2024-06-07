@@ -149,12 +149,13 @@ const onsubmit = handleSubmit(async (val) => {
 
         let address = {
             clients_id: userId.value,
-            user_Address: sameAddress.user_Address,
-            user_AddressLine: sameAddress.user_AddressLine,
-            user_City: sameAddress.user_City,
-            user_State: sameAddress.user_State,
-            user_ZipCode: +sameAddress.user_ZipCode,
+            user_Address: sameAddress.value.user_Address,
+            user_AddressLine: sameAddress.value.user_AddressLine,
+            user_City: sameAddress.value.user_City,
+            user_State: sameAddress.value.user_State,
+            user_ZipCode: +sameAddress.value.user_ZipCode,
         }
+
 
         if (!val.sameAddress) {
             address = {
@@ -162,7 +163,6 @@ const onsubmit = handleSubmit(async (val) => {
                 ...getCustomAddress.value
             }
         }
-
         await Promise.all([
             userInsertRows('PaymentInfo', paymentData),
             userInsertRows('BillingAddress', address)])
