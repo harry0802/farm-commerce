@@ -230,7 +230,7 @@ router.beforeEach((to, from) => {
   // 未登入不可訪問頁面
 
   if (to.meta.requiresAuth && !store.isaAuthenticated) {
-    return { name: "login" };
+    return { name: "home" };
   }
   // 不可隨意訪問頁面
   if (to.meta.entryControl && !store.allow) {
