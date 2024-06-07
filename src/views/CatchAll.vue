@@ -15,8 +15,7 @@
                 </BaseText>
             </BaseTextContent>
 
-            <BasePhtoContent reverse class="rounded-full"
-                :img="'src/assets/gif/dungeon-meshi-delicious-in-dungeon.gif'" />
+            <BasePhtoContent reverse class="rounded-full" img="src/assets/gif/dungeon-meshi-delicious-in-dungeon.gif" />
         </BaseContent>
     </BaseSection>
 

@@ -5,15 +5,15 @@
         <home-hero />
         <home-product />
         <MountainFlow class="bg-white  text-b-color-browm" />
-        <ordering-process-guide />
+        <ordering-process-guide :picture="homePageimg.orderingProcessGuide" />
         <MountainFlow class="bg-b-color-browm text-b-color-green-light" />
         <product-highlights />
         <MountainFlow class="bg-b-color-green-light text-b-color-green-dark" />
-        <features-and-advantages />
+        <features-and-advantages :picture="homePageimg.featuresAndAdvantages" />
         <MountainFlow class="bg-b-color-green-dark text-b-color-browm" />
         <our-story />
         <linked-resources />
-        <opening-hours-segment />
+        <opening-hours-segment :picture="homePageimg.openingHoursSegment" />
       </div>
     </template>
     <template #sidebar>
@@ -36,4 +36,6 @@ import {
 } from "@/common/components/home/index.js";
 import MountainFlow from "@/common/components/ui/section/MountainFlow.vue";
 import BaseMainPage from "@/common/components/ui/card/BaseMainPage.vue";
+import * as homePageimg from "@/assets/imgs/homePage/index.js";
+
 </script>

@@ -1,7 +1,7 @@
 <template>
   <base-section class="bg-b-color-browm">
     <base-content />
-    <base-phto-center :img="'src/assets/imgs/homePage/edoardo-busti-5ofKC-FQK3Q-unsplash.jpg'" />
+    <base-phto-center :img="picture" />
     <base-text-content>
       <div class="ProcessGuide__Title response__content">
         <h2 class="u-text-large">我們的流程：</h2>
@@ -19,6 +19,7 @@ import BaseTextContent from "../ui/content/base/BaseTextContent.vue";
 import PrimaryButton from "../ui/button/PrimaryButton.vue";
 import ProcessGuideText from "../ui/text/ProcessGuideText.vue";
 import BaseContent from "../ui/content/base/BaseContent.vue";
+defineProps({ picture: String })
 </script>
 
 <style scoped>
