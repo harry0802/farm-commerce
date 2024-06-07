@@ -15,7 +15,7 @@
                 </BaseText>
             </BaseTextContent>
 
-            <BasePhtoContent reverse class="rounded-full" img="src/assets/gif/dungeon-meshi-delicious-in-dungeon.gif" />
+            <BasePhtoContent reverse class="rounded-full" :img="deliciousInDungeon" />
         </BaseContent>
     </BaseSection>
 
@@ -28,6 +28,7 @@ import BaseContent from "@/common/components/ui/content/base/BaseContent.vue";
 import BasePhtoContent from "@/common/components/ui/content/base/BasePhtoContent.vue";
 import BaseText from "@/common/components/ui/text/BaseText.vue";
 import BaseTextContent from "@/common/components/ui/content/base/BaseTextContent.vue";
+import deliciousInDungeon from "@/assets/gif/dungeon-meshi-delicious-in-dungeon.gif";
 </script>
 
 <style scoped>

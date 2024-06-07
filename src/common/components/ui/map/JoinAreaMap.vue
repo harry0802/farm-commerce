@@ -15,6 +15,7 @@ const router = useRouter()
 
 onMounted(() => {
     if (!userArea.value.ID) {
+
         return router.push('zip-check')
     }
     const map = L.map(mapContainer.value, {

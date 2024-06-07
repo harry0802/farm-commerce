@@ -8,7 +8,7 @@
                 複製成功
             </div>
         </div>
-        <button @click="copy(discountCode)" class="u-pirmary-button" type="button">複製折扣碼</button>
+        <button @click="copy(discountCode.toLowerCase())" class="u-pirmary-button" type="button">複製折扣碼</button>
     </div>
 </template>
 
@@ -17,7 +17,7 @@ import { ref } from "vue";
 import { useClipboard } from '@vueuse/core'
 import { Icon } from '@iconify/vue';
 
-const discountCode = ref('HARRYP13')
+const discountCode = ref('FURRYFRIENDS')
 const { copy, copied } = useClipboard()
 </script>
 
