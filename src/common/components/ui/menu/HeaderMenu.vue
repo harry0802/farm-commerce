@@ -2,7 +2,8 @@
   <div class="nav-classification nav-container">
     <div class="nav-categorie" v-for="(menus) in productData" :key="menus">
       <div class="nav-categories-wrap ">
-        <RouterLink :class="{ 'active': route.params.id === menus.project }" :to="'/shop/' + `${menus.project}`">{{
+        <RouterLink class="inline-block" :class="{ 'active': route.params.id === menus.project }"
+          :to="'/shop/' + `${menus.project}`">{{
       menus.project }}
         </RouterLink>
         <div class="nav-dropdown-wrap public__item-link">
