@@ -84,6 +84,8 @@ const signInWithPassword = async function (userEnter) {
       password: userEnter.password,
     });
 
+    console.log(data);
+
     if (error) throw error;
     return data;
   } catch (error) {
@@ -91,15 +93,13 @@ const signInWithPassword = async function (userEnter) {
   }
 };
 
-supabase.auth.signInWithOtp;
-
 const signinWithEmail = async function (userEnter) {
   try {
     const { error } = await supabase.auth.signInWithOtp({
       email: userEnter,
       options: {
         shouldCreateUser: false,
-        emailRedirectTo: "http://localhost:5173/farm-commerce/#/",
+        emailRedirectTo: "http://localhost:5173/farm-commerce/#/welcomeback",
       },
     });
     if (error) throw error;
@@ -155,6 +155,19 @@ const getUserInfo = async function () {
   }
 };
 
+const confirmMagicLink = async function (token, type, email) {
+  const { error } = await supabase.auth.verifyOtp({
+    email: email,
+    token: token,
+    type: type,
+  });
+  if (error) {
+    setErrorToast("出了一點問題,請稍後再試或是使用一般登入");
+    throw error;
+  }
+  return token;
+};
+
 export {
   userSignUp,
   verifyOtp,
@@ -164,5 +177,6 @@ export {
   signInWithPassword,
   signinWithEmail,
   signOutSpabase,
+  confirmMagicLink,
   toast,
 };

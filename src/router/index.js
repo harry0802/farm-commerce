@@ -9,6 +9,7 @@ import FarmJoin from "@/views/FarmJoin.vue";
 import FarmAccount from "@/views/FarmAccount.vue";
 import FarmLogin from "@/views/FarmLogin.vue";
 import FarmSearch from "@/views/FarmSearch.vue";
+import FarmWellComBack from "@/views/FarmWellComBack.vue";
 import catchAll from "@/views/CatchAll.vue";
 
 const router = createRouter({
@@ -213,7 +214,7 @@ const router = createRouter({
     {
       path: "/welcomeBack",
       name: "welcomeBack",
-      component: () => import("@/common/components/join/JoinWelcome.vue"),
+      component: FarmWellComBack,
       meta: { title: "歡迎回來" },
     },
 
