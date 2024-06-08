@@ -211,6 +211,13 @@ const router = createRouter({
     },
 
     {
+      path: "/welcomeBack",
+      name: "welcomeBack",
+      component: () => import("@/common/components/join/JoinWelcome.vue"),
+      meta: { title: "歡迎回來" },
+    },
+
+    {
       path: "/:catchAll(.*)",
       component: catchAll,
       meta: { title: "找不到頁面" },

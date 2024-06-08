@@ -2,8 +2,10 @@
   <section v-fade-in class="hero-section overflow-hidden relative w-full  max-h-[600px]">
     <div class="hero__image ">
       <div class="">
-        <img loading="lazy" class=" w-full h-full aspect-video  object-cover"
-          src="@/assets/imgs/homePage/videobackground.png" alt="hero background" />
+        <img loading="lazy" class="sm:hidden  w-full h-full aspect-square  object-cover"
+          src="@/assets/imgs/homePage/farm-hero-390.jpg" alt="hero background" />
+        <img loading="lazy" class=" hidden sm:block w-full h-full aspect-video  object-cover"
+          src="@/assets/imgs/homePage/videobackground.jpg" alt="hero background" />
       </div>
       <video loding="lazy" class="hero__film " playsinline autoplay="autoplay" loop="loop" muted="muted">
         <source src="@/assets/video/farmtodinner.mp4" />

@@ -1,5 +1,5 @@
 <template>
-  <div class=" product-item__wrapper p-0.5 pb-10 rounded-lg overflow-hidden bg-white">
+  <div class=" product-item__wrapper p-0.5 pb-10 rounded-lg overflow-hidden ">
     <div class="relative  product-item__container p-1.5 flex flex-col h-full   ">
       <!-- 產品圖片 -->
       <div class="relative product-item__photo">

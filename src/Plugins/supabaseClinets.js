@@ -91,6 +91,8 @@ const signInWithPassword = async function (userEnter) {
   }
 };
 
+supabase.auth.signInWithOtp;
+
 const signinWithEmail = async function (userEnter) {
   try {
     const { error } = await supabase.auth.signInWithOtp({
