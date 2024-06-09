@@ -5,7 +5,9 @@
                 <BasePhtoContent v-bind="item" />
                 <BaseTextContent v-bind="item">
                     <BaseText v-bind="item">
-                        <!-- <p></p> -->
+                        <p class="mt-4 u-text-small" v-if="item.extraText" v-for=" text, i in item.extraText" :key="i">
+                            {{ text }}
+                        </p>
                     </BaseText>
                 </BaseTextContent>
             </BaseContent>
@@ -44,7 +46,7 @@ const sectionGroup = [
     {
         title: '人文關懷',
         paragraph: '從種植您食物的農民到包裝和配送您訂單的員工，我們確保他們都獲得合理的工資。我們尋求與公平對待工人的企業合作。我們的每一元食品收入中，有 50% 回饋給農場。（相比之下，食品行業的全國平均水平僅為 15%。）',
-        extraText: ['我們認識到食品系統中存在的系統性種族主義和不平等問題，並承諾積極應對這些挑戰。我們致力於與更多由BIPOC（黑人、原住民、有色人種）擁有的農場和企業合作，並積極僱用多元化的員工。這還不止於此，我們的所有肉類和乳製品都遵循嚴格的動物福利標準。因為我們相信，人道應延伸至所有生物。', '幫助我們，共同建立一個更好的食品系統。'],
+        extraText: ['在這方面，我們真的很努力！我們在找新鮮水果的時候總是把樂趣和責任結合起來。積極招聘多元化的員工，我們都在盡力做到最好。此外，我們的肉類和乳製品符合嚴格的動物福利標準，因為對我們來說，人道關懷不僅僅是針對人類，也涵蓋了所有生物。', '快來幫助我們一起建立更棒的食品系統吧！'],
         img: advantagesPic.HumanisticCare,
         reverse: true
     }
