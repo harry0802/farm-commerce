@@ -2,6 +2,8 @@ import { pinia } from "@/store/pinia.js";
 import useAccountStore from "@/store/modules/account/accountStore.js";
 import { createRouter, createWebHashHistory } from "vue-router";
 import FarmHome from "@/views/FarmHome.vue";
+import FarmFeaturesAndAdvantages from "@/views/FarmFeaturesAndAdvantages.vue";
+
 import FarmShop from "@/views/FarmShop.vue";
 import FarmProduct from "@/views/FarmProduct.vue";
 import FarmProducers from "@/views/FarmProducers.vue";
@@ -26,6 +28,13 @@ const router = createRouter({
       name: "home",
       component: FarmHome,
       meta: { title: "農場美食販賣部" },
+    },
+
+    {
+      path: "/features-and-advantages",
+      name: "features",
+      component: FarmFeaturesAndAdvantages,
+      meta: { title: "特色及優點" },
     },
 
     {

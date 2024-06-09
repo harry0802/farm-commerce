@@ -2,11 +2,11 @@
   <div>
     <base-section>
       <base-content>
-        <base-phto-content :img="picture" class="lg:order-1" :reverse="true" />
+        <base-phto-content :img="picture" reverse />
         <base-text-content :reverse="true">
           <base-text :title="'FeaturesAndAdvantages:'"
             :paragraph="'肩負著改變食物系統和人們取得食物的方式的使命，「農田到餐桌」正進行著根本性的轉變。我們堅信每個人都應該能夠從值得信賴的種植者和製造商那裡，直接獲得最新鮮、高品質的農產品、海鮮、肉類等食材。我們致力於讓這變得輕鬆且負擔得起。'"></base-text>
-          <primary-button class="mt-10" :btnTitle="'手作匠心'"></primary-button>
+          <primary-button class="mt-10" :btnTitle="'手作匠心'" />
         </base-text-content>
       </base-content>
     </base-section>
