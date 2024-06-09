@@ -13,8 +13,8 @@
             </div>
         </div>
     </div>
-
 </template>
+
 <style scoped>
 * {
     font-family: "SentyGoldSand";

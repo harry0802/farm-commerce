@@ -265,6 +265,8 @@ router.beforeEach((to, from) => {
   }
   // 註冊到一半 引導完成註冊
   if (to.meta.requiresAuth && !store.regDeliveryaddress) {
+    console.log(store.regDeliveryaddress);
+
     store.checkAllow();
     return { name: "delivery-address" };
   }
