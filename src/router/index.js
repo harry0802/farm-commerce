@@ -236,7 +236,6 @@ const router = createRouter({
 router.beforeEach((to, from) => {
   const store = useAccountStore();
   // 未登入不可訪問頁面
-
   if (to.meta.requiresAuth && !store.isaAuthenticated) {
     return { name: "home" };
   }

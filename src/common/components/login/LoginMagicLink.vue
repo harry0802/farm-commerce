@@ -15,7 +15,7 @@
 <script setup>
 
 import { useRoute, useRouter } from 'vue-router'
-import { confirmMagicLink } from "@/Plugins/supabaseClinets.js";
+import { confirmMagicLink, setErrorToast } from "@/Plugins/supabaseClinets.js";
 
 const route = useRoute()
 const router = useRouter()
@@ -23,7 +23,15 @@ const router = useRouter()
 
 const login = async () => {
     if (route.query) {
+
+
         const { token, type, address } = (route.query)
+
+        if (!token || !type || !address) {
+            setErrorToast('請前往信箱獲取連結')
+            return
+        }
+
         const response = await confirmMagicLink(token, type, address)
         console.log(response);
         if (!response) return

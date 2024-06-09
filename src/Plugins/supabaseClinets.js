@@ -84,8 +84,6 @@ const signInWithPassword = async function (userEnter) {
       password: userEnter.password,
     });
 
-    console.log(data);
-
     if (error) throw error;
     return data;
   } catch (error) {
@@ -162,7 +160,11 @@ const confirmMagicLink = async function (token, type, email) {
     type: type,
   });
   if (error) {
-    setErrorToast("出了一點問題,請稍後再試或是使用一般登入");
+    let errMessage;
+    error.status === 403
+      ? (errMessage = "您的 Token 已經過期，請重新進行登錄操作")
+      : (errMessage = "出了點問題 , 請稍後再試，或是使用一般登入");
+    setErrorToast(errMessage);
     throw error;
   }
   return token;
@@ -178,5 +180,6 @@ export {
   signinWithEmail,
   signOutSpabase,
   confirmMagicLink,
+  setErrorToast,
   toast,
 };
