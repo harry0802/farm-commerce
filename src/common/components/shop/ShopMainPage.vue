@@ -4,14 +4,11 @@
   </main>
 </template>
 
-
 <script setup>
 import ProductPageSection from "../ui/section/ProductPageSection.vue";
 defineProps({
-  overview: Boolean
+  overview: Boolean,
 });
-
-
 </script>
 
 <style scoped>

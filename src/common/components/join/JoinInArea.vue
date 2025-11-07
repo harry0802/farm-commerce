@@ -1,7 +1,7 @@
 <template>
-    <section class="join-page__section-specific">
-        <JoinInAreaContent />
-    </section>
+  <section class="join-page__section-specific">
+    <JoinInAreaContent />
+  </section>
 </template>
 
 <script setup>

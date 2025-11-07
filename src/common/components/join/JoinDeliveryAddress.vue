@@ -1,7 +1,7 @@
 <template>
-    <section class="join-page__section ">
-        <JoinDeliveryAddressContent />
-    </section>
+  <section class="join-page__section">
+    <JoinDeliveryAddressContent />
+  </section>
 </template>
 
 <script setup>
