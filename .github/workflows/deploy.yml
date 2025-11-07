@@ -25,6 +25,10 @@ jobs:
 
       - name: Build project
         run: npm run build
+        env:
+          VITE_APP_FARM_PRODUCTS_URL: ${{ secrets.VITE_APP_FARM_PRODUCTS_URL }}
+          VITE_APP_FARM_PRODUCTS_KEY: ${{ secrets.VITE_APP_FARM_PRODUCTS_KEY }}
+          VITE_APP_GOOGLEAI_KEY: ${{ secrets.VITE_APP_GOOGLEAI_KEY }}
 
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v4
