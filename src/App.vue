@@ -18,7 +18,7 @@ import { RouterView } from "vue-router";
 import FarmFooter from "./layout/FarmFooter.vue";
 import farmHeader from "./layout/FarmHeader.vue";
 import HeaderSidebar from "@/common/components/cartsidebar/HeaderSidebar.vue";
-import chatbotPage from "@/common/components/chatbot/chatbotPage.vue";
+import chatbotPage from "@/common/components/chatbot/ChatbotPage.vue";
 import { Toaster } from "@/common/composables/ui/sonner";
 import { startAuthStateListener } from "@/Plugins/sessionHandler.js";
 
