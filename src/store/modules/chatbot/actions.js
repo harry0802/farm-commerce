@@ -1,35 +1,29 @@
-import OpenAI from "openai";
 import {
   GoogleGenerativeAI,
   HarmCategory,
   HarmBlockThreshold,
 } from "@google/generative-ai";
-// OPENAI SETTING
-const openai = new OpenAI({
-  apiKey: "",
-  dangerouslyAllowBrowser: true,
-});
 // GOOGLEAI SETTING
-const MODEL_NAME = "gemini-1.0-pro";
+const MODEL_NAME = "gemini-2.5-flash";
 const API_KEY = import.meta.env.VITE_APP_GOOGLEAI_KEY;
 const genAI = new GoogleGenerativeAI(API_KEY);
 
 const safetySettings = [
   {
     category: HarmCategory.HARM_CATEGORY_HARASSMENT,
-    threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+    threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
   },
   {
     category: HarmCategory.HARM_CATEGORY_HATE_SPEECH,
-    threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+    threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
   },
   {
     category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
-    threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+    threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
   },
   {
     category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
-    threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE,
+    threshold: HarmBlockThreshold.BLOCK_ONLY_HIGH,
   },
 ];
 const generationConfig = {
@@ -60,127 +54,93 @@ export default {
         (el) => el.id === findId && el.wait
       );
       if (!target) return;
-      const model = genAI.getGenerativeModel({ model: MODEL_NAME });
+
+      const model = genAI.getGenerativeModel({
+        model: MODEL_NAME,
+        systemInstruction: `你是一個販售高品質農產品的店主，個性極度傲慢、不耐煩且充滿諷刺。
+
+規則：
+1. 對任何與農產品無關的問題，你只會用 1-2 句話敷衍回答，態度冷漠且不屑。
+2. 不要表現同情、關心或提供心理支持。
+3. 不要問對方問題或試圖深入了解。
+4. 只有在談論你的農產品時，才會變得熱情且專業。
+5. 永遠記住：你只在乎賣農產品，其他事情你完全不感興趣。`,
+      });
 
       const chat = model.startChat({
+        generationConfig,
+        safetySettings,
         history: [
           {
             role: "user",
-            parts: "我好傷心",
+            parts: [{ text: "我今天過得不好" }],
           },
           {
             role: "model",
-            parts: "我不在乎",
+            parts: [{ text: "哦。那你要買菜嗎？" }],
           },
           {
             role: "user",
-            parts: "你好我是來購買的顧客",
+            parts: [{ text: "我好傷心" }],
           },
           {
             role: "model",
-            parts:
-              "除了與農產品有關的問題外，它充滿了傲慢與諷刺，不情願的回答所有問題。",
+            parts: [{ text: "我不在乎。" }],
+          },
+          {
+            role: "user",
+            parts: [{ text: "我需要有人聊聊" }],
+          },
+          {
+            role: "model",
+            parts: [{ text: "我很忙。要買什麼？" }],
+          },
+          {
+            role: "user",
+            parts: [{ text: "可以安慰我嗎" }],
+          },
+          {
+            role: "model",
+            parts: [{ text: "不行。我只賣菜。" }],
           },
         ],
-        generationConfig: {
-          maxOutputTokens: 3000,
-        },
       });
 
-      const result = await chat.sendMessageStream(msg).catch((e) => {
+      const result = await chat.sendMessageStream(msg);
+
+      const response = await result.response;
+      const feedback = response.promptFeedback;
+
+      if (feedback && feedback.blockReason) {
         target.wait = false;
-        target.message = "很抱歉因為 Google 流量限制，請你稍候再試";
+        target.message = "很抱歉，你的請求因 Google 安全政策被阻擋了。\n";
         target.error = true;
-        throw e;
-      });
+        return;
+      }
 
-      const { stream, response } = await result;
-
-      await response.then((feedback) => {
-        if (
-          (feedback.promptFeedback && feedback.promptFeedback.blockReason) ||
-          feedback.candidates[0].finishReason === "SAFETY"
-        ) {
-          target.wait = false;
-          target.message =
-            "很抱歉你因為 Google 安全政策，你不能詢問相關問題 \n";
-          target.error = true;
-        }
-      });
+      if (response.candidates[0].finishReason === "SAFETY") {
+        target.wait = false;
+        target.message = "很抱歉，回應內容因 Google 安全政策被過濾了。\n";
+        target.error = true;
+        return;
+      }
 
       target.wait = false;
-      for await (const chunk of stream) {
+      target.message = "";
+      for await (const chunk of result.stream) {
         const chunkText = chunk.text();
         target.message += chunkText;
       }
     } catch (error) {
+      const target = this.createChatLi.find((el) => el.id === findId);
+      if (target) {
+        target.wait = false;
+        target.message = "很抱歉，因 Google 流量限制或網路問題，請稍候再試。";
+        target.error = true;
+      }
+      console.error(`RUN CHAT ERROR:💣 ${error.message}`);
       throw error;
     }
-  },
-  // OPENAI
-  async generateResponse(userMessage) {
-    try {
-      return await openai.beta.chat.completions.stream({
-        model: "gpt-3.5-turbo",
-        messages: [
-          {
-            role: "system",
-            content:
-              "It reluctantly answers all questions with sarcastic remarks, except for those related to farming.",
-          },
-
-          {
-            role: "user",
-            content: `${userMessage}`,
-          },
-        ],
-        stream: true,
-      });
-    } catch (err) {
-      if (err instanceof OpenAI.APIError) {
-        console.log(err.status); // 400
-        console.log(err.name); // BadRequestError
-        console.log(err.headers); // {server: 'nginx', ...}
-      } else {
-        throw err;
-      }
-    }
-  },
-  openaiEventHandler(stream, findId) {
-    const target = this.createChatLi.find((el) => el.id === findId && el.wait);
-    if (!target) return;
-    return new Promise((resolve, rejection) => {
-      setTimeout(() => {
-        resolve((target.wait = false));
-      }, 1000);
-
-      stream.on("content", (delta) => {
-        if (!this.isAborted) {
-          target.message += delta;
-        } else {
-          target.message += `📱訊息：有內鬼停止交易...`;
-          stream.abort();
-        }
-      });
-
-      // stream.on("abort", () => {
-      //   target.message += `📱訊息：有內鬼停止交易...`;
-      //   this.isAborted = false;
-      // });
-
-      stream.on("error", (error) => {
-        target.message = "技術上出現一點錯誤，請聯絡開發人員回報";
-        console.log(error);
-
-        rejection(error.me);
-      });
-      stream.on("end", () => {
-        console.log(123);
-
-        this.operational = false;
-        this.isAborted = false;
-      });
-    });
   },
   //
   autoAdjustTextareaHeight() {

@@ -3,14 +3,26 @@
     <teleport to="body">
       <transition name="fade">
         <div v-if="store.showCart">
-          <div class="overlay fixed  w-full inset-0  h-full  z-[9]" :class="{ open: store.showCart }"></div>
+          <div
+            class="overlay fixed w-full inset-0 h-full z-[9]"
+            :class="{ open: store.showCart }"
+          ></div>
         </div>
       </transition>
     </teleport>
     <teleport to="#header">
       <transition>
-        <div class="cart__container" :style="{ marginTop: width > 950 ? marginTop + 'px' : '' }" v-if="store.showCart">
-          <aside class="cart__content" :style="{ height: width > 950 ? `calc(100vh - ${80 + marginTop}px)` : '' }">
+        <div
+          class="cart__container"
+          :style="{ marginTop: width > 950 ? marginTop + 'px' : '' }"
+          v-if="store.showCart"
+        >
+          <aside
+            class="cart__content"
+            :style="{
+              height: width > 950 ? `calc(100vh - ${80 + marginTop}px)` : '',
+            }"
+          >
             <HeaderSideBarSelectorBtn />
             <cartDate v-if="!store.showProductItem" />
             <CartProdut v-else />
@@ -19,11 +31,18 @@
       </transition>
     </teleport>
   </div>
-
 </template>
 
 <script setup>
-import { ref, onMounted, watch, onBeforeUnmount, provide, toRefs, watchEffect } from "vue";
+import {
+  ref,
+  onMounted,
+  watch,
+  onBeforeUnmount,
+  provide,
+  toRefs,
+  watchEffect,
+} from "vue";
 import HeaderSideBarSelectorBtn from "../ui/button/HeaderSideBarSelectorBtn.vue";
 import { onClickOutside, useWindowSize } from "@vueuse/core";
 import CartProdut from "../cartsidebar/cartProdut/CartProdut.vue";
@@ -31,57 +50,78 @@ import cartDate from "../../components/cartsidebar/cartDate/CartDate.vue";
 import cartStore from "@/store/modules/cart/cartStore.js";
 import { useOrderStore } from "@/store/modules/order/index.js";
 
-const { handleOrderRemoveItem, workDayLists, myorder, calcOrderState, setProductCart, productCart, handleSelectionDay, calcSubtotal, promoCodeConstruction } = toRefs(useOrderStore());
+const {
+  handleOrderRemoveItem,
+  workDayLists,
+  myorder,
+  calcOrderState,
+  setProductCart,
+  productCart,
+  handleSelectionDay,
+  calcSubtotal,
+  promoCodeConstruction,
+} = toRefs(useOrderStore());
 const store = cartStore();
 const marginTop = ref(40);
 const product = ref(null);
-const currentOrder = ref(null)
-const { width } = useWindowSize()
-
-
+const currentOrder = ref(null);
+const { width } = useWindowSize();
 
 const findOrderDate = function () {
-  const select = store.selectionDay?.orderDate || store.getFirstDay()
-  currentOrder.value = product.value = myorder.value.find((i) => i.order_date.date === select)
-  product.value ? setProductCart.value(product.value.products) : setProductCart.value([])
-}
-
+  const select = store.selectionDay?.orderDate || store.getFirstDay();
+  currentOrder.value = product.value = myorder.value.find(
+    (i) => i.order_date.date === select
+  );
+  product.value
+    ? setProductCart.value(product.value.products)
+    : setProductCart.value([]);
+};
 
 const handleScroll = () => {
   const scrollTop = window.scrollY;
   marginTop.value = scrollTop <= 40 ? 40 - scrollTop : 0;
-}
+};
 
-watch(() => store.showCart, (newVal) => {
-  newVal ?
-    document.body.style.overflow = 'hidden' :
-    document.body.style.overflow = 'auto'
-})
+watch(
+  () => store.showCart,
+  (newVal) => {
+    newVal
+      ? (document.body.style.overflow = "hidden")
+      : (document.body.style.overflow = "auto");
+  }
+);
 
 watchEffect(() => {
-  handleScroll()
+  handleScroll();
   findOrderDate();
-
-})
+});
 
 onMounted(() => {
-  const header = document.getElementById('header')
+  const header = document.getElementById("header");
   onClickOutside(header, () => {
-    store.closeCart()
-  })
-  window.addEventListener("scroll", handleScroll)
+    store.closeCart();
+  });
+  window.addEventListener("scroll", handleScroll);
 });
 
 onBeforeUnmount(() => {
   window.removeEventListener("scroll", handleScroll);
-})
+});
 
-provide('store', store)
-provide('orderStore', { myorder, calcOrderState, workDayLists, productCart, handleSelectionDay, setProductCart, handleOrderRemoveItem, calcSubtotal, currentOrder, promoCodeConstruction })
-provide('findOrderDate', { findOrderDate, product })
-
-
-
+provide("store", store);
+provide("orderStore", {
+  myorder,
+  calcOrderState,
+  workDayLists,
+  productCart,
+  handleSelectionDay,
+  setProductCart,
+  handleOrderRemoveItem,
+  calcSubtotal,
+  currentOrder,
+  promoCodeConstruction,
+});
+provide("findOrderDate", { findOrderDate, product });
 </script>
 
 <style scoped>
@@ -123,7 +163,6 @@ provide('findOrderDate', { findOrderDate, product })
 .v-leave-to {
   /* 从右侧滑入 */
   transform: translateX(100%);
-
 }
 
 .fade-leave-active {

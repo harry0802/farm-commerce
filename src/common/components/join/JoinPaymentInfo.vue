@@ -1,7 +1,7 @@
 <template>
-    <section class="join-page__section-specific">
-        <JoinPaymentInfoContent />
-    </section>
+  <section class="join-page__section-specific">
+    <JoinPaymentInfoContent />
+  </section>
 </template>
 
 <script setup>
