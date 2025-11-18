@@ -1,0 +1,1 @@
+import{A as t}from"./AccountEmptyCard-BJ5re-f-.js";import{c as e,a as o,o as c}from"./index-CdlARe2l.js";const r={class:"section-container"},p={__name:"AccountOrderHistory",setup(s){return(a,n)=>(c(),e("div",r,[o(t,{title:"以完成訂單",description:"目前沒有完成的訂單"})]))}};export{p as default};

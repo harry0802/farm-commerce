@@ -7,8 +7,9 @@
         <img loading="lazy" class=" hidden sm:block w-full h-full aspect-video  object-cover"
           src="@/assets/imgs/homePage/videobackground.jpg" alt="hero background" />
       </div>
+      <!-- 影片從 Supabase Storage CDN 載入（原檔 53MB 超過 Cloudflare 限制） -->
       <video loding="lazy" class="hero__film " playsinline autoplay="autoplay" loop="loop" muted="muted">
-        <source src="@/assets/video/farmtodinner.mp4" />
+        <source src="https://srwrseziyaecgzjcndxt.supabase.co/storage/v1/object/sign/video/farmtodinner%20(1).mp4?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8zYWFkMjdjZS01OGYwLTQ2OTItYTlmNy1kYmNlYjAyNmI5NGIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJ2aWRlby9mYXJtdG9kaW5uZXIgKDEpLm1wNCIsImlhdCI6MTc2MzQ1NjU2MywiZXhwIjozMzI2NzkyMDU2M30.tJ1k_gVUvJSH8qtXZj5tkPkq1-RkbfiImTArguqwoA4" type="video/mp4" />
       </video>
     </div>
 
