@@ -3,7 +3,7 @@
     <div class="hero__image ">
       <div class="">
         <img loading="lazy" class=" w-full h-full aspect-video  object-cover"
-          src="@/assets/imgs/homePage/videobackground.png" alt="hero background" />
+          src="@/assets/imgs/homePage/videobackground.webp" alt="hero background" />
       </div>
       <!-- 影片從 Supabase Storage CDN 載入（原檔 53MB 超過 Cloudflare 限制） -->
       <video loding="lazy" class="hero__film " playsinline autoplay="autoplay" loop="loop" muted="muted">
