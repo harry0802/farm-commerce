@@ -70,4 +70,74 @@
 
 9. Vuex 換成 Pina
 
-10. 使用 VueUes
+10. 使用 VueUse
+
+11. 使用 pnpm 作為套件管理工具
+
+## 開發指令
+
+### 安裝依賴
+```bash
+pnpm install
+```
+
+### 啟動開發伺服器
+```bash
+pnpm dev
+```
+開發伺服器會在 `http://localhost:5173` 啟動，並支援網路存取（`--host`）。
+
+### 建置專案
+```bash
+# 正式環境建置（GitHub Pages）
+pnpm run build:prod
+
+# 測試環境建置
+pnpm run build:stage
+```
+
+## 部署
+
+此專案支援多平台部署：
+
+### GitHub Pages 部署
+
+專案使用 GitHub Actions 自動部署到 GitHub Pages：
+- 推送到 `main` 分支會自動觸發部署
+- 部署路徑：`/farm-commerce/`
+- 環境變數在 GitHub Secrets 中設定
+
+手動部署：
+```bash
+pnpm run deploy
+```
+
+### Cloudflare Pages 部署
+
+Cloudflare Pages 從 GitHub 自動同步並部署：
+
+**Build 設定：**
+- Build command: `pnpm install && pnpm run build`
+- Build output directory: `dist`
+- Node version: 20 或以上
+
+**環境變數：**
+```
+VITE_BASE_PATH=/
+VITE_APP_FARM_PRODUCTS_URL=<Supabase URL>
+VITE_APP_FARM_PRODUCTS_KEY=<Supabase Anon Key>
+VITE_APP_GOOGLEAI_KEY=<Google AI Key>
+```
+
+## 環境變數
+
+建立 `.env` 檔案並設定以下變數：
+
+```env
+VITE_APP_FARM_PRODUCTS_URL=<Supabase URL>
+VITE_APP_FARM_PRODUCTS_KEY=<Supabase Anon Key>
+VITE_APP_GOOGLEAI_KEY=<Google Generative AI Key>
+VITE_BASE_PATH=/farm-commerce/  # GitHub Pages 用，Cloudflare 用 /
+```
+
+正式環境的環境變數已在 `.env.production` 設定。
