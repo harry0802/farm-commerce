@@ -2,7 +2,7 @@
     <div class="account__empty  supplier__content w-full  grid">
         <h2 class="u-text-large">{{ title }}</h2>
         <h3 class="mt-2 u-text-small">{{ description }}</h3>
-        <img class="rounded-md  self-start w-full max-w-[325px max-sm:mt-10" src="@/assets/imgs/26hkhPJ5hmdD87HYA.gif"
+        <img class="rounded-md  self-start w-full max-w-[325px max-sm:mt-10" src="https://srwrseziyaecgzjcndxt.supabase.co/storage/v1/object/sign/gif/26hkhPJ5hmdD87HYA.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8zYWFkMjdjZS01OGYwLTQ2OTItYTlmNy1kYmNlYjAyNmI5NGIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJnaWYvMjZoa2hQSjVobWREODdIWUEuZ2lmIiwiaWF0IjoxNzYzNDYxMDE1LCJleHAiOjQ4ODU1MjUwMTV9.xKe9MPcrfgbu29kf5QeTdNvdFlzn0ZQIdfxDaN6dMek"
             alt="">
         <RouterLink class="mt-16 place-self-start	 text-color-primary-light" :to="'/shop/麵包'">開始去購物！</RouterLink>
     </div>

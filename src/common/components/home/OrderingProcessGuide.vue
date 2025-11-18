@@ -45,7 +45,7 @@ defineProps({ picture: String })
   right: 0;
   bottom: 0;
 
-  background-image: url("@/assets/imgs/shop.png");
+  background-image: url("@/assets/imgs/shop.webp");
   background-size: 100% 100%;
 }
 </style>
