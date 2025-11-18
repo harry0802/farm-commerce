@@ -26,6 +26,6 @@ const isLargeScreen = useMediaQuery("(min-width: 950px)");
 
 <style scoped>
 h2 {
-  font-family: Maca;
+  font-family: RiiT_F, sans-serif;
 }
 </style>
