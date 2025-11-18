@@ -129,6 +129,8 @@ VITE_APP_FARM_PRODUCTS_KEY=<Supabase Anon Key>
 VITE_APP_GOOGLEAI_KEY=<Google AI Key>
 ```
 
+**注意：** 由於 Cloudflare Pages 限制單檔最大 25 MB，超大資源檔（影片 53MB、字體 30-40MB）已改用 Supabase Storage CDN 託管，確保兩個平台都能正常運作。
+
 ## 環境變數
 
 建立 `.env` 檔案並設定以下變數：

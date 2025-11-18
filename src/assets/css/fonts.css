@@ -20,9 +20,10 @@
   font-style: normal;
 }
 
+/* 超大字體從 Supabase Storage CDN 載入（原檔超過 Cloudflare 25MB 限制） */
 @font-face {
   font-family: "cjkfonts";
-  src: url("@/assets/font/cjkFonts_allseto_v1.11.ttf") format("truetype");
+  src: url("https://srwrseziyaecgzjcndxt.supabase.co/storage/v1/object/sign/Font/cjkFonts_allseto_v1.11.ttf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8zYWFkMjdjZS01OGYwLTQ2OTItYTlmNy1kYmNlYjAyNmI5NGIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJGb250L2Nqa0ZvbnRzX2FsbHNldG9fdjEuMTEudHRmIiwiaWF0IjoxNzYzNDU2NzQyLCJleHAiOjQ4ODU1MjA3NDJ9.npXSzAxv4Cjp-5715tmX9Upx9HmLqM7ecpgJnd2njZE") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
@@ -33,9 +34,10 @@
   font-weight: normal;
   font-style: normal;
 }
+
 @font-face {
   font-family: "SentyGoldSand";
-  src: url("@/assets/font/unsure/SentyGoldSand.ttf") format("truetype");
+  src: url("https://srwrseziyaecgzjcndxt.supabase.co/storage/v1/object/sign/Font/SentyGoldSand.ttf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8zYWFkMjdjZS01OGYwLTQ2OTItYTlmNy1kYmNlYjAyNmI5NGIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJGb250L1NlbnR5R29sZFNhbmQudHRmIiwiaWF0IjoxNzYzNDU2Nzg2LCJleHAiOjQ4ODU1MjA3ODZ9.ngwTNEgGwh3la6_mQPoPmCMWVu43MHF_PFgUDIn2UWY") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
