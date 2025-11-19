@@ -40,13 +40,18 @@ export default {
 
   chatbotToggler() {
     this.isChat = !this.isChat;
-    // 鎖定/解鎖背景滾動
-    if (this.isChat) {
-      const scrollY = window.scrollY;
-      document.body.style.overflow = 'hidden';
-      document.body.style.position = 'fixed';
-      document.body.style.width = '100%';
-      document.body.style.top = `-${scrollY}px`;
+    const isChatbotOpen = !this.isChat;
+
+    if (isChatbotOpen) {
+      // 鎖定背景滾動
+      this._savedScrollY = window.scrollY;
+
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.width = "100%";
+      document.body.style.left = "0";
+      document.body.style.right = "0";
+      document.body.style.top = `-${this._savedScrollY}px`;
 
       // 防止觸控滾動穿透
       let touchStartY = 0;
@@ -56,10 +61,12 @@ export default {
       };
 
       const handleTouchMove = (e) => {
-        const chatbox = e.target.closest('.chatbox');
+        const chatbox = e.target.closest(".chatbox");
         if (chatbox) {
           const isAtTop = chatbox.scrollTop === 0;
-          const isAtBottom = chatbox.scrollTop + chatbox.clientHeight >= chatbox.scrollHeight - 1;
+          const isAtBottom =
+            chatbox.scrollTop + chatbox.clientHeight >=
+            chatbox.scrollHeight - 1;
           const currentY = e.touches[0].clientY;
           const isScrollingUp = currentY > touchStartY;
           const isScrollingDown = currentY < touchStartY;
@@ -75,23 +82,35 @@ export default {
       this._touchStartHandler = handleTouchStart;
       this._touchMoveHandler = handleTouchMove;
 
-      document.body.addEventListener('touchstart', handleTouchStart, { passive: true });
-      document.body.addEventListener('touchmove', handleTouchMove, { passive: false });
+      document.body.addEventListener("touchstart", handleTouchStart, {
+        passive: true,
+      });
+      document.body.addEventListener("touchmove", handleTouchMove, {
+        passive: false,
+      });
     } else {
-      const scrollY = document.body.style.top;
-      document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.width = '';
-      document.body.style.top = '';
+      // 解鎖背景滾動
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+      document.body.style.left = "";
+      document.body.style.right = "";
+      document.body.style.top = "";
 
       if (this._touchStartHandler) {
-        document.body.removeEventListener('touchstart', this._touchStartHandler);
+        document.body.removeEventListener(
+          "touchstart",
+          this._touchStartHandler
+        );
+        this._touchStartHandler = null;
       }
       if (this._touchMoveHandler) {
-        document.body.removeEventListener('touchmove', this._touchMoveHandler);
+        document.body.removeEventListener("touchmove", this._touchMoveHandler);
+        this._touchMoveHandler = null;
       }
 
-      window.scrollTo(0, parseInt(scrollY || '0') * -1);
+      window.scrollTo(0, this._savedScrollY || 0);
+      this._savedScrollY = 0;
     }
   },
   addMessage(id, role, message, state = false, err = false) {

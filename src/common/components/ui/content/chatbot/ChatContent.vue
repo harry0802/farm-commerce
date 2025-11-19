@@ -4,7 +4,8 @@
     class="chatbox overflow-y-auto h-[510px] pt-[30px] px-5 pb-[100px]"
   >
     <li
-      v-for="chatList in createChatLi"
+      v-for="(chatList, index) in createChatLi"
+      :key="index"
       class="chat incoming flex list-none"
       :class="{ outgoing: chatList.role === 'user' }"
     >
