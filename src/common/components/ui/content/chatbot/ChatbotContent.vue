@@ -1,6 +1,6 @@
 <template>
 
-    <div class="chatbot z-10 fixed w-[420px] left-9 bottom-[90px]  bg-white rounded-2xl overflow-hidden opacity-0 pointer-events-none scale-50 origin-bottom-left  transition-all  "
+    <div class="chatbot z-10 fixed w-[420px] left-9 bottom-[90px]  bg-white rounded-2xl overflow-hidden opacity-0 pointer-events-none scale-50 origin-bottom-left  transition-all duration-300 ease-in-out  "
         :class="{ 'show-chatbot': !isChat }">
 
         <slot name="title" />
@@ -48,22 +48,39 @@ const { isChat } = inject('store')
     .chatbot {
         left: 0;
         bottom: 0;
-        height: 100%;
+        height: 100dvh;
+        height: 100vh;
         border-radius: 0;
         width: 100%;
+        transform-origin: center;
+    }
+
+    .show-chatbot.chatbot {
+        animation: slideUp 0.3s ease-out;
     }
 
     .chatbot .chatbox {
-        height: 90%;
-        padding: 25px 15px 100px;
+        height: calc(100% - 120px);
+        padding: 20px 16px 100px;
     }
 
     .chatbot .chat-input {
-        padding: 5px 15px;
+        padding: 8px 16px;
     }
 
     .chatbot header span {
         display: block;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
     }
 }
 </style>
