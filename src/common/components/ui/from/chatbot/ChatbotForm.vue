@@ -19,18 +19,38 @@
 
 <script setup>
 import { Icon } from '@iconify/vue';
-import { ref, onMounted, inject } from "vue";
+import { ref, onMounted, inject, nextTick } from "vue";
 const elementTextarea = ref(null)
-const { setInputInitHeight, setElementTextarea, userMessage, autoAdjustTextareaHeight, handleEnterKeyPress, handleChat } = inject('store')
+const { setInputInitHeight, setElementTextarea, userMessage, autoAdjustTextareaHeight, handleEnterKeyPress, handleChat, setElementCahtbox } = inject('store')
 
 const sendQuestion = function () {
     if (userMessage.value === '') return
     handleChat.value()
 }
 
+// 處理手機鍵盤彈出
+const handleFocus = () => {
+    nextTick(() => {
+        if (setElementCahtbox.value) {
+            setElementCahtbox.value.value.scrollTop = setElementCahtbox.value.value.scrollHeight;
+        }
+    });
+};
+
+// 處理手機鍵盤收起
+const handleBlur = () => {
+    // iOS Safari 修正視窗高度
+    window.scrollTo(0, 0);
+};
 
 onMounted(() => {
     setInputInitHeight.value = elementTextarea.value.scrollHeight;
     setElementTextarea.value = elementTextarea.value
+
+    // 監聽鍵盤事件
+    if (elementTextarea.value) {
+        elementTextarea.value.addEventListener('focus', handleFocus);
+        elementTextarea.value.addEventListener('blur', handleBlur);
+    }
 })
 </script>

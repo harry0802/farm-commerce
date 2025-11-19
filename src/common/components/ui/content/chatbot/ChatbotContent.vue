@@ -53,6 +53,8 @@ const { isChat } = inject('store')
         border-radius: 0;
         width: 100%;
         transform-origin: center;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
     }
 
     .show-chatbot.chatbot {
@@ -62,10 +64,12 @@ const { isChat } = inject('store')
     .chatbot .chatbox {
         height: calc(100% - 120px);
         padding: 20px 16px 100px;
+        overscroll-behavior: contain;
     }
 
     .chatbot .chat-input {
         padding: 8px 16px;
+        padding-bottom: max(8px, env(safe-area-inset-bottom));
     }
 
     .chatbot header span {

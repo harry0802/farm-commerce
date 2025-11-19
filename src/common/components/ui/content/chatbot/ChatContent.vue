@@ -11,7 +11,7 @@
                     :class="{
                         error: chatList.error,
                         'rounded-bl-none': chatList.role === 'bot',
-                        'rounded-br-none bg-color-eva-dark-yellow text-white': chatList.role === 'user'
+                        'rounded-br-none bg-[#d4a017] text-gray-900 font-medium': chatList.role === 'user'
                     }">
                     {{ chatList.message }}
                 </p>

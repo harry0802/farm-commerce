@@ -40,6 +40,20 @@ export default {
 
   chatbotToggler() {
     this.isChat = !this.isChat;
+    // 鎖定/解鎖背景滾動
+    if (!this.isChat) {
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+      document.body.style.top = `-${window.scrollY}px`;
+    } else {
+      const scrollY = document.body.style.top;
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.top = '';
+      window.scrollTo(0, parseInt(scrollY || '0') * -1);
+    }
   },
   addMessage(id, role, message, state = false, err = false) {
     this.createChatLi.push({ id, role, message, wait: state, err });
