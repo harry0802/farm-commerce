@@ -7,7 +7,7 @@
         <h2 class="u-text-large">我們的流程：</h2>
       </div>
       <process-guide-text />
-      <primary-button class="mt-4" :btnTitle="'了解更多'"></primary-button>
+      <primary-button :path="{ name: 'howitworks' }" class="mt-4" :btnTitle="'了解更多'"></primary-button>
     </base-text-content>
   </base-section>
 </template>
@@ -45,7 +45,7 @@ defineProps({ picture: String })
   right: 0;
   bottom: 0;
 
-  background-image: url("@/assets/imgs/shop.png");
+  background-image: url("@/assets/imgs/shop.webp");
   background-size: 100% 100%;
 }
 </style>

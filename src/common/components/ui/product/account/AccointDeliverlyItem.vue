@@ -8,8 +8,8 @@
                         :alt="product.product_name">
                 </div>
                 <figcaption class="flex flex-col  gap-y-1 text-color-primary">
-                    <span class="font-[Macacjkfonts] font-semibold tracking-wider ">{{ product.product_name }}</span>
-                    <span class="font-[Macacjkfonts]  tracking-wider">數量 : {{ product.quantity }}</span>
+                    <span class="font-[Maca] font-semibold tracking-wider ">{{ product.product_name }}</span>
+                    <span class="font-[Maca]  tracking-wider">數量 : {{ product.quantity }}</span>
                 </figcaption>
             </figure>
         </div>

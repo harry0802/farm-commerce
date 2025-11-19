@@ -21,7 +21,6 @@ const getPiniaState = () => {
 
 const throttledLoginHandler = useThrottleFn(async (event, session) => {
   const { accountStore, initializeOrderStore, resetOrder } = getPiniaState();
-
   if (event === "SIGNED_IN" && accountStore.userState.aud !== "authenticated") {
     accountStore.setAuthenticated(session.user);
     getAccountInfo();

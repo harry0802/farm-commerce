@@ -2,40 +2,42 @@
 
 @font-face {
   font-family: "Yagoinini";
-  src: url("@/assets/font/851Gkktt_005.ttf") format("truetype");
+  src: url("https://srwrseziyaecgzjcndxt.supabase.co/storage/v1/object/sign/Font/851MkPOP_101.ttf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8zYWFkMjdjZS01OGYwLTQ2OTItYTlmNy1kYmNlYjAyNmI5NGIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJGb250Lzg1MU1rUE9QXzEwMS50dGYiLCJpYXQiOjE3NjM1NDg0MTYsImV4cCI6NDg4NTYxMjQxNn0.L98boCWzHRH79Lqt7whKrqJ34mVRuVK8b-6kGE8ZQOc") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: "RiiT_F";
-  src: url("@/assets/font/RiiT_F.otf") format("opentype");
+  src: url("https://srwrseziyaecgzjcndxt.supabase.co/storage/v1/object/sign/Font/RiiT_F.otf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8zYWFkMjdjZS01OGYwLTQ2OTItYTlmNy1kYmNlYjAyNmI5NGIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJGb250L1JpaVRfRi5vdGYiLCJpYXQiOjE3NjM1NDg0NTIsImV4cCI6NDg4NTYxMjQ1Mn0.Rpg_R4vYtMRImdmBOR6CoM-S-G-JPliaZqYehZD0qsM") format("opentype");
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: "RiiPopkkR";
-  src: url("@/assets/font/RiiPopkkR.otf") format("opentype");
+  src: url("https://srwrseziyaecgzjcndxt.supabase.co/storage/v1/object/sign/Font/RiiPopkkR.otf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8zYWFkMjdjZS01OGYwLTQ2OTItYTlmNy1kYmNlYjAyNmI5NGIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJGb250L1JpaVBvcGtrUi5vdGYiLCJpYXQiOjE3NjM1NDg0MzUsImV4cCI6NDg4NTYxMjQzNX0.h_ISLQ5XKxGJVD4SQ461-GljH4GNKWeA87enXkOrJ4Y") format("opentype");
   font-weight: normal;
   font-style: normal;
 }
 
+/* 超大字體從 Supabase Storage CDN 載入（原檔超過 Cloudflare 25MB 限制） */
 @font-face {
   font-family: "cjkfonts";
-  src: url("@/assets/font/cjkFonts_allseto_v1.11.ttf") format("truetype");
+  src: url("https://srwrseziyaecgzjcndxt.supabase.co/storage/v1/object/sign/Font/cjkFonts_allseto_v1.11.ttf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8zYWFkMjdjZS01OGYwLTQ2OTItYTlmNy1kYmNlYjAyNmI5NGIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJGb250L2Nqa0ZvbnRzX2FsbHNldG9fdjEuMTEudHRmIiwiaWF0IjoxNzYzNDU2NzQyLCJleHAiOjQ4ODU1MjA3NDJ9.npXSzAxv4Cjp-5715tmX9Upx9HmLqM7ecpgJnd2njZE") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Maca";
-  src: url("@/assets/font/unsure/851MkPOP_101.ttf") format("truetype");
+  src: url("https://srwrseziyaecgzjcndxt.supabase.co/storage/v1/object/sign/Font/851MkPOP_101.ttf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8zYWFkMjdjZS01OGYwLTQ2OTItYTlmNy1kYmNlYjAyNmI5NGIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJGb250Lzg1MU1rUE9QXzEwMS50dGYiLCJpYXQiOjE3NjM0NjIxMjYsImV4cCI6NDg4NTUyNjEyNn0.TTpXfVe9hEBlxCply2DYpwBnTT2nh1bbwo6V32gey4g") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
+
 @font-face {
   font-family: "SentyGoldSand";
-  src: url("@/assets/font/unsure/SentyGoldSand.ttf") format("truetype");
+  src: url("https://srwrseziyaecgzjcndxt.supabase.co/storage/v1/object/sign/Font/SentyGoldSand.ttf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8zYWFkMjdjZS01OGYwLTQ2OTItYTlmNy1kYmNlYjAyNmI5NGIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJGb250L1NlbnR5R29sZFNhbmQudHRmIiwiaWF0IjoxNzYzNDU2Nzg2LCJleHAiOjQ4ODU1MjA3ODZ9.ngwTNEgGwh3la6_mQPoPmCMWVu43MHF_PFgUDIn2UWY") format("truetype");
   font-weight: normal;
   font-style: normal;
 }

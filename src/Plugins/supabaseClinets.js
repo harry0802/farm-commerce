@@ -91,13 +91,13 @@ const signInWithPassword = async function (userEnter) {
   }
 };
 
-// --port=8080 --host=localhost ./dist
 const signinWithEmail = async function (userEnter) {
   try {
     const { error } = await supabase.auth.signInWithOtp({
       email: userEnter,
       options: {
-        emailRedirectTo: "http://localhost:5173/?#/home",
+        shouldCreateUser: false,
+        emailRedirectTo: "http://localhost:5173/farm-commerce/#/welcomeback",
       },
     });
     if (error) throw error;
@@ -153,6 +153,23 @@ const getUserInfo = async function () {
   }
 };
 
+const confirmMagicLink = async function (token, type, email) {
+  const { error } = await supabase.auth.verifyOtp({
+    email: email,
+    token: token,
+    type: type,
+  });
+  if (error) {
+    let errMessage;
+    error.status === 403
+      ? (errMessage = "您的 Token 已經過期，請重新進行登錄操作")
+      : (errMessage = "出了點問題 , 請稍後再試，或是使用一般登入");
+    setErrorToast(errMessage);
+    throw error;
+  }
+  return token;
+};
+
 export {
   userSignUp,
   verifyOtp,
@@ -162,5 +179,7 @@ export {
   signInWithPassword,
   signinWithEmail,
   signOutSpabase,
+  confirmMagicLink,
+  setErrorToast,
   toast,
 };

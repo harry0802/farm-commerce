@@ -15,7 +15,7 @@
                 </BaseText>
             </BaseTextContent>
 
-            <BasePhtoContent reverse class="rounded-full" img="src/assets/gif/dungeon-meshi-delicious-in-dungeon.gif" />
+            <BasePhtoContent reverse class="rounded-full" img="https://srwrseziyaecgzjcndxt.supabase.co/storage/v1/object/sign/gif/dungeon-meshi-delicious-in-dungeon.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8zYWFkMjdjZS01OGYwLTQ2OTItYTlmNy1kYmNlYjAyNmI5NGIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJnaWYvZHVuZ2Vvbi1tZXNoaS1kZWxpY2lvdXMtaW4tZHVuZ2Vvbi5naWYiLCJpYXQiOjE3NjM0NjExMjgsImV4cCI6MTc3MjAxNDcyOH0.O0B0ZgOqF7q9PpD0ExwI0iOWNhi2GNmkxknvjHV_B2I" />
         </BaseContent>
     </BaseSection>
 

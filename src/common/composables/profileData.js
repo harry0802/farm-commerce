@@ -122,10 +122,11 @@ const getAccountInfo = async function () {
         "client_id"
       ),
     ]);
+  const [{ user_id: userid }] = client;
 
-  const userid = userState.value.id;
   registration.value.deliveryaddress =
     deliveryAddress?.[0]?.clients_id === userid;
+
   registration.value.personalinfo = client?.[0]?.user_id === userid;
   registration.value.paymentinfo = paymentInfo?.[0]?.client_id === userid;
   store.setAccountProfileInfo(
@@ -155,4 +156,9 @@ const updateAccount = async function (spFrom, columnVal, spEq) {
   }
 };
 
-export { updateAccount, getAccountInfo, multipleTablesChannel };
+export {
+  updateAccount,
+  getAccountInfo,
+  multipleTablesChannel,
+  getSupabaseSpecificData,
+};

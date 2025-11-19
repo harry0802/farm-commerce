@@ -3,7 +3,7 @@
     <div class="secondary-nav__container nav-container">
       <div class="secondary-nav__section secondary-nav__link">
         <a href="#" class="secondary-nav__links--item">關於我們</a>
-        <a href="#" class="secondary-nav__links--item">食譜</a>
+        <a href="https://harry0802.github.io/sideproject-forkify/" class="secondary-nav__links--item">食譜</a>
       </div>
 
       <div class="secondary-nav__section secondary-nav__user">

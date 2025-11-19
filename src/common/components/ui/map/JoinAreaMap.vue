@@ -1,10 +1,11 @@
 <template>
-    <div class="mapContainer w-full h-[300px] z-0" ref="mapContainer"></div>
+    <div class="mapContainer w-full h-[300px] z-0" ref="mapContainer" />
 </template>
 
 <script setup>
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import locationIcon from "@/assets/imgs/mapIcon/pet-shop-location-color-icon-vector.png";
 
 import { ref, onMounted, inject } from "vue";
 import { useRouter } from "vue-router";
@@ -14,6 +15,7 @@ const router = useRouter()
 
 onMounted(() => {
     if (!userArea.value.ID) {
+
         return router.push('zip-check')
     }
     const map = L.map(mapContainer.value, {
@@ -22,7 +24,7 @@ onMounted(() => {
     });
 
     const greenIcon = L.icon({
-        iconUrl: ("src/assets/imgs/mapIcon/pet-shop-location-color-icon-vector.png"), // 修改這裡,
+        iconUrl: (locationIcon), // 修改這裡,
         iconSize: [50, 64],
         iconAnchor: [25, 64],
         popupAnchor: [0, -64],

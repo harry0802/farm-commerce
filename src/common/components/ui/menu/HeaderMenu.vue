@@ -1,17 +1,14 @@
 <template>
   <div class="nav-classification nav-container">
-    <div class="nav-categorie" v-for="menus in productData" :key="menus">
-      <div class="nav-categories-wrap">
-        <RouterLink
-          :class="{ active: route.params.id === menus.project }"
-          :to="'/shop/' + `${menus.project}`"
-          >{{ menus.project }}
+    <div class="nav-categorie" v-for="(menus) in productData" :key="menus">
+      <div class="nav-categories-wrap ">
+        <RouterLink class="inline-block" :class="{ 'active': route.params.id === menus.project }"
+          :to="'/shop/' + `${menus.project}`">{{
+      menus.project }}
         </RouterLink>
         <div class="nav-dropdown-wrap public__item-link">
-          <div class="nav-dropdown" v-for="menuCategories in menus.categories">
-            <RouterLink :to="'/shop/' + `${menuCategories.category}`">{{
-              menuCategories.category
-            }}</RouterLink>
+          <div class="nav-dropdown " v-for="( menuCategories) in menus.categories">
+            <RouterLink :to="'/shop/' + `${menuCategories.category}`">{{ menuCategories.category }}</RouterLink>
           </div>
         </div>
       </div>
@@ -20,9 +17,10 @@
 </template>
 
 <script setup>
-import { inject } from "vue";
-const productData = inject("productData");
-const { route } = inject("vueRouter");
+
+import { inject, } from "vue";
+const productData = inject('productData')
+const { route, } = inject('vueRouter')
 </script>
 
 <style scoped>
@@ -40,8 +38,9 @@ const { route } = inject("vueRouter");
   z-index: -1;
 }
 
-.nav-dropdown-wrap > .nav-dropdown > * {
+.nav-dropdown-wrap>.nav-dropdown>* {
   font-family: "cjkfonts";
+
 }
 
 .nav-classification.nav-container {
@@ -66,7 +65,7 @@ const { route } = inject("vueRouter");
   padding-top: 19px;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.3s;
+  transition: opacity .3s;
 }
 
 .nav-dropdown {
@@ -79,13 +78,13 @@ const { route } = inject("vueRouter");
     0px 0px 5px rgba(7, 38, 30, 0.04), 0px 0px 3px rgba(7, 38, 30, 0.04);
 }
 
-.nav-dropdown > a {
+.nav-dropdown>a {
   min-width: 200px;
   padding: 8px;
   padding-left: 16px;
 }
 
-.nav-categories-wrap > a::after {
+.nav-categories-wrap>a::after {
   content: "";
   position: absolute;
   display: block;
@@ -101,7 +100,7 @@ const { route } = inject("vueRouter");
     opacity 0.1s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.nav-categories-wrap > .active::after {
+.nav-categories-wrap>.active::after {
   opacity: 1;
   transform: translate(-50%, 20px);
   width: 100%;
@@ -118,13 +117,13 @@ const { route } = inject("vueRouter");
   pointer-events: auto;
 }
 
-.nav-dropdown > a {
+.nav-dropdown>a {
   position: relative;
   z-index: 1;
   overflow: hidden;
 }
 
-.nav-dropdown > a::before {
+.nav-dropdown>a::before {
   content: "";
   display: block;
   inset: 0;
@@ -135,17 +134,17 @@ const { route } = inject("vueRouter");
   transform: translateX(-100%);
   clip-path: polygon(0 0, 100% 0%, 75% 100%, 0% 100%);
   opacity: 0;
-  transition: transform 0.3s cubic-bezier(0.5, 1, 0.89, 1), opacity 0.4s;
+  transition: transform 0.3s cubic-bezier(0.5, 1, 0.89, 1), opacity .4s;
   @apply bg-b-color-green-light;
 }
 
-.nav-dropdown > a:hover:before {
+.nav-dropdown>a:hover:before {
   opacity: 1;
   transform: translateX(0%);
-  transition: transform 0.4s cubic-bezier(0.5, 1, 0.89, 1), opacity 0.1s ease-in;
+  transition: transform 0.4s cubic-bezier(0.5, 1, 0.89, 1), opacity .1s ease-in;
 }
 
-.nav-dropdown > :not(:last-child) {
+.nav-dropdown> :not(:last-child) {
   border-bottom: 1px solid #eee8;
 }
 </style>

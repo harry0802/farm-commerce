@@ -1,7 +1,7 @@
 <template>
     <button @click="chatbotToggler"
-        class="chatbot-toggler fixed flex h-[50px] w-[50px] place-content-center place-items-center bottom-[30px] left-9 bg-color-eva-dark-yellow  cursor-pointer rounded-full  transition-all">
-        <Icon class="u-text-small absolute" :class="{
+        class="chatbot-toggler fixed flex h-[50px] w-[50px] min-h-[44px] min-w-[44px] place-content-center place-items-center bottom-[30px] left-9 bg-color-eva-dark-yellow  cursor-pointer rounded-full  transition-all hover:scale-110 active:scale-95 shadow-lg">
+        <Icon class="u-text-small absolute text-2xl" :class="{
         'toggleChatbot': !isChat,
     }" :icon="isChat ? 'tabler:message-chatbot' : 'pixelarticons:close'" />
     </button>

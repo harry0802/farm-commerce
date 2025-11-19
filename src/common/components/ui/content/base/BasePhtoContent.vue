@@ -1,7 +1,7 @@
 <template>
   <figure class=" rounded-lg overflow-hidden" :class="reverse ? 'img__recontainer' : 'img__container'">
     <img @load="isloading" loading="" :class="{ 'img__loaded--animate': loading }"
-      class="img__load response__img--col-1 object-cover " :src="img" alt="" />
+      class="img__load w-full h-full  object-cover  " :src="img" alt="" />
   </figure>
 </template>
 
@@ -20,12 +20,17 @@ export default {
 </script>
 
 <style scoped>
+img {
+  aspect-ratio: 3884/2594;
+  aspect-ratio: 1/.72;
+}
+
 .img__container {
   @apply col-span-full sm:col-start-3 sm:col-end-11;
 }
 
 .img__recontainer {
-  @apply col-span-full sm:col-start-3 sm:col-end-11
+  @apply lg:order-1 col-span-full sm:col-start-3 sm:col-end-11
 }
 
 
@@ -36,7 +41,7 @@ export default {
   }
 
   .img__recontainer {
-    @apply lg:col-start-8 lg:col-span-5;
+    @apply lg:col-start-7 lg:col-span-6;
     align-self: center;
   }
 

@@ -1,7 +1,7 @@
 <template>
     <section class="hero-section relative w-full">
         <div class="background__container max-h-[280px]  overflow-hidden">
-            <img class="aspect-[10/5] w-full object-cover" src="@/assets/imgs/close-up-couple-with-dog-garden.jpg"
+            <img class="aspect-[10/5] w-full object-cover" src="@/assets/imgs/close-up-couple-with-dog-garden.webp"
                 alt="">
         </div>
         <div class="overlay__container absolute inset-0 flex m-auto">

@@ -8,7 +8,13 @@
 <script setup>
 import HighlightCard from "../card/HighlightCard.vue";
 import BaseSection from "../section/BaseSection.vue";
-import * as articleGif from "@/assets/gif/index.js";
+
+// GIF 從 Supabase Storage CDN 載入
+const articleGif = {
+  Thehistory: "https://srwrseziyaecgzjcndxt.supabase.co/storage/v1/object/sign/gif/Thehistory.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8zYWFkMjdjZS01OGYwLTQ2OTItYTlmNy1kYmNlYjAyNmI5NGIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJnaWYvVGhlaGlzdG9yeS5naWYiLCJpYXQiOjE3NjM0NjEyMTgsImV4cCI6NDg4NTUyNTIxOH0.00Kx2qHX5D7RvVLzjJyZNasnJ49gIgbb5WeP78jgrYI",
+  Pastafork: "https://srwrseziyaecgzjcndxt.supabase.co/storage/v1/object/sign/gif/Pastafork.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8zYWFkMjdjZS01OGYwLTQ2OTItYTlmNy1kYmNlYjAyNmI5NGIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJnaWYvUGFzdGFmb3JrLmdpZiIsImlhdCI6MTc2MzQ2MTE4NCwiZXhwIjo0ODg1NTI1MTg0fQ.Areo98u6JeAmp1yifap4vsAfF4nmcomBQI3pyxB0cIo",
+  Pasta: "https://srwrseziyaecgzjcndxt.supabase.co/storage/v1/object/sign/gif/Pasta.gif?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8zYWFkMjdjZS01OGYwLTQ2OTItYTlmNy1kYmNlYjAyNmI5NGIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJnaWYvUGFzdGEuZ2lmIiwiaWF0IjoxNzYzNDYxMTU5LCJleHAiOjE3NzIwMTQ3NTl9.G87sIQ6_MH-vMg3OGXXahnwpnIoRtRCVgE4SxRRuF4Q"
+};
 
 const article = [
   {
