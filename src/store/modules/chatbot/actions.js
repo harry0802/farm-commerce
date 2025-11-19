@@ -41,7 +41,7 @@ export default {
   chatbotToggler() {
     this.isChat = !this.isChat;
     // 鎖定/解鎖背景滾動
-    if (!this.isChat) {
+    if (this.isChat) {
       const scrollY = window.scrollY;
       document.body.style.overflow = 'hidden';
       document.body.style.position = 'fixed';

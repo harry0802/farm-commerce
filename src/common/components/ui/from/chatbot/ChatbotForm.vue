@@ -31,7 +31,7 @@ const sendQuestion = function () {
 // 處理手機鍵盤彈出
 const handleFocus = () => {
     nextTick(() => {
-        if (setElementCahtbox.value) {
+        if (setElementCahtbox.value?.value) {
             setElementCahtbox.value.value.scrollTop = setElementCahtbox.value.value.scrollHeight;
         }
     });
