@@ -66,20 +66,19 @@ export default {
         history: [
           {
             role: "user",
-            parts: "我好傷心",
+            parts: [{ text: "我好傷心" }],
           },
           {
             role: "model",
-            parts: "我不在乎",
+            parts: [{ text: "我不在乎" }],
           },
           {
             role: "user",
-            parts: "你好我是來購買的顧客",
+            parts: [{ text: "你好我是來購買的顧客" }],
           },
           {
             role: "model",
-            parts:
-              "除了與農產品有關的問題外，它充滿了傲慢與諷刺，不情願的回答所有問題。",
+            parts: [{ text: "除了與農產品有關的問題外，它充滿了傲慢與諷刺，不情願的回答所有問題。" }],
           },
         ],
         generationConfig: {
