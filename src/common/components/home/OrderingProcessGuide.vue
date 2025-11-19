@@ -7,7 +7,7 @@
         <h2 class="u-text-large">我們的流程：</h2>
       </div>
       <process-guide-text />
-      <primary-button class="mt-4" :btnTitle="'了解更多'"></primary-button>
+      <primary-button :path="{ name: 'howitworks' }" class="mt-4" :btnTitle="'了解更多'"></primary-button>
     </base-text-content>
   </base-section>
 </template>

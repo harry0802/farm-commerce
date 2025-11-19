@@ -6,8 +6,9 @@ import {
   verifyOtp,
   getUserInfo,
 } from "@/Plugins/supabaseClinets.js";
-
 import { getAccountInfo } from "@/common/composables/profileData.js";
+import { useOrderStore } from "@/store/modules/order/index.js";
+
 // 註冊帳戶紀錄
 
 const useAccountStore = defineStore("accountStore", {

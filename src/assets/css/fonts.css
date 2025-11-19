@@ -2,20 +2,20 @@
 
 @font-face {
   font-family: "Yagoinini";
-  src: url("@/assets/font/851Gkktt_005.ttf") format("truetype");
+  src: url("https://srwrseziyaecgzjcndxt.supabase.co/storage/v1/object/sign/Font/851MkPOP_101.ttf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8zYWFkMjdjZS01OGYwLTQ2OTItYTlmNy1kYmNlYjAyNmI5NGIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJGb250Lzg1MU1rUE9QXzEwMS50dGYiLCJpYXQiOjE3NjM1NDg0MTYsImV4cCI6NDg4NTYxMjQxNn0.L98boCWzHRH79Lqt7whKrqJ34mVRuVK8b-6kGE8ZQOc") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: "RiiT_F";
-  src: url("@/assets/font/RiiT_F.otf") format("opentype");
+  src: url("https://srwrseziyaecgzjcndxt.supabase.co/storage/v1/object/sign/Font/RiiT_F.otf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8zYWFkMjdjZS01OGYwLTQ2OTItYTlmNy1kYmNlYjAyNmI5NGIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJGb250L1JpaVRfRi5vdGYiLCJpYXQiOjE3NjM1NDg0NTIsImV4cCI6NDg4NTYxMjQ1Mn0.Rpg_R4vYtMRImdmBOR6CoM-S-G-JPliaZqYehZD0qsM") format("opentype");
   font-weight: normal;
   font-style: normal;
 }
 @font-face {
   font-family: "RiiPopkkR";
-  src: url("@/assets/font/RiiPopkkR.otf") format("opentype");
+  src: url("https://srwrseziyaecgzjcndxt.supabase.co/storage/v1/object/sign/Font/RiiPopkkR.otf?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV8zYWFkMjdjZS01OGYwLTQ2OTItYTlmNy1kYmNlYjAyNmI5NGIiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJGb250L1JpaVBvcGtrUi5vdGYiLCJpYXQiOjE3NjM1NDg0MzUsImV4cCI6NDg4NTYxMjQzNX0.h_ISLQ5XKxGJVD4SQ461-GljH4GNKWeA87enXkOrJ4Y") format("opentype");
   font-weight: normal;
   font-style: normal;
 }

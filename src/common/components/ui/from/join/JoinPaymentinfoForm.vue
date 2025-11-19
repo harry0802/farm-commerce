@@ -44,7 +44,7 @@
                 </div>
 
                 <FormField v-slot="{ value: checkboxVl, handleChange }" name="sameAddress">
-                    <CustomCheckbox :description="getDeliveryAddress()" :value="checkboxVl" :handleChange="handleChange"
+                    <CustomCheckbox :description="getDeliveryAddress" :value="checkboxVl" :handleChange="handleChange"
                         class="text-left flex mt-5" @click="isAddresSave = false" />
                 </FormField>
 
@@ -74,14 +74,18 @@ import CostomInput from "@/common/components/ui/from/CostomInput.vue";
 import BaseCard from "@/common/components/ui/card/BaseCard.vue";
 import PayinfoRadioGroup from "@/common/components/ui/from/join/payinfo/PayinfoRadioGroup.vue";
 import LoadingCat2 from '../../../ui/animat/LoadingCat2.vue'
-import { inject, ref, toRefs } from "vue";
+import { inject, ref, toRefs, onMounted, computed, watchEffect } from "vue";
 import { userInsertRows, getUserInfo } from "@/Plugins/supabaseClinets.js";
 import { Form, FormField } from "@/common/composables/ui/form";
 import { paymentinfo, useField } from "@/Plugins/zodValidators.js";
 import { useProfileInfoStore } from "@/store/modules/profile/profileStore.js";
 import { Button } from '@/common/composables/ui/button'
 import PayInfoForm from "@/common/components/ui/from/join/payinfo/PayInfoForm.vue";
-const { router, store } = inject('paymentInfo')
+import { supabase } from "@/config/FarmPruductsItemManage.js";
+
+
+
+const { router, } = inject('paymentInfo')
 const {
     handleSubmit,
     loading
@@ -100,10 +104,23 @@ const { value: showAddress } = useField('sameAddress')
 const getCustomAddress = ref('')
 const closeAddress = ref(showAddress)
 const isAddresSave = ref(false)
-const { deliveryAddress } = toRefs(useProfileInfoStore())
+const sameAddress = ref(null)
+const userId = ref('')
+
 
 // 預設地址
-const getDeliveryAddress = () => Object.values(deliveryAddress.value).map(item => item.val).join(',')
+const getDeliveryAddress = computed(() => {
+    if (sameAddress.value == null && !sameAddress.value) return
+
+    return Object.values(sameAddress.value).map(item => item).join(',')
+}
+)
+
+
+
+
+
+
 
 const mo = ['January',
     'February',
@@ -122,43 +139,66 @@ const mo = ['January',
 const onsubmit = handleSubmit(async (val) => {
     try {
         loading.value = true
-        const { id } = await getUserInfo()
         const paymentData = {
-            client_id: id,
+            client_id: userId.value,
             card_name: val.userName,
-            card_cardNumber: val.creditNumber,
+            card_cardNumber: +val.creditNumber,
             card_date: `${val.creditYear}/${val.creditMoon}`,
-            card_password: val.creditLastNb,
+            card_password: +val.creditLastNb,
         }
 
         let address = {
-            clients_id: id,
-            user_Address: deliveryAddress.value.user_Address.val,
-            user_AddressLine: deliveryAddress.value.user_AddressLine.val,
-            user_City: deliveryAddress.value.user_City.val,
-            user_State: deliveryAddress.value.user_State.val,
-            user_ZipCode: deliveryAddress.value.user_ZipCode.val,
+            clients_id: userId.value,
+            user_Address: sameAddress.value.user_Address,
+            user_AddressLine: sameAddress.value.user_AddressLine,
+            user_City: sameAddress.value.user_City,
+            user_State: sameAddress.value.user_State,
+            user_ZipCode: +sameAddress.value.user_ZipCode,
         }
 
 
         if (!val.sameAddress) {
             address = {
-                clients_id: id,
+                clients_id: userId.value,
                 ...getCustomAddress.value
             }
         }
-
         await Promise.all([
             userInsertRows('PaymentInfo', paymentData),
-            userInsertRows('BillingAddress', address)]).catch((e) => {
-                throw e
-            })
+            userInsertRows('BillingAddress', address)])
+
         router.push({ name: 'welcome' })
     } finally {
         loading.value = false
     }
 
 })
+
+const initAddress = async function () {
+    const { id } = await getUserInfo()
+    let { data: [address], error } = await supabase
+        .from('deliveryAddress')
+        .select(`user_Address,user_AddressLine,user_City,user_State,user_ZipCode`)
+        .eq('clients_id', id);
+    if (error) throw error;
+
+    if (address) {
+        sameAddress.value = address
+        userId.value = id
+        return
+    }
+
+
+}
+
+
+onMounted(() => {
+    initAddress()
+})
+
+
+
+
 
 </script>
 

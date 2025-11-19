@@ -40,6 +40,59 @@ export default {
 
   chatbotToggler() {
     this.isChat = !this.isChat;
+    // 鎖定/解鎖背景滾動
+    if (!this.isChat) {
+      const scrollY = window.scrollY;
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+      document.body.style.top = `-${scrollY}px`;
+
+      // 防止觸控滾動穿透
+      let touchStartY = 0;
+
+      const handleTouchStart = (e) => {
+        touchStartY = e.touches[0].clientY;
+      };
+
+      const handleTouchMove = (e) => {
+        const chatbox = e.target.closest('.chatbox');
+        if (chatbox) {
+          const isAtTop = chatbox.scrollTop === 0;
+          const isAtBottom = chatbox.scrollTop + chatbox.clientHeight >= chatbox.scrollHeight - 1;
+          const currentY = e.touches[0].clientY;
+          const isScrollingUp = currentY > touchStartY;
+          const isScrollingDown = currentY < touchStartY;
+
+          if ((isAtTop && isScrollingUp) || (isAtBottom && isScrollingDown)) {
+            e.preventDefault();
+          }
+          return;
+        }
+        e.preventDefault();
+      };
+
+      this._touchStartHandler = handleTouchStart;
+      this._touchMoveHandler = handleTouchMove;
+
+      document.body.addEventListener('touchstart', handleTouchStart, { passive: true });
+      document.body.addEventListener('touchmove', handleTouchMove, { passive: false });
+    } else {
+      const scrollY = document.body.style.top;
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.top = '';
+
+      if (this._touchStartHandler) {
+        document.body.removeEventListener('touchstart', this._touchStartHandler);
+      }
+      if (this._touchMoveHandler) {
+        document.body.removeEventListener('touchmove', this._touchMoveHandler);
+      }
+
+      window.scrollTo(0, parseInt(scrollY || '0') * -1);
+    }
   },
   addMessage(id, role, message, state = false, err = false) {
     this.createChatLi.push({ id, role, message, wait: state, err });

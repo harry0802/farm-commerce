@@ -1,5 +1,5 @@
 <template>
-    <form @submit="submitFrom">
+    <form @submit.prevent="submitFrom">
         <div class="grid w-full gap-y-6 gap-x-8 sm:grid-cols-2 twzipcode" ref="twZipcode">
             <FormField name="countys">
                 <CostomSelect :userLabel="'縣市*'" :userDescription="'輸入要更改的內容'">

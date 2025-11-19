@@ -1,7 +1,8 @@
 <template>
   <div class="response__content">
     <div>
-      <h3 class="inline-flex items-center u-text-medium" :class="dataPseudo" :data-pseudo-text="pseudoText">
+      <h3 class="inline-flex items-center u-text-medium tracking-wider" :class="dataPseudo"
+        :data-pseudo-text="pseudoText">
         {{ title }}
       </h3>
 

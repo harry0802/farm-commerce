@@ -1,5 +1,5 @@
 <template>
-    <div class="grid gap-6">
+    <div class="grid gap-1">
         <FormField name="quantity">
             <CostomSelect user-label="數量">
                 <select v-model="quantityVl"

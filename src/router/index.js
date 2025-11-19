@@ -2,6 +2,8 @@ import { pinia } from "@/store/pinia.js";
 import useAccountStore from "@/store/modules/account/accountStore.js";
 import { createRouter, createWebHashHistory } from "vue-router";
 import FarmHome from "@/views/FarmHome.vue";
+import FarmFeaturesAndAdvantages from "@/views/FarmFeaturesAndAdvantages.vue";
+import FarmHowItWorks from "@/views/FarmHowItWorks.vue";
 import FarmShop from "@/views/FarmShop.vue";
 import FarmProduct from "@/views/FarmProduct.vue";
 import FarmProducers from "@/views/FarmProducers.vue";
@@ -9,6 +11,7 @@ import FarmJoin from "@/views/FarmJoin.vue";
 import FarmAccount from "@/views/FarmAccount.vue";
 import FarmLogin from "@/views/FarmLogin.vue";
 import FarmSearch from "@/views/FarmSearch.vue";
+import FarmWellComBack from "@/views/FarmWellComBack.vue";
 import catchAll from "@/views/CatchAll.vue";
 
 const router = createRouter({
@@ -25,6 +28,20 @@ const router = createRouter({
       name: "home",
       component: FarmHome,
       meta: { title: "農場美食販賣部" },
+    },
+
+    {
+      path: "/features-and-advantages",
+      name: "features",
+      component: FarmFeaturesAndAdvantages,
+      meta: { title: "特色及優點" },
+    },
+
+    {
+      path: "/how-it-works",
+      name: "howitworks",
+      component: FarmHowItWorks,
+      meta: { title: "購買流程" },
     },
 
     {
@@ -211,6 +228,13 @@ const router = createRouter({
     },
 
     {
+      path: "/welcomeBack",
+      name: "welcomeBack",
+      component: FarmWellComBack,
+      meta: { title: "歡迎回來" },
+    },
+
+    {
       path: "/:catchAll(.*)",
       component: catchAll,
       meta: { title: "找不到頁面" },
@@ -228,7 +252,6 @@ const router = createRouter({
 router.beforeEach((to, from) => {
   const store = useAccountStore();
   // 未登入不可訪問頁面
-
   if (to.meta.requiresAuth && !store.isaAuthenticated) {
     return { name: "home" };
   }
@@ -242,6 +265,8 @@ router.beforeEach((to, from) => {
   }
   // 註冊到一半 引導完成註冊
   if (to.meta.requiresAuth && !store.regDeliveryaddress) {
+    console.log(store.regDeliveryaddress);
+
     store.checkAllow();
     return { name: "delivery-address" };
   }
