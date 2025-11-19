@@ -21,7 +21,7 @@ import BaseContent from "@/common/components/ui/content/base/BaseContent.vue";
 import BaseText from "@/common/components/ui/text/BaseText.vue";
 import BaseTextContent from "@/common/components/ui/content/base/BaseTextContent.vue";
 import BasePhtoContent from "../ui/content/base/BasePhtoContent.vue";
-import * as advantagesPic from "@/assets/imgs/featuresAndAdvantages/inex.js";
+import * as advantagesPic from "@/assets/imgs/featuresAndAdvantages/index.js";
 
 const sectionGroup = [
     {

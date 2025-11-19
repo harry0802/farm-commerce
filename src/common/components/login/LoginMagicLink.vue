@@ -2,7 +2,7 @@
     <div class="join-page__section">
         <div class="join-page__contnet max-w-full place-content-center place-items-center text-color-primary">
             <div class="u-text-giant tracking-widest">歡迎回來！</div>
-            <div class="max-w-[600px] "><img class="rounded-md shadow-lg" src="@/assets/imgs/welcom.jpg" alt=""></div>
+            <div class="max-w-[600px] "><img class="rounded-md shadow-lg" src="@/assets/imgs/welcom.webp" alt=""></div>
             <div class="tracking-wider">請按下按鈕後即可進行登入</div>
             <div class="text-center">
                 <button @click="login" class="u-pirmary-button ">登陸</button>
